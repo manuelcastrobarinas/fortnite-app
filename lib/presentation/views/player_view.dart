@@ -17,6 +17,8 @@ class PlayerView extends StatelessWidget {
       const DropdownMenuEntry(value: '26', label: 'TEMPORADA 26'),
     ];
 
+    final List<String> choisesList = ['Solo','Duos','Trios','Escuadrones'];
+
     final Size size = MediaQuery.of(context).size;
     const TextStyle titleSection = TextStyle(color: kPrimaryTextColor, fontSize: 20);
 
@@ -34,7 +36,9 @@ class PlayerView extends StatelessWidget {
             const Center(child: _Username()),
             const SizedBox(height: 5),
             const _UserLevel(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            ChoiceChipComponent(choisesList: choisesList),
+            const SizedBox(height: 10),
             const Text('Indice del Jugador', style: titleSection),
             const SizedBox(height: 10),
             const StadisticsComponentMultipleRows(
@@ -127,6 +131,10 @@ class _ImageAndPlatforms extends StatelessWidget {
             backgroundColor: kPrimaryTextColor,
             radius: size.height * 0.40,
           ),
+          SizedBox(
+            height: size.width * 0.40,
+            width : size.width * 0.34,
+            child: const Image(image: AssetImage('assets/player/jonnes.png'),fit: BoxFit.cover,)),
           Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox(

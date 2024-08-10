@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fortnite_app/presentation/views/painters/painters.dart';
 
 class NewsView extends StatelessWidget {
   const NewsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("News Page"));
+    return const LeftWavesPainterView(
+      colorWave: Colors.white,
+    );
   }
 }

@@ -35,14 +35,14 @@ final List<Widget> _navigationItems = <Widget> [
     Colors.white,
   ];
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class NavegationScreen extends StatefulWidget {
+  const NavegationScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<NavegationScreen> createState() => _NavegationScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _NavegationScreenState extends State<NavegationScreen> {
   int selectedIndex = 0;
   Color backgroundColor = kBackgroundColor;
   Color backgroundNavigatorColor = Colors.white;
