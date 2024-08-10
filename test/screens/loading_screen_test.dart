@@ -14,7 +14,7 @@ final MaterialApp fakeApp = MaterialApp(
 void main() {
   // Grupo de pruebas para la pantalla LoadingScreen
   group('LoadingScreen Tests', () {
-    testWidgets('Should render LoadingScreen with LoadingView', (WidgetTester tester) async {
+    testWidgets('deberia renderizar la LoadingScreen with LoadingView', (WidgetTester tester) async {
       await tester.pumpWidget(fakeApp); // Construye el widget LoadingScreen en el entorno de prueba
       expect(find.byType(LoadingView), findsOneWidget); // Busca el widget LoadingView dentro de LoadingScreen
     });
