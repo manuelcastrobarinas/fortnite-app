@@ -91,6 +91,7 @@ Lista de dependencias utilizadas en el proyecto.
 | Dependencia | Documentación |
 | ------ | ------ |
 | curved_navigation_bar: ^1.0.6 | https://pub.dev/packages/curved_navigation_bar|
+| chips_choice: ^3.0.1: | https://pub.dev/packages/chips_choice/install|
 
 ---
 

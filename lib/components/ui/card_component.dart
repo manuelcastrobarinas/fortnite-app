@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CustomCard extends StatelessWidget {
+class CustomCardComponent extends StatelessWidget {
   final String title;
   final String subtitle;
   final int price;
   final Color color;
   final String urlImage;
 
-  const CustomCard({
+  const CustomCardComponent({
     super.key, 
     required this.title,
     required this.subtitle,
