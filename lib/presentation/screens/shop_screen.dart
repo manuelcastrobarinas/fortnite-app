@@ -6,9 +6,19 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: ShopView(),
+      appBar: AppBar(
+        toolbarHeight: 100,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text('Tienda Hoy', style: TextStyle(color: Colors.black, fontSize: 30), maxLines: 1, overflow: TextOverflow.ellipsis),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black, size: 40,)),
+          const SizedBox(width: 40.0)
+        ],
+      ),
+      body: const ShopView(),
     );
   }
 }
