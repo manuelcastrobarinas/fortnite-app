@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class CustomCard extends StatelessWidget {
   final String title;
   final String subtitle;
-  final int points;
-  final String imagePath;
+  final int price;
   final Color color;
   final String urlImage;
 
@@ -12,8 +11,7 @@ class CustomCard extends StatelessWidget {
     super.key, 
     required this.title,
     required this.subtitle,
-    required this.points,
-    required this.imagePath,
+    required this.price,
     required this.color,
     required this.urlImage
   });
@@ -78,7 +76,7 @@ class CustomCard extends StatelessWidget {
                       const Image(image:AssetImage('assets/loading/vbuck.png')),
                       const SizedBox(width: 2.0),
                       Expanded(
-                        child: Text('$points', style: priceStyle, overflow: TextOverflow.ellipsis),
+                        child: Text('$price', style: priceStyle, overflow: TextOverflow.ellipsis),
                       ),
                     ],
                   ),
