@@ -50,14 +50,3 @@ class _TagsMultipleChipSelectorComponentState extends State<TagsMultipleChipSele
     );
   }
 }
-
-
-  // overlayColor: Colors.orange,
-  // shadowColor: Colors.red,
-  // foregroundColor: kShadowColor,
-
-  // borderColor:Colors.amber,
-  // avatarForegroundColor:Colors.brown,
-  // avatarBackgroundColor:Colors.purple,
-  // checkmarkColor:Colors.pink,
-  // iconColor:Colors.lime
