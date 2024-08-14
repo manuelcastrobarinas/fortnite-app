@@ -162,7 +162,7 @@ class _ContainerItem extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Container(
             margin: const EdgeInsets.all(5.0),
-            height: MediaQuery.of(context).size.height * 0.20,
+            height: double.infinity,
             decoration: BoxDecoration(
               color: backgroundColor, 
               borderRadius: BorderRadius.circular(15)

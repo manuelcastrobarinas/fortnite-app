@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fortnite_app/contants.dart';
+import 'package:fortnite_app/presentation/views/painters/painters.dart';
 import 'package:fortnite_app/presentation/views/shop_view.dart';
 
 class ShopScreen extends StatelessWidget {
@@ -18,7 +20,12 @@ class ShopScreen extends StatelessWidget {
           const SizedBox(width: 40.0)
         ],
       ),
-      body: const ShopView(),
+      body:  const Stack(
+          children: [
+            LeftWavesPainterView(colorWave: kBackgroundColor),
+            ShopView(),
+          ],
+        )
     );
   }
 }
