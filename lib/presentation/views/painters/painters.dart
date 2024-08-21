@@ -1,0 +1,1 @@
+export 'package:fortnite_app/presentation/views/painters/left_waves_painter_view.dart';
