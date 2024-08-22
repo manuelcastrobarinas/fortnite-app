@@ -37,22 +37,22 @@ class ShopModel {
 }
 
 class News {
-  String? id;
-  String? title;
+  String id;
+  String title;
   String? tabTitle;
   DateTime? date;
-  String? body;
+  String body;
   String? adspace;
   String? image;
   bool? live;
   String? video;
 
   News({
-    this.id,
-    this.title,
+    required this.id,
+    required this.title,
     this.tabTitle,
     this.date,
-    this.body,
+    required this.body,
     this.adspace,
     this.image,
     this.live,
