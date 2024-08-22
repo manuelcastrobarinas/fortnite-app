@@ -4,7 +4,7 @@ import 'package:fortnite_app/contants.dart';
 
 import '../../screens.dart';
 
-final List<Widget> _navigationItems = <Widget> [
+List<Widget> _navigationItems = <Widget> [
     const Icon(Icons.home_rounded),
     const Icon(Icons.newspaper_rounded),
     const Icon(Icons.shopping_bag_rounded),
