@@ -4,8 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:fortnite_app/components/components.dart';
 import 'package:fortnite_app/contants.dart';
 
+import '../../blocs/items/items_bloc.dart';
+
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+
+  final ItemsState state;
+  
+  const HomeView({
+    super.key,
+    required this.state
+  });
 
  
 

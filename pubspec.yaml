@@ -41,6 +41,7 @@ dependencies:
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
   flutter_dotenv: ^5.1.0
+  meta: ^1.12.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
     - assets/player/
     - assets/fonts/
     - assets/fonts/fortnite/
+    - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
