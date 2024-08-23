@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fortnite_app/contants.dart';
 import 'package:fortnite_app/routes/routes.dart';
 
-void main() {
+void main() async {
+  const envFileName ='.env'; //este es
+  await dotenv.load(fileName: envFileName);
   runApp(const MyApp());
 }
 
@@ -24,4 +27,4 @@ class MyApp extends StatelessWidget {
       initialRoute: 'loading',
     );
   }
-}
+} 
