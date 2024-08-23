@@ -18,7 +18,7 @@ class StadisticsWaponsComponent extends StatelessWidget {
   @override
  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       width : double.infinity,
       decoration: BoxDecoration(
         color:  const Color.fromRGBO(78, 129, 234, 1),
@@ -125,7 +125,7 @@ class StadisticSections extends StatelessWidget {
                 const SizedBox(width: 4.0),
                 SizedBox(
                   // color: Colors.amber,
-                  width: MediaQuery.of(context).size.width * 0.22,
+                  width: MediaQuery.of(context).size.width * 0.20,
                   child: Text(title, style: titleStyle, maxLines: 2),
                 ),
               ],

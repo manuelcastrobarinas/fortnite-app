@@ -21,7 +21,7 @@ List<Widget> _navigationItems = <Widget> [
 
 //COLORES DE FONDO DE LAS PANTALLAS
   final List<Color> _backgroundScreenColors = <Color>[
-    Colors.white,
+    kBackgroundColor,
     kBackgroundColor,
     Colors.white,
     kBackgroundColor,
@@ -29,7 +29,7 @@ List<Widget> _navigationItems = <Widget> [
 
 //COLORES DE LA NAVEGACION DE LA BARRA
   final List<Color> _backgroundNavigatorColors = <Color>[
-    kBackgroundColor,
+    Colors.white,
     Colors.white,
     kBackgroundColor,
     Colors.white,

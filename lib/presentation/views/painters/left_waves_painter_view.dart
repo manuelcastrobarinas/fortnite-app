@@ -72,10 +72,8 @@ class _LeftWavesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    throw true;
+    return false;
   }
-
-
 }
 
   //VALORES DE LA CURVA EN PANTALLA COMPLETA
