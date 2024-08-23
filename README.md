@@ -94,7 +94,8 @@ Lista de dependencias utilizadas en el proyecto.
 | chips_choice: ^3.0.1: | https://pub.dev/packages/chips_choice/install|
 | dio: ^5.6.0: | https://pub.dev/packages/dio/install|
 | bloc: ^8.1.4: | https://pub.dev/packages/bloc|
-|  flutter_bloc: ^8.1.6: | https://pub.dev/packages/flutter_bloc/install|
+| flutter_bloc: ^8.1.6: | https://pub.dev/packages/flutter_bloc/install|
+| flutter_dotenv: ^5.1.0: | https://pub.dev/packages/flutter_dotenv|
 
 ---
 
