@@ -14,16 +14,15 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: SafeArea(
-        child: FutureBuilder(
+        child: (itemsBloc.state.items != null) ?  const _HomeInformation()
+        : FutureBuilder(
           future  : itemsBloc.getItemsGame(), 
           builder : (BuildContext context, AsyncSnapshot<String> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
             if (snapshot.connectionState == ConnectionState.none)    return const Center(child: Text("No hay conexión"));
             if (snapshot.hasError || snapshot.error == true)         return Center(child: Text(snapshot.error.toString()));
             if (snapshot.data != 'success') return Center(child: Text(snapshot.data.toString()));
-            return BlocBuilder<ItemsBloc, ItemsState>(
-              builder: (context, state) => _HomeInformation(state: state),
-            );
+            return  const _HomeInformation();
           }
         )
       ),
@@ -32,18 +31,15 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _HomeInformation extends StatelessWidget {
-  final ItemsState state;
 
-  const _HomeInformation({
-    required this.state
-  });
+  const _HomeInformation();
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       children: [
-        const LeftWavesPainterView(colorWave: Colors.white),
-        HomeView(state: state,),
+        LeftWavesPainterView(colorWave: Colors.white),
+        HomeView(),
       ],
     );
   }

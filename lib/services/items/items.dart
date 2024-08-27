@@ -19,7 +19,6 @@ class ItemServices {
     final String url = '$_apiUrl/loot/list';
     final response = await _dio.get(url);
     itemsModel = ItemsModel.fromJson(response.data);
-    print(itemsModel!.weapons?[0].name);
     return 'success';
     } catch (e) {
       return throw CustomApiErrors.fromError(e);
