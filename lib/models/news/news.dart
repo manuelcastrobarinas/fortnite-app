@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-class ShopModel {
+class NewsModel {
   bool? result;
   String? type;
   String? lang;
   int? show;
   List<News>? news;
 
-  ShopModel({
+  NewsModel({
     this.result,
     this.type,
     this.lang,
@@ -15,11 +15,11 @@ class ShopModel {
     this.news,
   });
 
-  factory ShopModel.fromRawJson(String str) => ShopModel.fromJson(json.decode(str));
+  factory NewsModel.fromRawJson(String str) => NewsModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ShopModel.fromJson(Map<String, dynamic> json) => ShopModel(
+  factory NewsModel.fromJson(Map<String, dynamic> json) => NewsModel(
       result: json["result"],
       type: json["type"],
       lang: json["lang"],
