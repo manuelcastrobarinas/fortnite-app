@@ -19,8 +19,8 @@ class PlayerServices {
     try {
       final String url = '$_url/lookup?username=$userName';
       final Response<dynamic> respose = await _dio.get(url);
-      if (respose.statusCode == 200 && respose.data.result == false) return 'La cuenta ingresada no existe';
       _playerId = PlayerIDmodel.fromJson(respose.data);
+      if (_playerId!.result == false) return 'La cuenta ingresada no existe';
       return 'success';
      } catch (e) {
       return throw CustomApiErrors.fromError(e);
