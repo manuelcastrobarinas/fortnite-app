@@ -152,7 +152,7 @@ class _ContainerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle textStyle = TextStyle(color: Colors.white, fontSize: 16);
+    const TextStyle textStyle = TextStyle(color: Colors.white, fontSize: 14, overflow: TextOverflow.ellipsis);
     String url = "https://media.fortniteapi.io/images/8021b5d65a1e177487b6608ad3f37824/transparent.png";
     return Stack(
       children: [
@@ -200,7 +200,7 @@ class _ContainerItem extends StatelessWidget {
                   SizedBox(width: 2.0),
                   Expanded(
                     flex: 1,
-                    child: Text('3000', style: textStyle),
+                    child: Text('3000', style: textStyle, maxLines: 1),
                   ),
                 ],
               ),
