@@ -5,12 +5,14 @@ class ButtonComponent extends StatelessWidget {
   final Size size;
   final String route;
   final String text;
+  final bool isBack;
 
   const ButtonComponent({
     super.key, 
     required this.size,
     required this.route,
-    required this.text
+    required this.text,
+    this.isBack = true
   });
 
   @override
@@ -52,7 +54,7 @@ class ButtonComponent extends StatelessWidget {
                 fontFamily: 'fortnite'
               )
             ),
-            onPressed: () => Navigator.pushNamed(context, route)
+            onPressed: () =>  isBack == true ? Navigator.pushNamed(context, route) : Navigator.pushReplacementNamed(context, route)
           ),
         ),
       )

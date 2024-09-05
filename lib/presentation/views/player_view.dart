@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/components/components.dart';
 
+import '../../blocs/player/player_bloc.dart';
 import '../../contants.dart';
 
 class PlayerView extends StatelessWidget {
@@ -8,94 +10,112 @@ class PlayerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final List<DropdownMenuEntry<String>> dropdownSeasonsList = [
-      const DropdownMenuEntry(value: '30', label: 'TEMPORADA ACTUAL 30'),
-      const DropdownMenuEntry(value: '29', label: 'TEMPORADA 29'),
-      const DropdownMenuEntry(value: '28', label: 'TEMPORADA 28'),
-      const DropdownMenuEntry(value: '27', label: 'TEMPORADA 27'),
-      const DropdownMenuEntry(value: '26', label: 'TEMPORADA 26'),
-    ];
-
     final List<String> choisesList = ['Solo','Duos','Trios','Escuadrones'];
 
     final Size size = MediaQuery.of(context).size;
     const TextStyle titleSection = TextStyle(color: kPrimaryTextColor, fontSize: 20);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Center(child: _DropdownSeasonsMenu(dropdownSeasonsList: dropdownSeasonsList)),
-            const SizedBox(height: 10.0),
-            Center(child: _ImageAndPlatforms(size: size)),
-            const SizedBox(height: 10.0),
-            const Center(child: _Username()),
-            const SizedBox(height: 5),
-            const _UserLevel(),
-            const SizedBox(height: 10),
-            ChoiceChipComponent(choisesList: choisesList),
-            const SizedBox(height: 10),
-            const Text('Indice del Jugador', style: titleSection),
-            const SizedBox(height: 10),
-            const StadisticsComponentMultipleRows(
-              listStadistics: <StadisticSection>[
-                StadisticSection(title: 'K|D', description: 'Indice de kills|deaths', value: '1.46'),
-                StadisticSection(title: 'W|R', description: 'ratio de Victorias', value: '0.03'),
-                StadisticSection(title: 'Score', description: 'Puntaje Obtenido', value: '492.746')
+    return BlocBuilder<PlayerBloc, PlayerState>(
+      builder: (context, state) {
+        // final List<DropdownMenuEntry<String>> dropdownSeasonsList = [
+        //   const DropdownMenuEntry(value: '30', label: 'TEMPORADA ACTUAL 30'),
+        //   const DropdownMenuEntry(value: '29', label: 'TEMPORADA 29'),
+        //   const DropdownMenuEntry(value: '28', label: 'TEMPORADA 28'),
+        //   const DropdownMenuEntry(value: '27', label: 'TEMPORADA 27'),
+        //   const DropdownMenuEntry(value: '26', label: 'TEMPORADA 26'),
+        // ];
+
+        List<StadisticSection> indexPlayerStats = <StadisticSection>[
+          StadisticSection(title: 'K|D', description: 'Indice de kills|deaths', value: state.selectedStats?["kd"].toString() ?? 'no'),
+          StadisticSection(title: 'W|R', description: 'ratio de Victorias', value: state.selectedStats?["winrate"].toString()  ?? 'no'),
+          StadisticSection(title: 'Score', description: 'Puntaje Obtenido', value: state.selectedStats?["score"].toString()  ?? 'no')
+        ];
+
+        List<StadisticSection> topGames = <StadisticSection>[
+          StadisticSection(title: '#1',   description: 'Victorias magístrales',   value: state.selectedStats?["winrate"].toString() ?? 'no'),
+          StadisticSection(title: '#3',   description: 'Top 3 de las partidas',   value: state.selectedStats?["placetop3"].toString() ?? 'no'),
+          StadisticSection(title: '#5',   description: 'Top 5 de las partidas',   value: state.selectedStats?["placetop5"].toString() ?? 'no'),
+          StadisticSection(title: '#10',  description: 'Top 10 de las partidas',  value: state.selectedStats?["placetop10"].toString() ?? 'no'),
+          StadisticSection(title: '#12',  description: 'Top 12 de las partidas',  value: state.selectedStats?["placetop12"].toString() ?? 'no'),
+          StadisticSection(title: '#25',  description: 'Top 25 de las partidas',  value: state.selectedStats?["placetop25"].toString() ?? 'no'),
+        ];
+
+
+        List<StadisticSection> generalStats = <StadisticSection>[
+          StadisticSection(title: 'Kills', description: 'Jugadores Eliminados', value: state.selectedStats?["kills"].toString() ?? 'no'),
+          StadisticSection(title: '#Matches', description: 'Partidas Jugadas',  value: state.selectedStats?["matchesplayed"].toString() ?? 'no'),
+          StadisticSection(title: '#Tiempo', description: 'Minutos Jugados',    value: state.selectedStats?["minutesplayed"].toString() ?? 'no')
+        ];
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // Center(child: _DropdownSeasonsMenu(dropdownSeasonsList: dropdownSeasonsList)),
+                const SizedBox(height: 10.0),
+                Center(child: _ImageAndPlatforms(size: size)),
+                const SizedBox(height: 10.0),
+                Center(child: _Username(userName: state.player!.name!,)),
+                const SizedBox(height: 5),
+                _UserLevel(level: state.player!.account!.level.toString()),
+                const SizedBox(height: 10),
+                _ChoiceChipSelectedTeam(
+                  choisesList: choisesList,
+                  defaultChoiseIndex: state.selectTeamOption,
+                  playerState: state,
+                ),
+                const SizedBox(height: 10),
+                const Text('Indice del Jugador', style: titleSection),
+                const SizedBox(height: 10),
+                StadisticsComponentMultipleRows(
+                  listStadistics: indexPlayerStats
+                ),
+                const SizedBox(height: 20),
+                const Text('Top Obtenido en partidas', style: titleSection),
+                const SizedBox(height: 10),
+                StadisticsComponentMultipleRows(
+                  radius: 20,
+                  listStadistics:topGames
+                ),
+                const SizedBox(height: 20),
+                const Text('Estadisticas generales', style: titleSection),
+                const SizedBox(height: 10),
+                StadisticsComponentMultipleRows(
+                  listStadistics: generalStats
+                ),
+                const SizedBox(height: 10),
               ],
             ),
-            const SizedBox(height: 20),
-            const Text('Top Obtenido en partidas', style: titleSection),
-            const SizedBox(height: 10),
-            const StadisticsComponentMultipleRows(
-              radius: 20,
-              listStadistics: <StadisticSection>[
-                StadisticSection(title: '#1',   description: 'Victorias magístrales',   value: '6'),
-                StadisticSection(title: '#3',   description: 'Top 3 de las partidas',   value: '25'),
-                StadisticSection(title: '#5',   description: 'Top 5 de las partidas',   value: '30'),
-                StadisticSection(title: '#10',  description: 'Top 10 de las partidas',  value: '60'),
-                StadisticSection(title: '#12',  description: 'Top 12 de las partidas',  value: '150'),
-                StadisticSection(title: '#25',  description: 'Top 25 de las partidas',  value: '400'),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text('Estadisticas generales', style: titleSection),
-            const SizedBox(height: 10),
-            const StadisticsComponentMultipleRows(
-              listStadistics: <StadisticSection>[
-                StadisticSection(title: 'Kills', description: 'Jugadores Eliminados', value: '3.780'),
-                StadisticSection(title: '#Matches', description: 'Partidas Jugadas',  value: '2.682'),
-                StadisticSection(title: '#Tiempo', description: 'Minutos Jugados',    value: '20.739')
-              ],
-            ),
-            const SizedBox(height: 10),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
 
 class _UserLevel extends StatelessWidget {
-  const _UserLevel();
+  final String level;
+
+  const _UserLevel({
+    required this.level
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
+        const SizedBox(
           child: Text('Nivel', style: TextStyle(color: Colors.black, fontSize: 26), overflow: TextOverflow.ellipsis, maxLines: 2),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         SizedBox(
-          child: Text('237', style: TextStyle(color: Colors.amber, fontSize: 32), overflow: TextOverflow.ellipsis, maxLines: 2),
+          child: Text(level, style: const TextStyle(color: Colors.amber, fontSize: 32), overflow: TextOverflow.ellipsis, maxLines: 2),
         ),
       ],
     );
@@ -103,12 +123,15 @@ class _UserLevel extends StatelessWidget {
 }
 
 class _Username extends StatelessWidget {
-  const _Username();
+  final String userName;
+  const _Username({
+    required this.userName
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('Madavzcore', style: TextStyle(color: Colors.black, fontSize: 32), overflow: TextOverflow.ellipsis, maxLines: 2),
+    return SizedBox(
+      child: Text(userName, style: const TextStyle(color: Colors.black, fontSize: 32), overflow: TextOverflow.ellipsis, maxLines: 2),
     );
   }
 }
@@ -247,5 +270,60 @@ class _DropdownSeasonsMenu extends StatelessWidget {
         onSelected: (value) {},
       ),
     );
+  }
+}
+
+
+class _ChoiceChipSelectedTeam extends StatelessWidget {
+
+  final int defaultChoiseIndex;
+  final PlayerState playerState;
+  final List<String> choisesList; //LISTA DE ELEMENTOS PARA CADA UNO DE LOS CHOISE
+
+  const _ChoiceChipSelectedTeam({
+    required this.choisesList,
+    required this.defaultChoiseIndex,
+    required this.playerState
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final playerBloc = BlocProvider.of<PlayerBloc>(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: Center(
+          child: Wrap(
+            spacing: 10.0,
+            children: List.generate(choisesList.length, (index) {
+                return ChoiceChip(
+                  labelPadding: const EdgeInsets.all(2.0),
+                  label: Text(choisesList[index], style: const TextStyle(color: Colors.white)), 
+                  selected: defaultChoiseIndex == index,
+                  selectedColor: kPrimaryColor,
+                  disabledColor: kPrimaryColorVariant,
+                  backgroundColor: kPrimaryColorVariant,
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  onSelected: (value) {
+                      playerBloc.changeTeamOption(
+                      newTeamOption: index, 
+                      selectedStats: setTeamStats(index, playerState)
+                    );
+                  },
+                );
+              } 
+            ),
+          ),
+        )
+      ),
+    );
+  }
+
+  Map<String, double>? setTeamStats(int index, PlayerState state) {
+    if (index == 0) return state.player!.globalStats!.solo;
+    if (index == 1) return state.player!.globalStats!.duo;
+    if (index == 2) return state.player!.globalStats!.trio;
+   return state.player!.globalStats!.squad;
   }
 }

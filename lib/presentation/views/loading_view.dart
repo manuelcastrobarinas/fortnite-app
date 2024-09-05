@@ -20,7 +20,7 @@ class LoadingView extends StatelessWidget {
             const _Banner(),
             Expanded(
               flex  : 1,
-              child : ButtonComponent(text:'PRESS TO START', size: size, route: 'main')
+              child : ButtonComponent(text:'PRESIONA INICIAR', size: size, route: 'main', isBack: false)
             )
           ],
         ),

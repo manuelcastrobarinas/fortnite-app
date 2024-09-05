@@ -20,7 +20,7 @@ class CustomCardComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     const TextStyle titleStyle   = TextStyle(color: Colors.white, fontSize: 30);
-    const TextStyle priceStyle   = TextStyle(color: Colors.white, fontSize: 24);
+    const TextStyle priceStyle   = TextStyle(color: Colors.white, fontSize: 20, overflow: TextOverflow.ellipsis);
     const TextStyle packageStyle = TextStyle(color: Colors.white, fontSize: 28);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -64,7 +64,7 @@ class CustomCardComponent extends StatelessWidget {
               alignment: Alignment.topRight,
               child:   Container(
                 height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.22,
+                width: MediaQuery.of(context).size.width * 0.25,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(5),
