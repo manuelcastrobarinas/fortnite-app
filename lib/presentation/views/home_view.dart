@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/components/components.dart';
 import 'package:fortnite_app/contants.dart';
+import 'package:fortnite_app/delegates/search_item.dart';
 import 'package:fortnite_app/models/items/items.dart';
 import 'package:fortnite_app/utils/background_items_color.dart';
 
@@ -15,7 +16,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle titleStyle = TextStyle(color: kPrimaryTextColor, fontSize: 66, overflow: TextOverflow.ellipsis);
+    const TextStyle titleStyle = TextStyle(color: kPrimaryTextColor, fontSize: 52, overflow: TextOverflow.ellipsis);
     return  SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
@@ -34,7 +35,23 @@ class HomeView extends StatelessWidget {
             return Column(
               children: [
                 const SizedBox(height: 20.0),
-                const Text("Aprende sobre los items", style: titleStyle, maxLines: 2),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Expanded(
+                      flex  : 7,
+                      child : Text("Aprende sobre los items", style: titleStyle, maxLines: 2),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        onPressed: () => showSearch(delegate: SearchItemDelegate(), context: context),
+                        icon: const Icon(Icons.search, size: 38),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 20.0),
                 const _SubtitleSection(),
                 _ShowItem(urlImage: state.selectedWeapon?.images?.icon),
