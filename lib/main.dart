@@ -4,11 +4,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fortnite_app/blocs/items/items_bloc.dart';
 import 'package:fortnite_app/blocs/news/news_bloc.dart';
 import 'package:fortnite_app/blocs/player/player_bloc.dart';
+import 'package:fortnite_app/blocs/shop/shop_bloc.dart';
 import 'package:fortnite_app/contants.dart';
 import 'package:fortnite_app/routes/routes.dart';
 import 'package:fortnite_app/services/items/items.dart';
 import 'package:fortnite_app/services/news/news.dart';
 import 'package:fortnite_app/services/players/player.dart';
+import 'package:fortnite_app/services/shop/shop_services.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -18,6 +20,7 @@ Future<void> main() async {
         BlocProvider<ItemsBloc> (create:  (BuildContext context) => ItemsBloc(itemServices: ItemServices())),
         BlocProvider<NewsBloc>  (create:  (BuildContext context) => NewsBloc(newsServices: NewsServices())),
         BlocProvider<PlayerBloc>(create:  (BuildContext context) => PlayerBloc(playerServices: PlayerServices())),
+        BlocProvider<ShopBloc>  (create:  (BuildContext context) => ShopBloc(shopServices: ShopServices())),
       ],
       child: const MyApp()
     )
