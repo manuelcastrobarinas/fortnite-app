@@ -3,191 +3,174 @@
 import 'dart:convert';
 
 class ShopLimited {
-    bool? result;
-    bool? fullShop;
-    LastUpdate? lastUpdate;
-    dynamic nextRotation;
-    dynamic carousel;
-    dynamic specialOfferVideo;
-    dynamic customBackground;
-    List<Shop>? shop;
+  bool? result;   //RESULTADO POSITIVO O NEGATIVO
+  bool? fullShop; //SABER SI ES TODA LA TIENDA
+  LastUpdate? lastUpdate; //ULTIMA ACTUALIZACION EN LA TIENDA
+  List<Shop>? shop; //INFORMACION DE LA TIENDA
 
-    ShopLimited({
-      this.result,
-      this.fullShop,
-      this.lastUpdate,
-      this.nextRotation,
-      this.carousel,
-      this.specialOfferVideo,
-      this.customBackground,
-      this.shop,
-    });
+  ShopLimited({
+    this.result,
+    this.fullShop,
+    this.lastUpdate,
+    this.shop,
+  });
 
-    factory ShopLimited.fromRawJson(String str) => ShopLimited.fromJson(json.decode(str));
+  factory ShopLimited.fromRawJson(String str) => ShopLimited.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory ShopLimited.fromJson(Map<String, dynamic> json) => ShopLimited(
-      result: json["result"],
-      fullShop: json["fullShop"],
-      lastUpdate: json["lastUpdate"] == null ? null : LastUpdate.fromJson(json["lastUpdate"]),
-      nextRotation: json["nextRotation"],
-      carousel: json["carousel"],
-      specialOfferVideo: json["specialOfferVideo"],
-      customBackground: json["customBackground"],
-      shop: json["shop"] == null ? [] : List<Shop>.from(json["shop"]!.map((x) => Shop.fromJson(x))),
-    );
+  factory ShopLimited.fromJson(Map<String, dynamic> json) => ShopLimited(
+    result: json["result"],
+    fullShop: json["fullShop"],
+    lastUpdate: json["lastUpdate"] == null ? null : LastUpdate.fromJson(json["lastUpdate"]),
+    shop: json["shop"] == null ? [] : List<Shop>.from(json["shop"]!.map((x) => Shop.fromJson(x))),
+  );
 
-    Map<String, dynamic> toJson() => {
-      "result": result,
-      "fullShop": fullShop,
-      "lastUpdate": lastUpdate?.toJson(),
-      "nextRotation": nextRotation,
-      "carousel": carousel,
-      "specialOfferVideo": specialOfferVideo,
-      "customBackground": customBackground,
-      "shop": shop == null ? [] : List<dynamic>.from(shop!.map((x) => x.toJson())),
-    };
+  Map<String, dynamic> toJson() => {
+    "result": result,
+    "fullShop": fullShop,
+    "lastUpdate": lastUpdate?.toJson(),
+    "shop": shop == null ? [] : List<dynamic>.from(shop!.map((x) => x.toJson())),
+  };
 }
 
 class LastUpdate {
-    DateTime? date;
-    String? uid;
+  DateTime? date;
+  String? uid;
 
-    LastUpdate({
-      this.date,
-      this.uid,
-    });
+  LastUpdate({
+    this.date,
+    this.uid,
+  });
 
-    factory LastUpdate.fromRawJson(String str) => LastUpdate.fromJson(json.decode(str));
+  factory LastUpdate.fromRawJson(String str) => LastUpdate.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory LastUpdate.fromJson(Map<String, dynamic> json) => LastUpdate(
-      date: json["date"] == null ? null : DateTime.parse(json["date"]),
-      uid: json["uid"],
-    );
+  factory LastUpdate.fromJson(Map<String, dynamic> json) => LastUpdate(
+    date: json["date"] == null ? null : DateTime.parse(json["date"]),
+    uid: json["uid"],
+  );
 
-    Map<String, dynamic> toJson() => {
-      "date": date?.toIso8601String(),
-      "uid": uid,
-    };
+  Map<String, dynamic> toJson() => {
+    "date": date?.toIso8601String(),
+    "uid": uid,
+  };
 }
 
 class Shop {
-    String? mainId;
-    String? displayName;
-    String? displayDescription;
-    DisplayType? displayType;
-    MainType? mainType;
-    String? offerId;
-    String? devName;
-    OfferDates? offerDates;
-    List<DisplayAsset>? displayAssets;
-    DateTime? firstReleaseDate;
-    DateTime? previousReleaseDate;
-    bool? giftAllowed;
-    bool? buyAllowed;
-    Price? price;
-    Rarity? rarity;
-    Rarity? series;
-    Banner? banner;
-    OfferTag? offerTag;
-    List<Granted>? granted;
-    int? priority;
-    Section? section;
-    int? groupIndex;
-    StoreName? storeName;
-    TileSize? tileSize;
-    List<dynamic>? categories;
+  String? mainId; //ID
+  String? displayName; //NOMBRE
+  String? displayDescription; //DESCRIPCION
+  DisplayType? displayType;
+  String? mainType;
+  String? offerId;
+  String? devName;
+  OfferDates? offerDates;
+  ColorsItems? colors;
+  List<DisplayAsset>? displayAssets;
+  DateTime? firstReleaseDate;
+  DateTime? previousReleaseDate;
+  bool? giftAllowed;
+  bool? buyAllowed;
+  Price? price;
+  Rarity? rarity; //CALIDAD DE LOS OBJETOS
+  Rarity? series; //SERIE A LA QUE PERTENECE
+  Banner? banner; 
+  OfferTag? offerTag;
+  List<Granted>? granted; //OBJETOS QUE TRAE
+  int? priority;
+  Section? section;
+  int? groupIndex;
+  StoreName? storeName;
+  List<dynamic>? categories;
 
-    Shop({
-      this.mainId,
-      this.displayName,
-      this.displayDescription,
-      this.displayType,
-      this.mainType,
-      this.offerId,
-      this.devName,
-      this.offerDates,
-      this.displayAssets,
-      this.firstReleaseDate,
-      this.previousReleaseDate,
-      this.giftAllowed,
-      this.buyAllowed,
-      this.price,
-      this.rarity,
-      this.series,
-      this.banner,
-      this.offerTag,
-      this.granted,
-      this.priority,
-      this.section,
-      this.groupIndex,
-      this.storeName,
-      this.tileSize,
-      this.categories,
-    });
+  Shop({
+    this.mainId,
+    this.section, //TIENE LLA INFORMACION DE LOS PAQUETES, EL ID AL QUE PARTENENCE EL NOMBRE, LA CATEGORIA
+    this.displayName,
+    this.displayDescription,
+    this.displayType,
+    this.mainType,
+    this.offerId,
+    this.devName,
+    this.offerDates,
+    this.colors,
+    this.displayAssets,
+    this.firstReleaseDate,
+    this.previousReleaseDate,
+    this.giftAllowed,
+    this.buyAllowed,
+    this.price,
+    this.rarity,
+    this.series,
+    this.banner,
+    this.offerTag,
+    this.granted,
+    this.priority,
+    this.groupIndex,
+    this.storeName,
+    this.categories,
+  });
 
-    factory Shop.fromRawJson(String str) => Shop.fromJson(json.decode(str));
+  factory Shop.fromRawJson(String str) => Shop.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory Shop.fromJson(Map<String, dynamic> json) => Shop(
-      mainId: json["mainId"],
-      displayName: json["displayName"],
-      displayDescription: json["displayDescription"],
-      displayType: displayTypeValues.map[json["displayType"]]!,
-      mainType: mainTypeValues.map[json["mainType"]]!,
-      offerId: json["offerId"],
-      devName: json["devName"],
-      offerDates: json["offerDates"] == null ? null : OfferDates.fromJson(json["offerDates"]),
-      displayAssets: json["displayAssets"] == null ? [] : List<DisplayAsset>.from(json["displayAssets"]!.map((x) => DisplayAsset.fromJson(x))),
-      firstReleaseDate: json["firstReleaseDate"] == null ? null : DateTime.parse(json["firstReleaseDate"]),
-      previousReleaseDate: json["previousReleaseDate"] == null ? null : DateTime.parse(json["previousReleaseDate"]),
-      giftAllowed: json["giftAllowed"],
-      buyAllowed: json["buyAllowed"],
-      price: json["price"] == null ? null : Price.fromJson(json["price"]),
-      rarity: json["rarity"] == null ? null : Rarity.fromJson(json["rarity"]),
-      series: json["series"] == null ? null : Rarity.fromJson(json["series"]),
-      banner: json["banner"] == null ? null : Banner.fromJson(json["banner"]),
-      offerTag: json["offerTag"] == null ? null : OfferTag.fromJson(json["offerTag"]),
-      granted: json["granted"] == null ? [] : List<Granted>.from(json["granted"]!.map((x) => Granted.fromJson(x))),
-      priority: json["priority"],
-      section: json["section"] == null ? null : Section.fromJson(json["section"]),
-      groupIndex: json["groupIndex"],
-      storeName: storeNameValues.map[json["storeName"]]!,
-      tileSize: tileSizeValues.map[json["tileSize"]]!,
-      categories: json["categories"] == null ? [] : List<dynamic>.from(json["categories"]!.map((x) => x)),
-    );
+  factory Shop.fromJson(Map<String, dynamic> json) => Shop(
+    mainId: json["mainId"],
+    displayName: json["displayName"],
+    displayDescription: json["displayDescription"],
+    displayType: displayTypeValues.map[json["displayType"]]!,
+    mainType: json["mainType"],
+    offerId: json["offerId"],
+    devName: json["devName"],
+    offerDates: json["offerDates"] == null ? null : OfferDates.fromJson(json["offerDates"]),
+    colors: json["colors"] == null ? null : ColorsItems.fromJson(json["colors"]),
+    displayAssets: json["displayAssets"] == null ? [] : List<DisplayAsset>.from(json["displayAssets"]!.map((x) => DisplayAsset.fromJson(x))),
+    firstReleaseDate: json["firstReleaseDate"] == null ? null : DateTime.parse(json["firstReleaseDate"]),
+    previousReleaseDate: json["previousReleaseDate"] == null ? null : DateTime.parse(json["previousReleaseDate"]),
+    giftAllowed: json["giftAllowed"],
+    buyAllowed: json["buyAllowed"],
+    price: json["price"] == null ? null : Price.fromJson(json["price"]),
+    rarity: json["rarity"] == null ? null : Rarity.fromJson(json["rarity"]),
+    series: json["series"] == null ? null : Rarity.fromJson(json["series"]),
+    banner: json["banner"] == null ? null : Banner.fromJson(json["banner"]),
+    offerTag: json["offerTag"] == null ? null : OfferTag.fromJson(json["offerTag"]),
+    granted: json["granted"] == null ? [] : List<Granted>.from(json["granted"]!.map((x) => Granted.fromJson(x))),
+    priority: json["priority"],
+    section: json["section"] == null ? null : Section.fromJson(json["section"]),
+    groupIndex: json["groupIndex"],
+    storeName: storeNameValues.map[json["storeName"]]!,
+    categories: json["categories"] == null ? [] : List<dynamic>.from(json["categories"]!.map((x) => x)),
+  );
 
-    Map<String, dynamic> toJson() => {
-      "mainId": mainId,
-      "displayName": displayName,
-      "displayDescription": displayDescription,
-      "displayType": displayTypeValues.reverse[displayType],
-      "mainType": mainTypeValues.reverse[mainType],
-      "offerId": offerId,
-      "devName": devName,
-      "offerDates": offerDates?.toJson(),
-      "displayAssets": displayAssets == null ? [] : List<dynamic>.from(displayAssets!.map((x) => x.toJson())),
-      "firstReleaseDate": "${firstReleaseDate!.year.toString().padLeft(4, '0')}-${firstReleaseDate!.month.toString().padLeft(2, '0')}-${firstReleaseDate!.day.toString().padLeft(2, '0')}",
-      "previousReleaseDate": "${previousReleaseDate!.year.toString().padLeft(4, '0')}-${previousReleaseDate!.month.toString().padLeft(2, '0')}-${previousReleaseDate!.day.toString().padLeft(2, '0')}",
-      "giftAllowed": giftAllowed,
-      "buyAllowed": buyAllowed,
-      "price": price?.toJson(),
-      "rarity": rarity?.toJson(),
-      "series": series?.toJson(),
-      "banner": banner?.toJson(),
-      "offerTag": offerTag?.toJson(),
-      "granted": granted == null ? [] : List<dynamic>.from(granted!.map((x) => x.toJson())),
-      "priority": priority,
-      "section": section?.toJson(),
-      "groupIndex": groupIndex,
-      "storeName": storeNameValues.reverse[storeName],
-      "tileSize": tileSizeValues.reverse[tileSize],
-      "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x)),
-    };
+  Map<String, dynamic> toJson() => {
+    "mainId": mainId,
+    "displayName": displayName,
+    "displayDescription": displayDescription,
+    "displayType": displayTypeValues.reverse[displayType],
+    "mainType": mainType,
+    "offerId": offerId,
+    "devName": devName,
+    "offerDates": offerDates?.toJson(),
+    "displayAssets": displayAssets == null ? [] : List<dynamic>.from(displayAssets!.map((x) => x.toJson())),
+    "firstReleaseDate": "${firstReleaseDate!.year.toString().padLeft(4, '0')}-${firstReleaseDate!.month.toString().padLeft(2, '0')}-${firstReleaseDate!.day.toString().padLeft(2, '0')}",
+    "previousReleaseDate": "${previousReleaseDate!.year.toString().padLeft(4, '0')}-${previousReleaseDate!.month.toString().padLeft(2, '0')}-${previousReleaseDate!.day.toString().padLeft(2, '0')}",
+    "giftAllowed": giftAllowed,
+    "buyAllowed": buyAllowed,
+    "price": price?.toJson(),
+    "rarity": rarity?.toJson(),
+    "series": series?.toJson(),
+    "banner": banner?.toJson(),
+    "offerTag": offerTag?.toJson(),
+    "granted": granted == null ? [] : List<dynamic>.from(granted!.map((x) => x.toJson())),
+    "priority": priority,
+    "section": section?.toJson(),
+    "groupIndex": groupIndex,
+    "storeName": storeNameValues.reverse[storeName],
+    "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x)),
+  };
 }
 
 class Banner {
@@ -218,6 +201,38 @@ class Banner {
     };
 }
 
+  class ColorsItems {
+    String? color1;
+    String? color2;
+    String? color3;
+    String? textBackgroundColor;
+
+    ColorsItems({
+      this.color1,
+      this.color2,
+      this.color3,
+      this.textBackgroundColor,
+    });
+
+    factory ColorsItems.fromRawJson(String str) => ColorsItems.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory ColorsItems.fromJson(Map<String, dynamic> json) => ColorsItems(
+      color1: json["color1"],
+      color2: json["color2"],
+      color3: json["color3"],
+      textBackgroundColor: json["textBackgroundColor"],
+    );
+
+    Map<String, dynamic> toJson() => {
+      "color1": color1,
+      "color2": color2,
+      "color3": color3,
+      "textBackgroundColor": textBackgroundColor,
+    };
+  }
+
 enum Intensity {
   HIGH,
   LOW
@@ -232,7 +247,7 @@ class DisplayAsset {
   String? displayAsset;
   String? materialInstance;
   PrimaryMode? primaryMode;
-  ProductTag? productTag;
+  String? productTag;
   String? url;
   Flipbook? flipbook;
   String? backgroundTexture;
@@ -259,7 +274,7 @@ class DisplayAsset {
     displayAsset: json["displayAsset"],
     materialInstance: json["materialInstance"],
     primaryMode: primaryModeValues.map[json["primaryMode"]]!,
-    productTag: productTagValues.map[json["productTag"]]!,
+    productTag: json["productTag"],
     url: json["url"],
     flipbook: json["flipbook"] == null ? null : Flipbook.fromJson(json["flipbook"]),
     backgroundTexture: json["background_texture"],
@@ -271,7 +286,7 @@ class DisplayAsset {
     "displayAsset": displayAsset,
     "materialInstance": materialInstance,
     "primaryMode": primaryModeValues.reverse[primaryMode],
-    "productTag": productTagValues.reverse[productTag],
+    "productTag": productTag,
     "url": url,
     "flipbook": flipbook?.toJson(),
     "background_texture": backgroundTexture,
@@ -321,13 +336,6 @@ enum ProductTag {
   PRODUCT_SPARKS
 }
 
-final productTagValues = EnumValues({
-  "Product.BR": ProductTag.PRODUCT_BR,
-  "Product.DelMar": ProductTag.PRODUCT_DEL_MAR,
-  "Product.Juno": ProductTag.PRODUCT_JUNO,
-  "Product.Sparks": ProductTag.PRODUCT_SPARKS
-});
-
 enum DisplayType {
   ACCESORIO_MOCHILERO,
   ALA_DELTA,
@@ -337,7 +345,7 @@ enum DisplayType {
   LOTE_DE_4_OBJETO_S,
   LOTE_DE_5_OBJETO_S,
   LOTE_DE_OBJETOS,
-  MSICA,
+  MUSICA,
   PICOS,
   PLAYSET_PROP,
   TRAJE
@@ -352,11 +360,26 @@ final displayTypeValues = EnumValues({
   "Lote de 4 objeto(s)": DisplayType.LOTE_DE_4_OBJETO_S,
   "Lote de 5 objeto(s)": DisplayType.LOTE_DE_5_OBJETO_S,
   "Lote de objetos": DisplayType.LOTE_DE_OBJETOS,
-  "Música": DisplayType.MSICA,
+  "Música": DisplayType.MUSICA,
   "Picos": DisplayType.PICOS,
   "Playset Prop": DisplayType.PLAYSET_PROP,
   "Traje": DisplayType.TRAJE
 });
+
+final Map<DisplayType, String> displayTypeMap = {
+  DisplayType.ACCESORIO_MOCHILERO: "Accesorio mochilero",
+  DisplayType.ALA_DELTA: "Ala delta",
+  DisplayType.ENVOLTORIO: "Envoltorio",
+  DisplayType.ESTELA: "Estela",
+  DisplayType.GESTO: "Gesto",
+  DisplayType.LOTE_DE_4_OBJETO_S: "Lote de 4 objeto(s)",
+  DisplayType.LOTE_DE_5_OBJETO_S: "Lote de 5 objeto(s)",
+  DisplayType.LOTE_DE_OBJETOS: "Lote de objetos",
+  DisplayType.MUSICA: "Música",
+  DisplayType.PICOS: "Picos",
+  DisplayType.PLAYSET_PROP: "Playset Prop",
+  DisplayType.TRAJE: "Traje",
+};
 
 class Granted {
   String? id;
@@ -511,12 +534,12 @@ class Images {
 }
 
 class Rarity {
-    MainType? id;
-    Name? name;
+    String? id;
+    String? name;
 
     Rarity({
-        this.id,
-        this.name,
+      this.id,
+      this.name,
     });
 
     factory Rarity.fromRawJson(String str) => Rarity.fromJson(json.decode(str));
@@ -524,89 +547,15 @@ class Rarity {
     String toRawJson() => json.encode(toJson());
 
     factory Rarity.fromJson(Map<String, dynamic> json) => Rarity(
-        id: mainTypeValues.map[json["id"]]!,
-        name: nameValues.map[json["name"]]!,
+        id: json["id"],
+        name: json["name"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": mainTypeValues.reverse[id],
-        "name": nameValues.reverse[name],
+        "id": id,
+        "name": name,
     };
 }
-
-enum MainType {
-    BACKPACK,
-    BUILDING_PROP,
-    BUILDING_SET,
-    BUNDLE,
-    COMMON,
-    CONTRAIL,
-    CREATOR_COLLAB_SERIES,
-    CUBE_SERIES,
-    EMOJI,
-    EMOTE,
-    EPIC,
-    GLIDER,
-    LEGENDARY,
-    LOADINGSCREEN,
-    MARVEL_SERIES,
-    NONE,
-    OUTFIT,
-    PICKAXE,
-    RARE,
-    SERIES_ALAN_WALKER,
-    SERIES_TESLA,
-    SPARKS_BASS,
-    SPARKS_DRUM,
-    SPARKS_GUITAR,
-    SPARKS_MICROPHONE,
-    SPARKS_SONG,
-    SPRAY,
-    UNCOMMON,
-    VEHICLE_BODY,
-    VEHICLE_BOOSTER,
-    VEHICLE_COSMETICVARIANT,
-    VEHICLE_SKIN,
-    VEHICLE_WHEEL,
-    WRAP
-}
-
-final mainTypeValues = EnumValues({
-    "backpack": MainType.BACKPACK,
-    "building_prop": MainType.BUILDING_PROP,
-    "building_set": MainType.BUILDING_SET,
-    "bundle": MainType.BUNDLE,
-    "Common": MainType.COMMON,
-    "contrail": MainType.CONTRAIL,
-    "CreatorCollabSeries": MainType.CREATOR_COLLAB_SERIES,
-    "CUBESeries": MainType.CUBE_SERIES,
-    "emoji": MainType.EMOJI,
-    "emote": MainType.EMOTE,
-    "Epic": MainType.EPIC,
-    "glider": MainType.GLIDER,
-    "Legendary": MainType.LEGENDARY,
-    "loadingscreen": MainType.LOADINGSCREEN,
-    "MarvelSeries": MainType.MARVEL_SERIES,
-    "None": MainType.NONE,
-    "outfit": MainType.OUTFIT,
-    "pickaxe": MainType.PICKAXE,
-    "Rare": MainType.RARE,
-    "Series_Alan_Walker": MainType.SERIES_ALAN_WALKER,
-    "Series_Tesla": MainType.SERIES_TESLA,
-    "sparks_bass": MainType.SPARKS_BASS,
-    "sparks_drum": MainType.SPARKS_DRUM,
-    "sparks_guitar": MainType.SPARKS_GUITAR,
-    "sparks_microphone": MainType.SPARKS_MICROPHONE,
-    "sparks_song": MainType.SPARKS_SONG,
-    "spray": MainType.SPRAY,
-    "Uncommon": MainType.UNCOMMON,
-    "vehicle_body": MainType.VEHICLE_BODY,
-    "vehicle_booster": MainType.VEHICLE_BOOSTER,
-    "vehicle_cosmeticvariant": MainType.VEHICLE_COSMETICVARIANT,
-    "vehicle_skin": MainType.VEHICLE_SKIN,
-    "vehicle_wheel": MainType.VEHICLE_WHEEL,
-    "wrap": MainType.WRAP
-});
 
 enum Name {
     ACCESORIO_MOCHILERO,
@@ -705,7 +654,7 @@ class OfferDates {
 }
 
 class OfferTag {
-    Id? id;
+    String? id;
     String? text;
 
     OfferTag({
@@ -718,43 +667,15 @@ class OfferTag {
     String toRawJson() => json.encode(toJson());
 
     factory OfferTag.fromJson(Map<String, dynamic> json) => OfferTag(
-        id: idValues.map[json["id"]]!,
+        id: json["id"],
         text: json["text"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": idValues.reverse[id],
+        "id": id,
         "text": text,
     };
 }
-
-enum Id {
-    BOOSTS,
-    FUTURE,
-    JUMPSUITBUNDLEDESC,
-    JUMPSUITDESC,
-    LASTVOICE,
-    LASTVOICEGEAR,
-    MARIONETTEDESC,
-    PEACH,
-    PROMODESC114,
-    SPARKSJAMLOOP,
-    WHEELS
-}
-
-final idValues = EnumValues({
-    "boosts": Id.BOOSTS,
-    "future": Id.FUTURE,
-    "jumpsuitbundledesc": Id.JUMPSUITBUNDLEDESC,
-    "jumpsuitdesc": Id.JUMPSUITDESC,
-    "lastvoice": Id.LASTVOICE,
-    "lastvoicegear": Id.LASTVOICEGEAR,
-    "marionettedesc": Id.MARIONETTEDESC,
-    "peach": Id.PEACH,
-    "promodesc114": Id.PROMODESC114,
-    "sparksjamloop": Id.SPARKSJAMLOOP,
-    "wheels": Id.WHEELS
-});
 
 class Price {
     int? regularPrice;
@@ -785,16 +706,16 @@ class Price {
 }
 
 class Section {
-    String? id;
-    String? name;
-    Category? category;
+    String? id; //identificador del item en algun paquete al que pertenece
+    String? name;  //Nombre del paquete o la seccion a la que pertenece
+    String? category; //Categoria del item
     int? landingPriority;
 
     Section({
-        this.id,
-        this.name,
-        this.category,
-        this.landingPriority,
+      this.id,
+      this.name,
+      this.category,
+      this.landingPriority,
     });
 
     factory Section.fromRawJson(String str) => Section.fromJson(json.decode(str));
@@ -804,35 +725,17 @@ class Section {
     factory Section.fromJson(Map<String, dynamic> json) => Section(
         id: json["id"],
         name: json["name"],
-        category: categoryValues.map[json["category"]]!,
+        category: json["category"],
         landingPriority: json["landingPriority"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "category": categoryValues.reverse[category],
+        "category": category,
         "landingPriority": landingPriority,
     };
 }
-
-enum Category {
-    CALIENTA_MOTORES,
-    CONSTRUYE_CON_KITS_DE_LEGO,
-    DESTACADOS,
-    ORIGINALES_MAGISTRALES,
-    SPOTLIGHT,
-    SUBE_AL_ESCENARIO
-}
-
-final categoryValues = EnumValues({
-    "Calienta motores": Category.CALIENTA_MOTORES,
-    "Construye con kits de LEGO®": Category.CONSTRUYE_CON_KITS_DE_LEGO,
-    "Destacados": Category.DESTACADOS,
-    "Originales magistrales": Category.ORIGINALES_MAGISTRALES,
-    "Spotlight": Category.SPOTLIGHT,
-    "Sube al escenario": Category.SUBE_AL_ESCENARIO
-});
 
 enum StoreName {
     BR_DAILY_STOREFRONT,

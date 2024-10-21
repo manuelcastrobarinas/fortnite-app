@@ -20,8 +20,8 @@ class CardSlider extends StatefulWidget {
   final double? containerHeight;  //Opcional es una altura del contenedor principal
   final Color? containerColor;  //	Opcional es un color del contenedor principal
   final double? itemDotOffset;  //  Opcional es una distancia para colocar itemDot debajo de las diapositivas
-
-
+  final void Function(int) setIndexSelectedItem; //funcion para ingresar el index de la card que se esta mostrando
+ 
   const CardSlider({
     super.key,
     required this.cards,
@@ -37,15 +37,15 @@ class CardSlider extends StatefulWidget {
     this.containerHeight = 500,
     this.containerColor = Colors.transparent,
     this.itemDotOffset = 0,
-    this.itemDot
+    this.itemDot,
+    required this.setIndexSelectedItem
   });
 
   @override
   State<CardSlider> createState() => _CardSliderState();
 }
 
-class _CardSliderState extends State<CardSlider>
-    with SingleTickerProviderStateMixin {
+class _CardSliderState extends State<CardSlider> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   double alignmentCenterY = Alignment.center.y;
 
@@ -175,7 +175,7 @@ class _CardSliderState extends State<CardSlider>
 
     directionX = false;
 
-    if (widget.slideChanged != null) return widget.slideChanged!(valuesDataIndex.isEmpty ? 1 : valuesDataIndex[0]);
+
   }
 
   // Esta es la segunda (última) fase del inicio de la animación.
@@ -189,17 +189,25 @@ class _CardSliderState extends State<CardSlider>
       int i = valuesDataIndex[valuesDataIndex.length - 1];
       valuesDataIndex.removeAt(valuesDataIndex.length - 1);
       valuesDataIndex.insert(0, i);
-
       _dragAlignment = _dragAlignmentBack;
       _dragAlignmentBack = Alignment(Alignment.center.x,
           alignmentCenterY + getAlignment(valuesDataIndex.length - 1));
+      if (i == valuesDataIndex.length) { //AÑADE EL ITEM SELECCIONADO AL GESTOR DE ESTADO DE LA TIENDA
+        widget.setIndexSelectedItem(0);
+      } else { //AÑADE EL ITEM SELECCIONADO AL GESTOR DE ESTADO DE LA TIENDA
+        widget.setIndexSelectedItem(i); 
+      }
     } else {
       int i = valuesDataIndex[0];
       valuesDataIndex.removeAt(0);
       valuesDataIndex.add(i);
-
       _dragAlignmentBack = _dragAlignment;
       _dragAlignment = Alignment(Alignment.center.x, alignmentCenterY);
+      if (i == valuesDataIndex.length) {
+        widget.setIndexSelectedItem(0);
+      } else {
+      widget.setIndexSelectedItem(i+1);
+      }
     }
 
     _dragAlignmentCenterAnim =
@@ -278,6 +286,7 @@ class _CardSliderState extends State<CardSlider>
         }
       });
     });
+    widget.setIndexSelectedItem(0); //Seteamos el index en la posicion 0 siempre que se carge por primera vez las tarjetas
   }
 
   @override
@@ -421,50 +430,40 @@ class _CardSliderState extends State<CardSlider>
   }
 // puntos de navegación, control deslizante que no mueve diapositivas - fondo
   Widget animatedBackCards() {
-  return Stack(
-    children: [
-      Align(
-        alignment: Alignment(
-          Alignment.center.x,
-          Alignment.center.y + alignmentCenterYOffset / 2 + 0.65 + widget.itemDotOffset!
-        ),
-        child: Row(
-          children: [
-            const Spacer(),
-            for (int i = 0; i < valuesDataIndex.length; i++)
-              (widget.itemDot != null
-                ? widget.itemDot!((valuesDataIndex[0] == i ? _itemDotWidth : 0))
-                : itemDot((valuesDataIndex[0] == i ? _itemDotWidth : 0))),
-            const Spacer()
-          ],
-        ),
-      ),
-      for(int index = 0; index< widget.cards.length; index ++) 
-      for (int i = (widget.cards.length - 1); i >= 0; i--)
-        Align(
-          alignment: (i == 0 || i == widget.cards.length - 1)
-            ? (i == 0
-              ? Alignment(
-                  _dragAlignment.x,
-                  _dragAlignment.y + _dragAlignmentCenter +(animationPhase3 ? _bottomOffset : 0)
-              )
-              : _dragAlignmentBack)
-            : Alignment(
-              Alignment.center.x,
-              alignmentCenterY + getAlignment(i) + _dragAlignmentCenter + (animationPhase3 ? _bottomOffset : 0)
+    return Stack(
+      children: [
+        for (int index = 0; index < widget.cards.length; index++)
+          for (int i = (widget.cards.length - 1); i >= 0; i--)
+            Align(
+              alignment: (i == 0 || i == widget.cards.length - 1)
+                  ? (i == 0
+                      ? Alignment(
+                          _dragAlignment.x,
+                          _dragAlignment.y + _dragAlignmentCenter + (animationPhase3 ? _bottomOffset : 0),
+                        )
+                      : _dragAlignmentBack)
+                  : Alignment(
+                      Alignment.center.x,
+                      alignmentCenterY + getAlignment(i) + _dragAlignmentCenter + (animationPhase3 ? _bottomOffset : 0),
+                    ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                width: getWidth(i) + _containerSizeWidth + (animationPhase3 ? -1 * _cardWidthOffset : 0),
+                height: getHeight(i) + _containerSizeHeight + (animationPhase3 ? -1 * _cardHeightOffset : 0),
+                child: Transform.rotate(
+                  angle: i == 0
+                      ? 7.33 * (3.141592653589793 / 180)
+                      : i == 1
+                          ? -7.33 * (3.141592653589793 / 180)
+                          : 0,
+                  child: (valuesDataIndex.length > i && valuesDataIndex[i] < widget.cards.length)
+                      ? widget.cards[valuesDataIndex[i]]
+                      : const SizedBox(), // Manejo del caso en que el índice no es válido
+                ),
+              ),
             ),
-          child:Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            width: getWidth(i) +_containerSizeWidth + (animationPhase3 ? -1 * _cardWidthOffset : 0),
-            height: getHeight(i) +_containerSizeHeight +(animationPhase3 ? -1 * _cardHeightOffset : 0),
-            child: Transform.rotate(
-              angle: i == 0 ? 7.33 * (3.141592653589793 / 180) : i == 1 ? - 7.33 * (3.141592653589793 / 180) : 0,
-              child: widget.cards[valuesDataIndex[i]]
-            ),
-          ),
-        )
       ],
     );
   }
