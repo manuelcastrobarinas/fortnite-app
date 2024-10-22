@@ -40,9 +40,7 @@ class OnLoadAllShopsEvent extends ShopEvent {
   final List<Shop> alaDeltasShop; 
   final List<Shop> envoltoriosShop;
   final List<Shop> gestosShop;
-  final List<Shop> loteDe4ObjetosShop;
-  final List<Shop> loteDe5ObjetosShop;
-  final List<Shop> loteDeObjetosShop;
+  final List<Shop> loteDeObjetosShopCompletos;
   final List<Shop> musicaShop;
   final List<Shop> picosShop;
   final List<Shop> playSetProp;
@@ -52,9 +50,7 @@ class OnLoadAllShopsEvent extends ShopEvent {
     required this.alaDeltasShop,
     required this.envoltoriosShop,
     required this.gestosShop,
-    required this.loteDe4ObjetosShop,
-    required this.loteDe5ObjetosShop,
-    required this.loteDeObjetosShop,
+    required this.loteDeObjetosShopCompletos,
     required this.musicaShop,
     required this.picosShop,
     required this.playSetProp,

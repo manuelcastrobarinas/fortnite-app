@@ -27,7 +27,7 @@ class ShopScreen extends StatelessWidget {
       body: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           // return state.shopAll?.shop != null 
-          return state.loteDe5ObjetosShop.isNotEmpty
+          return state.loteDeObjetosShopCompletos.isNotEmpty
             ? const _ShowShopView()
             : const _GetShopData();
         }

@@ -121,7 +121,7 @@ class Shop {
     mainId: json["mainId"],
     displayName: json["displayName"],
     displayDescription: json["displayDescription"],
-    displayType: displayTypeValues.map[json["displayType"]]!,
+    displayType: displayTypeValues.map[json["displayType"]],
     mainType: json["mainType"],
     offerId: json["offerId"],
     devName: json["devName"],

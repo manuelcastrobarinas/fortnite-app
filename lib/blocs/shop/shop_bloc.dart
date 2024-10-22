@@ -21,9 +21,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       alaDeltasShop   : event.alaDeltasShop,
       envoltoriosShop : event.envoltoriosShop,
       gestosShop      : event.gestosShop,
-      loteDe4ObjetosShop  : event.loteDe4ObjetosShop,
-      loteDe5ObjetosShop  : event.loteDe5ObjetosShop,
-      loteDeObjetosShop   : event.loteDeObjetosShop,
+      loteDeObjetosShopCompletos  : event.loteDeObjetosShopCompletos,
       musicaShop    : event.musicaShop,
       picosShop     : event.picosShop,
       playSetProp   : event.playSetProp,
@@ -48,9 +46,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     List<Shop> alaDeltasShop      = <Shop>[];
     List<Shop> envoltoriosShop    = <Shop>[];
     List<Shop> gestosShop         = <Shop>[];
-    List<Shop> loteDe4ObjetosShop = <Shop>[];
-    List<Shop> loteDe5ObjetosShop = <Shop>[];
-    List<Shop> loteDeObjetosShop  = <Shop>[];
+    List<Shop> loteDeObjetosShopCompletos = <Shop>[];
     List<Shop> musicaShop         = <Shop>[];
     List<Shop> picosShop          = <Shop>[];
     List<Shop> playSetProp        = <Shop>[];
@@ -69,13 +65,13 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
             gestosShop.add(shop);
           break;
           case DisplayType.LOTE_DE_4_OBJETO_S:
-            loteDe4ObjetosShop.add(shop);
+            loteDeObjetosShopCompletos.add(shop);
           break;
           case DisplayType.LOTE_DE_5_OBJETO_S:
-            loteDe5ObjetosShop.add(shop);
+            loteDeObjetosShopCompletos.add(shop);
           break;
           case DisplayType.LOTE_DE_OBJETOS:
-            loteDeObjetosShop.add(shop);
+            loteDeObjetosShopCompletos.add(shop);
           break;
           case DisplayType.MUSICA:
             musicaShop.add(shop);
@@ -97,9 +93,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       alaDeltasShop: alaDeltasShop,
       envoltoriosShop: envoltoriosShop,
       gestosShop: gestosShop,
-      loteDe4ObjetosShop: loteDe4ObjetosShop,
-      loteDe5ObjetosShop: loteDe5ObjetosShop,
-      loteDeObjetosShop: loteDeObjetosShop,
+      loteDeObjetosShopCompletos: loteDeObjetosShopCompletos,
       musicaShop: musicaShop,
       picosShop: picosShop,
       playSetProp: playSetProp,
@@ -121,10 +115,4 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   void setIndexSelectedItemShop(int i) => add(OnUpdateIndexShopEvent(newIndex: i)); //Añadade el indice del del elemento de la tienda que esta seleccinado;
 }
 
-
-
 // carguemos 10 items
-// cada item muestre si tiene un pico, una mochila, un emote y un ala delta
-
-
-

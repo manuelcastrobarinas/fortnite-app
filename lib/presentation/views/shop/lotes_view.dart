@@ -37,14 +37,17 @@ class LotesView extends StatelessWidget {
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           if (cardsList.isEmpty) {
-            setShopCardsComponents(cardsList: cardsList, shop: state.loteDe5ObjetosShop);
+            setShopCardsComponents(cardsList: cardsList, shop: state.loteDeObjetosShopCompletos);
           }
           final ShopBloc shopBloc = BlocProvider.of<ShopBloc>(context);
           return Column(    
               children: [        
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  child: _SectionTitle(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  child: _SectionTitle(
+                    titleSection: 'Lotes de objetos', //TODO: HACER EL CAMBIO 
+                    elementsNumber: state.loteDeObjetosShopCompletos.length,
+                  ),
                 ),
                 CardSlider(
                   cards: cardsList,
@@ -61,19 +64,29 @@ class LotesView extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: _LeftContainerItem(//Evaluamos que el index se posicione en 0 cunado tenga el largo del arreglo
-                          imageUrl: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted![0].images!.icon!,
-                          titleArticle: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted![0].name!,
+                          imageUrl: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].images!.icon,
+                          titleArticle: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].name!,
                         ),
                       ),
-                      Expanded(
+                      (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 2 ) 
+                        ? const SizedBox() 
+                        : Expanded(
                         flex: 3,
                         child: _RightContainerItems(
-                          titleItemTwo: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted?[1].name,
-                          titleItemThree: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted?[2].name,
-                          titleItemFour: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted?[3].name,
-                          imageUrlTwo: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted?[1].images!.icon,
-                          imageUrlThree: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted?[2].images!.icon,
-                          imageUrlFour: state.loteDe5ObjetosShop[state.indexShop == state.loteDe5ObjetosShop.length ? 0 : state.indexShop].granted?[3].images!.icon,
+                          titleItemTwo: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[1].name,
+                          titleItemThree: (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 3 ) 
+                            ? null 
+                            : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[2].name,
+                          titleItemFour: (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 4 ) 
+                            ? null
+                            : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[3].name,
+                          imageUrlTwo: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[1].images!.icon,
+                          imageUrlThree:  (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 3 ) 
+                            ? null
+                            : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[2].images!.icon,
+                          imageUrlFour: (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 4 )
+                           ? null
+                           : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[3].images!.icon,
                         ),
                       ),
                     ],
@@ -210,8 +223,8 @@ class _RightUpContainerItems extends StatelessWidget {
 
 class _LeftContainerItem extends StatelessWidget {
 
-  final String titleArticle;
-  final String imageUrl;
+  final String? titleArticle;
+  final String? imageUrl;
   
   const _LeftContainerItem({
     required this.titleArticle,
@@ -220,11 +233,13 @@ class _LeftContainerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _ContainerItem(
+    return (titleArticle == null || imageUrl == null ) 
+    ? const SizedBox()
+    :_ContainerItem(
       backgroundColor: Colors.purple[200]!,
-      imageItem: imageUrl,
+      imageItem: imageUrl!,
       price: 700,
-      titleItem: titleArticle,
+      titleItem: titleArticle!,
     );
   }
 }
@@ -311,22 +326,28 @@ class _ContainerItem extends StatelessWidget {
 }
 
 class _SectionTitle extends StatelessWidget {
+  final String titleSection;
+  final int elementsNumber;
 
-  const _SectionTitle();
+  const _SectionTitle({
+    required this.titleSection,
+    required this.elementsNumber
+  });
+
   @override
   Widget build(BuildContext context) {
     const TextStyle style = TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis);
-    return const Row(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           flex: 6,
-          child: Text("Destacados", style: style, maxLines: 2)
+          child: Text(titleSection, style: style, maxLines: 2)
         ),
         Expanded(
           flex: 1,
-          child: Text("20", style: style, maxLines: 2)
+          child: Text(elementsNumber.toString(), style: style, maxLines: 2)
         ),
       ],
     );

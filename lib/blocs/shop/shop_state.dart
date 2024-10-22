@@ -9,9 +9,7 @@ class ShopState extends Equatable {
   final List<Shop> alaDeltasShop; //contiene los aladeltas disponibles
   final List<Shop> envoltoriosShop; //contiene los envoltorios disponibles
   final List<Shop> gestosShop; //contiene los gestos disponibles
-  final List<Shop> loteDe4ObjetosShop; //contiene los items del lote de 4 objetos disponibles
-  final List<Shop> loteDe5ObjetosShop; //contiene los items del lote de 5 objetos disponibles
-  final List<Shop> loteDeObjetosShop; //contiene los items del lotes de objetos disponibles
+  final List<Shop> loteDeObjetosShopCompletos; //contiene los items del lote de 5, 4 y demas objetos disponibles
   final List<Shop> musicaShop; //contiene las pistas de musica disponibles
   final List<Shop> picosShop; //contiene los picos disponibles
   final List<Shop> playSetProp; //contiene los items de lego disponibles
@@ -27,9 +25,7 @@ class ShopState extends Equatable {
     this.alaDeltasShop      = const <Shop>[],
     this.envoltoriosShop    = const <Shop>[],
     this.gestosShop         = const <Shop>[],
-    this.loteDe4ObjetosShop = const <Shop>[],
-    this.loteDe5ObjetosShop = const <Shop>[],
-    this.loteDeObjetosShop  = const <Shop>[],
+    this.loteDeObjetosShopCompletos = const <Shop>[],
     this.musicaShop         = const <Shop>[],
     this.picosShop          = const <Shop>[],
     this.playSetProp        = const <Shop>[],
@@ -43,9 +39,7 @@ class ShopState extends Equatable {
     List<Shop>? alaDeltasShop,
     List<Shop>? envoltoriosShop,
     List<Shop>? gestosShop,
-    List<Shop>? loteDe4ObjetosShop,
-    List<Shop>? loteDe5ObjetosShop,
-    List<Shop>? loteDeObjetosShop,
+    List<Shop>? loteDeObjetosShopCompletos,
     List<Shop>? musicaShop,
     List<Shop>? picosShop,
     List<Shop>? playSetProp,
@@ -58,9 +52,7 @@ class ShopState extends Equatable {
     alaDeltasShop   : alaDeltasShop ?? this.alaDeltasShop,
     envoltoriosShop : envoltoriosShop ?? this.envoltoriosShop,
     gestosShop      : gestosShop ?? this.gestosShop,
-    loteDe4ObjetosShop : loteDe4ObjetosShop ?? this.loteDe4ObjetosShop,
-    loteDe5ObjetosShop : loteDe5ObjetosShop ?? this.loteDe5ObjetosShop,
-    loteDeObjetosShop  : loteDeObjetosShop  ?? this.loteDeObjetosShop,
+    loteDeObjetosShopCompletos : loteDeObjetosShopCompletos ?? this.loteDeObjetosShopCompletos,
     musicaShop  : musicaShop  ?? this.musicaShop,
     picosShop   : picosShop   ?? this.picosShop,
     playSetProp : playSetProp ?? this.playSetProp,
@@ -76,9 +68,6 @@ class ShopState extends Equatable {
     alaDeltasShop,
     envoltoriosShop,
     gestosShop,
-    loteDe4ObjetosShop,
-    loteDe5ObjetosShop,
-    loteDeObjetosShop,
     musicaShop,
     picosShop,
     playSetProp,
@@ -86,8 +75,3 @@ class ShopState extends Equatable {
     itemShopSelected, 
   ];
 }
-
-
-
-//     PlaysetProp = "Playset Prop",
-//     Traje = "Traje",
