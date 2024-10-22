@@ -16,6 +16,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     // on<OnGetShopLimitedEvent>     ((event, emit) => emit(state.copyWith(shopAll: event.shopLimited)));
     on<OnSetSelectedShopItemEvent>((event, emit) => emit(state.copyWith(itemShopSelected: event.newItemShop)));
     // on<OnLoadShopDataEvent>       ((event, emit) => emit(state.copyWith(shopDataLoad: [...state.shopDataLoad + event.newListShop])));
+    on<OnSetNewIndexChipEvent>    ((event, emit) => emit(state.copyWith(indexChipSelected: event.newIndex)));
     on<OnUpdateIndexShopEvent>    ((event, emit) => emit(state.copyWith(indexShop: event.newIndex)));
     on<OnLoadAllShopsEvent>       ((event, emit) => emit(state.copyWith(
       alaDeltasShop   : event.alaDeltasShop,
@@ -113,6 +114,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   }
 
   void setIndexSelectedItemShop(int i) => add(OnUpdateIndexShopEvent(newIndex: i)); //Añadade el indice del del elemento de la tienda que esta seleccinado;
+  void setNewIndexChip(int i) => add(OnSetNewIndexChipEvent(newIndex: i)); //nuevo indice del chip tag seleccionado
 }
 
 // carguemos 10 items

@@ -16,6 +16,9 @@ class ShopState extends Equatable {
   final List<Shop> trajeShop; //contiene los trajes disponibles
   //iterador de las tiendas
   final Shop? itemShopSelected;
+  //indice del tag del chip Seleccionado
+  final int indexChipSelected;
+  
 
   const ShopState({
     // this.shopAll,
@@ -30,6 +33,7 @@ class ShopState extends Equatable {
     this.picosShop          = const <Shop>[],
     this.playSetProp        = const <Shop>[],
     this.trajeShop          = const <Shop>[],
+    this.indexChipSelected = 0,
   });
 
   ShopState copyWith({
@@ -45,6 +49,7 @@ class ShopState extends Equatable {
     List<Shop>? playSetProp,
     List<Shop>? trajeShop,
     Shop? itemShopSelected,
+    int? indexChipSelected,
   }) => ShopState (
     // shopAll         : shopAll ?? this.shopAll,
     // shopDataLoad    : shopDataLoad ?? this.shopDataLoad,
@@ -58,6 +63,7 @@ class ShopState extends Equatable {
     playSetProp : playSetProp ?? this.playSetProp,
     trajeShop   : trajeShop   ?? this.trajeShop,
     itemShopSelected: itemShopSelected ?? this.itemShopSelected,
+    indexChipSelected: indexChipSelected ?? this.indexChipSelected
   );
 
   @override
@@ -73,5 +79,7 @@ class ShopState extends Equatable {
     playSetProp,
     trajeShop,
     itemShopSelected, 
+    loteDeObjetosShopCompletos,
+    indexChipSelected
   ];
 }

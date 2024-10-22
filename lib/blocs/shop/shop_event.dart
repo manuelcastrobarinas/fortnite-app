@@ -57,3 +57,8 @@ class OnLoadAllShopsEvent extends ShopEvent {
     required this.trajeShop,
   });
 }
+
+class OnSetNewIndexChipEvent extends ShopEvent {
+  final int newIndex;
+  const OnSetNewIndexChipEvent({required this.newIndex});
+}

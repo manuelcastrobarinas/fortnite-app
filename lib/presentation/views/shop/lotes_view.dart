@@ -4,6 +4,7 @@ import 'package:fortnite_app/components/components.dart';
 import 'package:fortnite_app/models/shop/shop_limited.dart';
 
 import '../../../blocs/shop/shop_bloc.dart';
+import '../../../utils/shop/replace_color_shops.dart';
 
 class LotesView extends StatelessWidget {
   const LotesView({super.key});
@@ -20,13 +21,7 @@ class LotesView extends StatelessWidget {
             subtitle: shopElement.displayDescription ?? 'Descripcion no disponible', 
             title   : shopElement.displayName ?? 'Nombre no disponible', 
             price   : shopElement.price?.finalPrice ?? shopElement.price?.regularPrice ?? shopElement.price?.floorPrice ?? 2000, 
-            color   : (shopElement.colors?.color1 != null)
-                ?  Color(int.parse(shopElement.colors!.color1!.replaceFirst('#', '0xFF')))
-              : (shopElement.colors?.color2 != null) 
-                ? Color(int.parse(shopElement.colors!.color2!.replaceFirst('#', '0xFF'))) 
-              : (shopElement.colors?.color3 != null)
-                ? Color(int.parse(shopElement.colors!.color3!.replaceFirst('#', '0xFF'))) 
-              :Colors.black,
+            color   : replaceShopColorWithDartFormat(shopElement)
           )
         );
       }

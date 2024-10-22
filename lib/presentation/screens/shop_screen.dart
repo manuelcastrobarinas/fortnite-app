@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/contants.dart';
+import 'package:fortnite_app/presentation/views.dart';
 import 'package:fortnite_app/presentation/views/painters/painters.dart';
-import 'package:fortnite_app/presentation/views/shop/lotes_view.dart';
 
 import '../../blocs/shop/shop_bloc.dart';
 import '../../components/components.dart';
@@ -28,8 +28,8 @@ class ShopScreen extends StatelessWidget {
         builder: (context, state) {
           // return state.shopAll?.shop != null 
           return state.loteDeObjetosShopCompletos.isNotEmpty
-            ? const _ShowShopView()
-            : const _GetShopData();
+            ? _ShowShopView(state: state)
+            : _GetShopData(state: state);
         }
       )
     );
@@ -37,7 +37,10 @@ class ShopScreen extends StatelessWidget {
 }
 
 class _GetShopData extends StatelessWidget {
-  const _GetShopData();
+  final ShopState state;
+  const _GetShopData({
+    required this.state
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,36 +52,56 @@ class _GetShopData extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.none)    return const Center(child: Text("No hay conexión"));
         if (snapshot.hasError || snapshot.error == true)         return Center(child: Text(snapshot.error.toString()));
         if (snapshot.data != 'success') return Center(child: Text(snapshot.data.toString()));
-        return const _ShowShopView();
+        return  _ShowShopView(state: state);
       },
     );
   }
 }
 
 class _ShowShopView extends StatelessWidget {
-  const _ShowShopView();
+  final ShopState state;
+  const _ShowShopView({
+    required this.state
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final ShopBloc shopBloc = BlocProvider.of<ShopBloc>(context);
+    final List<String> choisesList =  ['Lotes', 'ala Deltas', 'Picos', 'Skins', 'Envoltorios', 'Gestos', 'Sets Lego', 'Musica'];
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
           flex: 1,
           fit: FlexFit.loose,
-          child: TagsMultipleChipSelectorComponent()
+          child: ChoiceChipSelectComponent(
+            choisesList: choisesList, 
+            defaultChoiseIndex: state.indexChipSelected, 
+            onSelected: shopBloc.setNewIndexChip
+          )
         ),  
         Flexible(
           flex: 7,
           fit: FlexFit.loose,
           child: Stack(
             children: [
-              LeftWavesPainterView(colorWave: kBackgroundColor),
-              LotesView(),
+              const LeftWavesPainterView(colorWave: kBackgroundColor),
+              _setShopViewByTag(indexSelected: state.indexChipSelected)
             ],
           ),
         ),
       ],
     );
+  }
+
+  Widget _setShopViewByTag({required int indexSelected}) {
+    if (indexSelected == 0) return const LotesView();
+    if (indexSelected == 1) return const AlaDeltaView();
+    if (indexSelected == 2) return const PicosView();
+    if (indexSelected == 3) return const LotesView();
+    if (indexSelected == 4) return const LotesView();
+    if (indexSelected == 5) return const LotesView();
+    if (indexSelected == 6) return const LotesView();
+    return const LotesView();
   }
 }
