@@ -10,7 +10,9 @@ class PicosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController controller = ScrollController();
     return SingleChildScrollView(
+      controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           return (state.picosShop.isEmpty) 
@@ -22,9 +24,10 @@ class PicosView extends StatelessWidget {
                 child: _SectionTitle(titleSection: 'Picos disponibles', elementsNumber: state.picosShop.length),
               ),
               GridView.builder(
+                controller: controller,
                 shrinkWrap: true,
                 itemCount: state.picosShop.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3), 
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), 
                 itemBuilder: (BuildContext context, int i) {
                   final Shop picoShop = state.picosShop[i];
                   final Color backgroundShopItemColor = replaceShopColorWithDartFormat(picoShop);

@@ -98,7 +98,7 @@ class _ShowShopView extends StatelessWidget {
     if (indexSelected == 0) return const LotesView();
     if (indexSelected == 1) return const AlaDeltaView();
     if (indexSelected == 2) return const PicosView();
-    if (indexSelected == 3) return const LotesView();
+    if (indexSelected == 3) return const SkinsView();
     if (indexSelected == 4) return const LotesView();
     if (indexSelected == 5) return const LotesView();
     if (indexSelected == 6) return const LotesView();

@@ -5,8 +5,9 @@ import 'package:fortnite_app/utils/shop/replace_color_shops.dart';
 import '../../../blocs/shop/shop_bloc.dart';
 import '../../../models/shop/shop_limited.dart';
 
-class AlaDeltaView extends StatelessWidget {
-  const AlaDeltaView({super.key});
+class SkinsView extends StatelessWidget {
+
+  const SkinsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,35 +16,33 @@ class AlaDeltaView extends StatelessWidget {
       controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          return (state.alaDeltasShop.isEmpty) 
+          return (state.trajeShop.isEmpty) 
           ? const Center(child: Text("No existen Ala deltas disponibles en la tienda"))
           : Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
-                child: _SectionTitle(titleSection: 'Alas delta', elementsNumber: state.alaDeltasShop.length),
+                child: _SectionTitle(titleSection: 'Skins Disponibles', elementsNumber: state.trajeShop.length),
               ),
               GridView.builder(
                 controller: controller,
                 shrinkWrap: true,
-                itemCount: state.alaDeltasShop.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3), 
+                itemCount: state.trajeShop.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1), 
                 itemBuilder: (BuildContext context, int i) {
-                  final Shop alaDeltaShop = state.alaDeltasShop[i];
-                  final Color backgroundShopItemColor = replaceShopColorWithDartFormat(alaDeltaShop);
+                  final Shop traje = state.trajeShop[i];
+                  final Color backgroundShopItemColor = replaceShopColorWithDartFormat(traje);
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     margin: const EdgeInsets.all(8.0),
-                    height: 50,
-                    width : 50,
                     child: _ContainerItem(
                       backgroundColor: backgroundShopItemColor, 
-                      titleItem: alaDeltaShop.displayName!, 
-                      imageItem: alaDeltaShop.granted![0].images!.icon!, 
-                      price: alaDeltaShop.price!.finalPrice!
+                      titleItem: traje.displayName!, 
+                      imageItem: traje.granted![0].images!.icon!, 
+                      price: traje.price!.finalPrice!
                     ),
                   );
                 }
@@ -72,17 +71,16 @@ class _ContainerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle textStyle = TextStyle(color: Colors.white, fontSize: 14, overflow: TextOverflow.ellipsis);
+    const TextStyle textStyle = TextStyle(color: Colors.white, fontSize: 18, overflow: TextOverflow.ellipsis);
     return Stack(
       children: [
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            margin: const EdgeInsets.all(5.0),
             height: double.infinity,
             decoration: BoxDecoration(
               color: backgroundColor, 
-              borderRadius: BorderRadius.circular(15)
+              borderRadius: BorderRadius.circular(10.0)
             ),             
           ),
         ),
@@ -103,23 +101,23 @@ class _ContainerItem extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.only(bottom: 15, right: 15),
             height: MediaQuery.of(context).size.height * 0.04,
-            width: MediaQuery.of(context).size.width * 0.18,
+            width: MediaQuery.of(context).size.width * 0.3,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(4),
+            child:  Padding(
+              padding: const EdgeInsets.all(4),
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Image(image:AssetImage('assets/loading/vbuck.png')),
                   ),
-                  SizedBox(width: 2.0),
+                  const SizedBox(width: 2.0),
                   Expanded(
                     flex: 1,
-                    child: Text('3000', style: textStyle, maxLines: 1),
+                    child: Text(price.toString(), style: textStyle, maxLines: 1),
                   ),
                 ],
               ),
@@ -130,7 +128,7 @@ class _ContainerItem extends StatelessWidget {
           padding: const EdgeInsets.only(left: 15, top: 15),
           child: Align(
             alignment: Alignment.topLeft,
-            child: Text(titleItem, style: textStyle.copyWith(color: Colors.white70)),
+            child: Text(titleItem, style: textStyle.copyWith(color: Colors.white70), maxLines: 2),
           ),
         )
       ],
