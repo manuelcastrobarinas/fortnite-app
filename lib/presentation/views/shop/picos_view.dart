@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortnite_app/components/components.dart';
 import 'package:fortnite_app/utils/shop/replace_color_shops.dart';
 
 import '../../../blocs/shop/shop_bloc.dart';
@@ -21,7 +22,7 @@ class PicosView extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
-                child: _SectionTitle(titleSection: 'Picos disponibles', elementsNumber: state.picosShop.length),
+                child: SectionTitleShopComponent(titleSection: 'Picos disponibles', elementsNumber: state.picosShop.length),
               ),
               GridView.builder(
                 controller: controller,
@@ -130,36 +131,6 @@ class _ContainerItem extends StatelessWidget {
             child: Text(titleItem, style: textStyle.copyWith(color: Colors.white70)),
           ),
         )
-      ],
-    );
-  }
-}
-
-
-class _SectionTitle extends StatelessWidget {
-  final String titleSection;
-  final int elementsNumber;
-
-  const _SectionTitle({
-    required this.titleSection,
-    required this.elementsNumber
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const TextStyle style = TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 9,
-          child: Text(titleSection, style: style, maxLines: 2)
-        ),
-        Expanded(
-          flex: 1,
-          child: Text(elementsNumber.toString(), style: style, maxLines: 2)
-        ),
       ],
     );
   }

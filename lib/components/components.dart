@@ -1,3 +1,5 @@
+export 'package:fortnite_app/components/ui/title_shop_component.dart';
+
 export 'package:fortnite_app/components/stadistics/stadistics_wapons_component.dart';
 export 'package:fortnite_app/components/ui/card_component.dart';
 export 'package:fortnite_app/components/sliders/card_slider_component.dart';

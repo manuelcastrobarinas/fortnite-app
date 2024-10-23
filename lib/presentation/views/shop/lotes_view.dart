@@ -39,8 +39,8 @@ class LotesView extends StatelessWidget {
               children: [        
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  child: _SectionTitle(
-                    titleSection: 'Lotes de objetos', //TODO: HACER EL CAMBIO 
+                  child: SectionTitleShopComponent(
+                    titleSection: 'Lotes de objetos',
                     elementsNumber: state.loteDeObjetosShopCompletos.length,
                   ),
                 ),
@@ -315,35 +315,6 @@ class _ContainerItem extends StatelessWidget {
             child: Text(titleItem, style: textStyle.copyWith(color: Colors.white70)),
           ),
         )
-      ],
-    );
-  }
-}
-
-class _SectionTitle extends StatelessWidget {
-  final String titleSection;
-  final int elementsNumber;
-
-  const _SectionTitle({
-    required this.titleSection,
-    required this.elementsNumber
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const TextStyle style = TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 6,
-          child: Text(titleSection, style: style, maxLines: 2)
-        ),
-        Expanded(
-          flex: 1,
-          child: Text(elementsNumber.toString(), style: style, maxLines: 2)
-        ),
       ],
     );
   }
