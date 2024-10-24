@@ -39,12 +39,11 @@ class CustomCardComponent extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: SizedBox(
-                width: size.width * 0.6,
-                height: double.infinity,
-               child: FadeInImage(
+              height: double.infinity,
+              child: FadeInImage(
                 placeholder: const AssetImage('assets/loading/load.gif'), 
                 image: NetworkImage(urlImage, scale: 1),
-                fit: BoxFit.fitHeight,
+                fit: BoxFit.fill,
               ),
              ),
           ),
