@@ -62,3 +62,13 @@ class OnSetNewIndexChipEvent extends ShopEvent {
   final int newIndex;
   const OnSetNewIndexChipEvent({required this.newIndex});
 }
+
+class OnLoadMoreElementsEvent extends ShopEvent {
+  final int page;
+  final int itemsPerPage;
+
+  const OnLoadMoreElementsEvent({
+    required this.page,
+    required this.itemsPerPage
+  });
+}

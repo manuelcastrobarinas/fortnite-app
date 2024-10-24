@@ -18,12 +18,15 @@ class ShopState extends Equatable {
   final Shop? itemShopSelected;
   //indice del tag del chip Seleccionado
   final int indexChipSelected;
-  
+  final int itemsPerPage;
+  final bool isLoading;
 
   const ShopState({
     // this.shopAll,
     // this.shopDataLoad = const <Shop>[],
-    this.indexShop = 0,
+    this.isLoading = false,
+    this.indexShop = 1,
+    this.itemsPerPage = 20,
     this.itemShopSelected,
     this.alaDeltasShop      = const <Shop>[],
     this.envoltoriosShop    = const <Shop>[],
@@ -40,6 +43,7 @@ class ShopState extends Equatable {
     // ShopLimited? shopAll,
     List<Shop>? shopDataLoad,
     int? indexShop,
+    int? itemsPerPage,
     List<Shop>? alaDeltasShop,
     List<Shop>? envoltoriosShop,
     List<Shop>? gestosShop,
@@ -50,10 +54,12 @@ class ShopState extends Equatable {
     List<Shop>? trajeShop,
     Shop? itemShopSelected,
     int? indexChipSelected,
+    bool? isLoading
   }) => ShopState (
     // shopAll         : shopAll ?? this.shopAll,
     // shopDataLoad    : shopDataLoad ?? this.shopDataLoad,
     indexShop       : indexShop ?? this.indexShop,
+    itemsPerPage    : itemsPerPage ?? this.itemsPerPage,
     alaDeltasShop   : alaDeltasShop ?? this.alaDeltasShop,
     envoltoriosShop : envoltoriosShop ?? this.envoltoriosShop,
     gestosShop      : gestosShop ?? this.gestosShop,
@@ -63,7 +69,8 @@ class ShopState extends Equatable {
     playSetProp : playSetProp ?? this.playSetProp,
     trajeShop   : trajeShop   ?? this.trajeShop,
     itemShopSelected: itemShopSelected ?? this.itemShopSelected,
-    indexChipSelected: indexChipSelected ?? this.indexChipSelected
+    indexChipSelected: indexChipSelected ?? this.indexChipSelected,
+    isLoading: isLoading ?? this.isLoading
   );
 
   @override
@@ -71,6 +78,7 @@ class ShopState extends Equatable {
     // shopAll,
     // shopDataLoad, 
     indexShop,
+    itemsPerPage,
     alaDeltasShop,
     envoltoriosShop,
     gestosShop,
@@ -80,6 +88,7 @@ class ShopState extends Equatable {
     trajeShop,
     itemShopSelected, 
     loteDeObjetosShopCompletos,
-    indexChipSelected
+    indexChipSelected,
+    isLoading
   ];
 }

@@ -106,18 +106,18 @@ class _ContainerItem extends StatelessWidget {
               border: Border.all(color: Colors.white),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(4),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Image(image:AssetImage('assets/loading/vbuck.png')),
                   ),
-                  SizedBox(width: 2.0),
+                  const SizedBox(width: 2.0),
                   Expanded(
                     flex: 1,
-                    child: Text('3000', style: textStyle, maxLines: 1),
+                    child: Text(price.toString(), style: textStyle, maxLines: 1),
                   ),
                 ],
               ),
