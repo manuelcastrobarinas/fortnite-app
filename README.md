@@ -96,7 +96,9 @@ Lista de dependencias utilizadas en el proyecto.
 | bloc: ^8.1.4: | https://pub.dev/packages/bloc|
 | flutter_bloc: ^8.1.6: | https://pub.dev/packages/flutter_bloc/install|
 | flutter_dotenv: ^5.1.0: | https://pub.dev/packages/flutter_dotenv|
-
+| meta: ^1.12.0  | https://pub.dev/packages/meta|
+| equatable: ^2.0.5 | https://pub.dev/packages/equatable|
+| animate_do: ^3.3.4 | https://pub.dev/packages/animate_do|
 ---
 
 ## Licencia y Uso
