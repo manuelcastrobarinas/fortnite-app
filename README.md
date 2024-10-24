@@ -5,6 +5,23 @@
 
 ![N|Solid](https://i.pinimg.com/564x/00/31/86/0031863213e6e3539a2cba5fbcf52a0b.jpg)
 
+# ¡Que contiene esta app?
+## Secciones de armas y Noticias.
+- Explora una completa base de datos de todas las armas disponibles en Fortnite. Consulta sus estadísticas detalladas, incluyendo daño, velocidad de disparo y rango, para tomar las mejores decisiones durante el juego.
+- Mantente al día con las últimas novedades de Fortnite. Recibe actualizaciones instantáneas sobre eventos, parches, cambios en el mapa y anuncios especiales directamente desde Epic Games.
+
+![armas_home](https://github.com/user-attachments/assets/55e2fd26-e6fd-47bf-a473-04374cae3a64)  ![noticias](https://github.com/user-attachments/assets/e57bc7e4-b2fe-4dd8-95cc-5e1313e7fa36)  
+
+## Tiendas de objetos y Estadisticas de Usuarios.
+- Accede a la tienda de Fortnite para descubrir las últimas ofertas. Explora categorías como Ala Delta, envoltorios, gestos, lotes de objetos, música, picos, kits de Lego y skins, y mantente informado sobre los artículos destacados y próximos lanzamientos.
+- Consulta las estadísticas detalladas de los jugadores en función de su modo de juego favorito. Compara tu rendimiento en solitario, dúo o escuadra, y mantente informado sobre tu progreso y mejoras.
+
+![tienda](https://github.com/user-attachments/assets/0efb7ff6-2840-436c-b307-9a310233d00c) ![perfiles](https://github.com/user-attachments/assets/18e0c658-98e0-4f22-a8b2-ee3904c2b9c4)
+
+
+
+
+
 
 ## Requisitos
 Para poder ejecutar el proyecto es necesario tener instalados ciertos requisitos:
@@ -20,10 +37,12 @@ Para poder ejecutar el proyecto es necesario tener instalados ciertos requisitos
 | Visual Studio`*` | https://visualstudio.microsoft.com/es |
 | VS Code | https://code.visualstudio.com |
 ---
+
+
 ## Instalación
 
 Fortinte Flutter App requiere minimo [Flutter 3.22.1 • channel stable •](https://github.com/flutter/flutter.git) o superior para ser ejecutado.
-- [hola] Descargar el repositorio y extraer.
+- Descargar el repositorio y extraer.
 - Ubicarse en la carpeta principal.
 - Instalar las dependencias.
 ```sh
