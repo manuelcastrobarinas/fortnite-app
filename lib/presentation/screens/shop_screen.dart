@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/contants.dart';
@@ -74,10 +75,13 @@ class _ShowShopView extends StatelessWidget {
         Flexible(
           flex: 1,
           fit: FlexFit.loose,
-          child: ChoiceChipSelectComponent(
-            choisesList: choisesList, 
-            defaultChoiseIndex: state.indexChipSelected, 
-            onSelected: shopBloc.setNewIndexChip
+          child: FadeInRight(
+            duration: const Duration(milliseconds: 1200),
+            child: ChoiceChipSelectComponent(
+              choisesList: choisesList, 
+              defaultChoiseIndex: state.indexChipSelected, 
+              onSelected: shopBloc.setNewIndexChip
+            ),
           )
         ),  
         Flexible(

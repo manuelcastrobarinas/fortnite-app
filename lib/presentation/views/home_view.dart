@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/components/components.dart';
@@ -39,33 +40,42 @@ class HomeView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex  : 7,
-                      child : Text("Aprende sobre los items", style: titleStyle, maxLines: 2),
+                      child : FadeInLeft(child: const Text("Aprende sobre los items", style: titleStyle, maxLines: 2)),
                     ),
                     Expanded(
-                      flex: 1,
-                      child: IconButton(
-                        onPressed: () => showSearch(delegate: SearchItemDelegate(), context: context),
-                        icon: const Icon(Icons.search, size: 38),
+                      flex: 1,  
+                      child: FadeInRight(
+                        child: IconButton(
+                          onPressed: () => showSearch(delegate: SearchItemDelegate(), context: context),
+                          icon: const Icon(Icons.search, size: 38),
+                        ),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20.0),
                 const _SubtitleSection(),
-                _ShowItem(urlImage: state.selectedWeapon?.images?.icon),
+                FadeIn(duration: const Duration(seconds: 2), 
+                  child: _ShowItem(urlImage: state.selectedWeapon?.images?.icon)
+                ),
                 _ItemName(
                   weaponName: state.selectedWeapon?.name!,
                   rarity: state.selectedWeapon?.rarity,
                 ),
                 const SizedBox(height: 20.0),
-                _SelectItemList(itemsList: state.items!.weapons!),
+                FadeIn(
+                  delay: const Duration(milliseconds: 1500),
+                  child: _SelectItemList(itemsList: state.items!.weapons!)
+                ),
                 const SizedBox(height: 20.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: StadisticsWaponsComponent(
-                    listStadistics: listStadistics
+                  child: FadeInUp(
+                    child: StadisticsWaponsComponent(
+                      listStadistics: listStadistics
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20.0),

@@ -72,7 +72,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
             loteDeObjetosShopCompletos.add(shop);
           break;
           case DisplayType.LOTE_DE_OBJETOS:
-            // loteDeObjetosShopCompletos.add(shop); //TODO:ACTIVAR
+            loteDeObjetosShopCompletos.add(shop);
           break;
           case DisplayType.MUSICA:
             musicaShop.add(shop);

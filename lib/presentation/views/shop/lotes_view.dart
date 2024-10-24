@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/components/components.dart';
@@ -58,9 +59,12 @@ class LotesView extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: _LeftContainerItem(//Evaluamos que el index se posicione en 0 cunado tenga el largo del arreglo
-                          imageUrl: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].images!.icon,
-                          titleArticle: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].name!,
+                        child: BounceInDown(
+                          from: 50,
+                          child: _LeftContainerItem(//Evaluamos que el index se posicione en 0 cunado tenga el largo del arreglo
+                            imageUrl: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].images!.icon,
+                            titleArticle: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].name!,
+                          ),
                         ),
                       ),
                       (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 2 ) 
@@ -159,11 +163,14 @@ class _RightDownContainerItem extends StatelessWidget {
         children: [
         Expanded(
           flex: 1,
-          child: _ContainerItem(
-            backgroundColor: Colors.blueAccent[100]!,
-            imageItem: imageUrlFour!,
-            price: 2000,
-            titleItem: titleItemFour!,
+          child: BounceInDown(
+            from: 100,
+            child: _ContainerItem(
+              backgroundColor: Colors.blueAccent[100]!,
+              imageItem: imageUrlFour!,
+              price: 2000,
+              titleItem: titleItemFour!,
+            ),
           )
         ),
       ],
@@ -193,22 +200,28 @@ class _RightUpContainerItems extends StatelessWidget {
           ? const SizedBox()
           : Expanded(
           flex: 1,
-          child:  _ContainerItem(
-            backgroundColor: Colors.blueAccent[100]!,
-            imageItem: imageUrlTwo!,
-            price: 1000,
-            titleItem: titleItemTwo!,
+          child:  BounceInDown(
+            from: 200,
+            child: _ContainerItem(
+              backgroundColor: Colors.blueAccent[100]!,
+              imageItem: imageUrlTwo!,
+              price: 1000,
+              titleItem: titleItemTwo!,
+            ),
           )
         ),
         (imageUrlThree == null || titleItemThree == null ) 
           ? const SizedBox()
           : Expanded(
           flex: 1,
-          child: _ContainerItem(
-            backgroundColor: Colors.blueAccent[100]!,
-            imageItem: imageUrlThree!,
-            price: 5000,
-            titleItem: titleItemThree!,
+          child: BounceInDown(
+            from: 250,
+            child: _ContainerItem(
+              backgroundColor: Colors.blueAccent[100]!,
+              imageItem: imageUrlThree!,
+              price: 5000,
+              titleItem: titleItemThree!,
+            ),
           )
         ),
       ],
