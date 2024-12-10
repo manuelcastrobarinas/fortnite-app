@@ -127,7 +127,6 @@ Este proyecto está disponible públicamente bajo los términos de la licencia [
 **Créditos**: Si utilizas este proyecto en tu propio trabajo, debes mencionar a los autores originales:
 
 - **Manuel Castro Barinas** ([@manuelcastrobarinas](https://github.com/manuelcastrobarinas))
-- **ImShepo** ([@ImShepo](https://github.com/ImShepo))
 
 Por favor, incluye un enlace a este repositorio en cualquier derivado o trabajo basado en este código.
 
