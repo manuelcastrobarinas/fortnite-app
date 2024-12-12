@@ -7,13 +7,13 @@ class ShopState extends Equatable {
   final int indexShop; 
   //TIENDAS SEPARADAS
   final List<Shop> alaDeltasShop; //contiene los aladeltas disponibles
-  final List<Shop> envoltoriosShop; //contiene los envoltorios disponibles
-  final List<Shop> gestosShop; //contiene los gestos disponibles
+  final List<Shop> wrappersShop; //contiene los envoltorios disponibles
+  final List<Shop> gesturesShop; //contiene los gestos disponibles
   final List<Shop> loteDeObjetosShopCompletos; //contiene los items del lote de 5, 4 y demas objetos disponibles
-  final List<Shop> musicaShop; //contiene las pistas de musica disponibles
+  final List<Shop> musicShop; //contiene las pistas de musica disponibles
   final List<Shop> picosShop; //contiene los picos disponibles
   final List<Shop> playSetProp; //contiene los items de lego disponibles
-  final List<Shop> trajeShop; //contiene los trajes disponibles
+  final List<Shop> skinsShop; //contiene los trajes disponibles
   //iterador de las tiendas
   final Shop? itemShopSelected;
   //indice del tag del chip Seleccionado
@@ -29,13 +29,13 @@ class ShopState extends Equatable {
     this.itemsPerPage = 20,
     this.itemShopSelected,
     this.alaDeltasShop      = const <Shop>[],
-    this.envoltoriosShop    = const <Shop>[],
-    this.gestosShop         = const <Shop>[],
+    this.wrappersShop    = const <Shop>[],
+    this.gesturesShop         = const <Shop>[],
     this.loteDeObjetosShopCompletos = const <Shop>[],
-    this.musicaShop         = const <Shop>[],
+    this.musicShop         = const <Shop>[],
     this.picosShop          = const <Shop>[],
     this.playSetProp        = const <Shop>[],
-    this.trajeShop          = const <Shop>[],
+    this.skinsShop          = const <Shop>[],
     this.indexChipSelected = 0,
   });
 
@@ -45,13 +45,13 @@ class ShopState extends Equatable {
     int? indexShop,
     int? itemsPerPage,
     List<Shop>? alaDeltasShop,
-    List<Shop>? envoltoriosShop,
-    List<Shop>? gestosShop,
+    List<Shop>? wrappersShop,
+    List<Shop>? gesturesShop,
     List<Shop>? loteDeObjetosShopCompletos,
-    List<Shop>? musicaShop,
+    List<Shop>? musicShop,
     List<Shop>? picosShop,
     List<Shop>? playSetProp,
-    List<Shop>? trajeShop,
+    List<Shop>? skinsShop,
     Shop? itemShopSelected,
     int? indexChipSelected,
     bool? isLoading
@@ -61,13 +61,13 @@ class ShopState extends Equatable {
     indexShop       : indexShop ?? this.indexShop,
     itemsPerPage    : itemsPerPage ?? this.itemsPerPage,
     alaDeltasShop   : alaDeltasShop ?? this.alaDeltasShop,
-    envoltoriosShop : envoltoriosShop ?? this.envoltoriosShop,
-    gestosShop      : gestosShop ?? this.gestosShop,
+    wrappersShop : wrappersShop ?? this.wrappersShop,
+    gesturesShop      : gesturesShop ?? this.gesturesShop,
     loteDeObjetosShopCompletos : loteDeObjetosShopCompletos ?? this.loteDeObjetosShopCompletos,
-    musicaShop  : musicaShop  ?? this.musicaShop,
+    musicShop  : musicShop  ?? this.musicShop,
     picosShop   : picosShop   ?? this.picosShop,
     playSetProp : playSetProp ?? this.playSetProp,
-    trajeShop   : trajeShop   ?? this.trajeShop,
+    skinsShop   : skinsShop   ?? this.skinsShop,
     itemShopSelected: itemShopSelected ?? this.itemShopSelected,
     indexChipSelected: indexChipSelected ?? this.indexChipSelected,
     isLoading: isLoading ?? this.isLoading
@@ -80,12 +80,12 @@ class ShopState extends Equatable {
     indexShop,
     itemsPerPage,
     alaDeltasShop,
-    envoltoriosShop,
-    gestosShop,
-    musicaShop,
+    wrappersShop,
+    gesturesShop,
+    musicShop,
     picosShop,
     playSetProp,
-    trajeShop,
+    skinsShop,
     itemShopSelected, 
     loteDeObjetosShopCompletos,
     indexChipSelected,

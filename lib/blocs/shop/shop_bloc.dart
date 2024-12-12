@@ -20,13 +20,13 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     on<OnUpdateIndexShopEvent>    ((event, emit) => emit(state.copyWith(indexShop: event.newIndex)));
     on<OnLoadAllShopsEvent>       ((event, emit) => emit(state.copyWith(
       alaDeltasShop   : event.alaDeltasShop,
-      envoltoriosShop : event.envoltoriosShop,
-      gestosShop      : event.gestosShop,
+      wrappersShop : event.envoltoriosShop,
+      gesturesShop      : event.gestosShop,
       loteDeObjetosShopCompletos  : event.loteDeObjetosShopCompletos,
-      musicaShop    : event.musicaShop,
+      musicShop    : event.musicaShop,
       picosShop     : event.picosShop,
       playSetProp   : event.playSetProp,
-      trajeShop     : event.trajeShop
+      skinsShop     : event.trajeShop
     )));
   }
 

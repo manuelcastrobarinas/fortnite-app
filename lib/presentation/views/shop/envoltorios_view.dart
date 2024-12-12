@@ -16,7 +16,7 @@ class EnvoltoriosView extends StatelessWidget {
       controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          final List<Shop> envoltoriosShop = state.envoltoriosShop;
+          final List<Shop> envoltoriosShop = state.wrappersShop;
           return Column(
               children: [
                 Padding(

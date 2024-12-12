@@ -17,21 +17,21 @@ class GestosView extends StatelessWidget {
       controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          return (state.gestosShop.isEmpty) 
+          return (state.gesturesShop.isEmpty) 
           ? const Center(child: Text("No existen gestos disponibles en la tienda"))
           : Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
-                child: SectionTitleShopComponent(titleSection: 'Gestos disponibles', elementsNumber: state.gestosShop.length),
+                child: SectionTitleShopComponent(titleSection: 'Gestos disponibles', elementsNumber: state.gesturesShop.length),
               ),
               GridView.builder(
                 controller: controller,
                 shrinkWrap: true,
-                itemCount: state.gestosShop.length,
+                itemCount: state.gesturesShop.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), 
                 itemBuilder: (BuildContext context, int i) {
-                  final Shop gestoShop = state.gestosShop[i];
+                  final Shop gestoShop = state.gesturesShop[i];
                   final Color backgroundShopItemColor = replaceShopColorWithDartFormat(gestoShop);
                   return Container(
                     decoration: BoxDecoration(

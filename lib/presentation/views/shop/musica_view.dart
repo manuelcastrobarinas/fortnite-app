@@ -45,7 +45,7 @@ class _MusicaViewState extends State<MusicaView> {
   Widget build(BuildContext context) {
     return BlocBuilder<ShopBloc, ShopState>(
       builder: (context, state) {
-        return (state.musicaShop.isEmpty)
+        return (state.musicShop.isEmpty)
             ? const Center(child: Text("No existen gestos disponibles en la tienda"))
             : Column(
                 children: [
@@ -53,16 +53,16 @@ class _MusicaViewState extends State<MusicaView> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                     child: SectionTitleShopComponent(
                       titleSection: 'Pistas disponibles',
-                      elementsNumber: state.musicaShop.length,
+                      elementsNumber: state.musicShop.length,
                     ),
                   ),
                   Expanded(
                     child: GridView.builder(
                       controller: _scrollController,
-                      itemCount: state.musicaShop.length,
+                      itemCount: state.musicShop.length,
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
                       itemBuilder: (BuildContext context, int i) {
-                        final Shop canciones = state.musicaShop[i];
+                        final Shop canciones = state.musicShop[i];
                         final Color backgroundShopItemColor = replaceShopColorWithDartFormat(canciones);
                         return Container(
                           decoration: BoxDecoration(

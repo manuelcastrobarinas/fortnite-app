@@ -17,21 +17,21 @@ class SkinsView extends StatelessWidget {
       controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          return (state.trajeShop.isEmpty) 
+          return (state.skinsShop.isEmpty) 
           ? const Center(child: Text("No existen Ala deltas disponibles en la tienda"))
           : Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
-                child: SectionTitleShopComponent(titleSection: 'Skins Disponibles', elementsNumber: state.trajeShop.length),
+                child: SectionTitleShopComponent(titleSection: 'Skins Disponibles', elementsNumber: state.skinsShop.length),
               ),
               GridView.builder(
                 controller: controller,
                 shrinkWrap: true,
-                itemCount: state.trajeShop.length,
+                itemCount: state.skinsShop.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1), 
                 itemBuilder: (BuildContext context, int i) {
-                  final Shop traje = state.trajeShop[i];
+                  final Shop traje = state.skinsShop[i];
                   final Color backgroundShopItemColor = replaceShopColorWithDartFormat(traje);
                   return Container(
                     decoration: BoxDecoration(
