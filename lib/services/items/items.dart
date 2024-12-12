@@ -8,20 +8,20 @@ import '../interceptors/interceptors.dart';
 class ItemServices {
   final Dio _dio;
   final String _apiUrl = dotenv.get('API_LIMITED_URL');
-  ItemsModel? itemsModel;
 
   ItemServices() : _dio = Dio()
     ..interceptors.add(AuthorizationInterceptor())
     ..interceptors.add(LanguageIterceptor());
 
-  Future<String> getItemsGame() async {
+  Future<ItemsModel> getItemsGame() async {
     try {
     final String url = '$_apiUrl/loot/list';
     final response = await _dio.get(url);
-    itemsModel = ItemsModel.fromJson(response.data);
-    return 'success';
+    final itemsModel = ItemsModel.fromJson(response.data);
+    if (itemsModel.weapons == null || itemsModel.weapons!.isEmpty) throw Exception('No hay información de las Armas');
+    return itemsModel;
     } catch (e) {
-      return throw CustomApiErrors.fromError(e);
+      throw CustomApiErrors.fromError(e);
     }
   }
 }

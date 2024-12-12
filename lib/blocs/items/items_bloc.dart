@@ -17,13 +17,14 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     on<OnSetSelectedWaponEvent>((event, emit) => emit(state.copyWith(selectedWeapon: event.newSelectedWapon)));
   }
 
-  Future<String> getItemsGame() async {
-    final response = await itemServices.getItemsGame();
-    if (response != 'success') return response;
-    add(OnGetItemsGameEvent(newItems: itemServices.itemsModel!));
-    if (itemServices.itemsModel?.weapons == null || itemServices.itemsModel!.weapons!.isEmpty) return 'No Hay información de las Armas';
-    if (state.selectedWeapon != null) return response; 
-    add(OnSetSelectedWaponEvent(newSelectedWapon: itemServices.itemsModel!.weapons![0]));
+  Future<ItemsModel> getItemsGame() async {
+    final ItemsModel response = await itemServices.getItemsGame();
+    add(OnGetItemsGameEvent(newItems: response)); 
+    
+    if (state.selectedWeapon == null) {
+      add(OnSetSelectedWaponEvent(newSelectedWapon: response.weapons![0]));
+    }
+    
     return response;
   }
 
