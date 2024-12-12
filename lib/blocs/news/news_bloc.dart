@@ -17,12 +17,11 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     on<OnSetNewNoticeEvent>((event, emit) => emit(state.copyWith(newSelected: event.newNotice)));
   }
 
-  Future<String> getNews() async {
-    final response = await newsServices.getNews();
-    if(response != 'success') return response;
-    add(OnGetNewsEvent(news: newsServices.newsModel!));
-    if (newsServices.newsModel?.news == null || newsServices.newsModel!.news!.isEmpty) return 'No existen Noticias disponibles';
-    add(OnSetNewNoticeEvent(newNotice: newsServices.newsModel!.news![0]));
+  Future<NewsModel> getNews() async {
+    final NewsModel response = await newsServices.getNews();
+    add(OnGetNewsEvent(news: response));
+    if (response.news == null || response.news!.isEmpty) throw Exception('No existen Noticias disponibles');
+    add(OnSetNewNoticeEvent(newNotice: response.news![0]));
     return response;
   }
 
