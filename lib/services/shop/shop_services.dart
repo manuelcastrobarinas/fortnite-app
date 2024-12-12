@@ -10,18 +10,16 @@ class ShopServices {
     ..interceptors.add(AuthorizationInterceptor())
     ..interceptors.add(LanguageIterceptor());
 
-  ShopLimited? shopLimited;
   final String _url = dotenv.get("API_LIMITED_URL_V2");
   
-  
-  Future<String> getShop() async {
+  Future<ShopLimited> getShop() async {
     try {
       final String url = '$_url/shop';
       final Response<dynamic> response = await _dio.get(url);
-      shopLimited = ShopLimited.fromJson(response.data);
-      return 'success';
+      final ShopLimited shopLimited = ShopLimited.fromJson(response.data);
+      return shopLimited;
     } catch (e) {
-      return throw CustomApiErrors.fromError(e);
+      throw CustomApiErrors.fromError(e);
     }
   }
 }

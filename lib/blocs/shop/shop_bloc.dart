@@ -30,15 +30,10 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     )));
   }
 
-  Future<String> getShopLimited() async {
-    final response = await shopServices.getShop();
-    if (response != 'success') return response;
-    // add(OnGetShopLimitedEvent(shopLimited: shopServices.shopLimited!));
-    if (shopServices.shopLimited?.result == false) return 'No ser ha podido obtener informacion de la tienda, intentelo mas tarde';
-    // add(OnSetSelectedShopItemEvent(newItemShop: shopServices.shopLimited!.shop![0]));
-    // addShopElementsPaginate(indexShop: state.indexShop, shop: shopServices.shopLimited!.shop);
-    updateAllShops(shops: shopServices.shopLimited!.shop);
-    return 'success';
+  Future<void> getShopLimited() async {
+    final ShopLimited response = await shopServices.getShop();
+    if (response.result == false) throw 'No ser ha podido obtener informacion de la tienda, intentelo mas tarde';
+    updateAllShops(shops: response.shop);
   }
 
   void setSelectedShopItem({required Shop newSelectedItem }) => add(OnSetSelectedShopItemEvent(newItemShop: newSelectedItem));

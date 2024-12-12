@@ -52,7 +52,7 @@ class _MusicaViewState extends State<MusicaView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                     child: SectionTitleShopComponent(
-                      titleSection: 'Pistas disponible',
+                      titleSection: 'Pistas disponibles',
                       elementsNumber: state.musicaShop.length,
                     ),
                   ),

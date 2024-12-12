@@ -18,7 +18,7 @@ class SectionTitleShopComponent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          flex: 9,
+          flex: 8,
           child: Text(titleSection, style: style, maxLines: 2)
         ),
         Expanded(

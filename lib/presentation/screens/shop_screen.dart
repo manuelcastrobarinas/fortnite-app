@@ -20,10 +20,10 @@ class ShopScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text('Tienda Hoy', style: TextStyle(color: Colors.black, fontSize: 38), maxLines: 1, overflow: TextOverflow.ellipsis),
-        actions: <Widget>[
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black, size: 40,)),
-          const SizedBox(width: 40.0)
-        ],
+        // actions: <Widget>[
+        //   IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black, size: 40,)),
+        //   const SizedBox(width: 40.0)
+        // ],
       ),
       body: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
