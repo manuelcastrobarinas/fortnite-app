@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/blocs/player/player_bloc.dart';
 import 'package:fortnite_app/models/players/player_stats.dart';
 
+import '../models/players/player_id.dart';
+
 class SearchAccountDelegate extends SearchDelegate {
 
   SearchAccountDelegate(): super (searchFieldLabel: 'Ingresa el username de tu cuenta');
@@ -31,12 +33,12 @@ class SearchAccountDelegate extends SearchDelegate {
            
     return FutureBuilder(
       future: playerbloc.getPlayerAccount(userName: query),
-      builder: (context, snapshot) {
-      // print("hola mundo 2");
+      builder: (BuildContext context, AsyncSnapshot<PlayerIDmodel> snapshot) {
+
         if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
         if (snapshot.connectionState == ConnectionState.none)    return const Center(child: Text("No hay conexión"));
         if (snapshot.hasError || snapshot.error == true)         return Center(child: Text(snapshot.error.toString()));
-        if (snapshot.data != 'success') return Center(child: Text(snapshot.data.toString()));
+        if (snapshot.data == null) return const Center(child: Text("No se encontró la cuenta"));
         return   BlocBuilder<PlayerBloc, PlayerState>(
           builder:(context, PlayerState state) {
             final account = state.player;

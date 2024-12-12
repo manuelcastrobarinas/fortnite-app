@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fortnite_app/models/players/player_stats.dart';
 
+import '../../models/players/player_id.dart';
 import '../../services/players/player.dart';
 
 part 'player_event.dart';
@@ -17,16 +18,15 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     on<OnChangeTeamOptionEvent>((event, emit) => emit(state.copyWith(selectTeamOption: event.changeOptionTeam, selectedStats: event.selectedStats)));
   }
 
-  Future<String> getPlayerAccount({required String userName}) async {
-    final getAccountID = await playerServices.getUserID(userName: userName);
-    if (getAccountID != 'success') return getAccountID;
-
-    final getPlayerStats = await playerServices.getUserStats();
-    if (getPlayerStats != 'success') return getPlayerStats;
+  Future<PlayerIDmodel> getPlayerAccount({required String userName}) async {
+    final PlayerIDmodel getAccountID = await playerServices.getUserID(userName: userName);
     
-    add(OnGetPlayerAccountEvent(player: playerServices.playerStatsModel!));
-    add(OnChangeTeamOptionEvent(changeOptionTeam: 0, selectedStats: playerServices.playerStatsModel!.globalStats!.solo!));
-    return getPlayerStats;
+    if (getAccountID.accountId == null) throw Exception('No se encontró el ID de la cuenta');
+    final PlayerStatsModel getPlayerStats = await playerServices.getUserStats(accountId: getAccountID.accountId!);
+    
+    add(OnGetPlayerAccountEvent(player: getPlayerStats));
+    add(OnChangeTeamOptionEvent(changeOptionTeam: 0, selectedStats: getPlayerStats.globalStats!.solo!));
+    return getAccountID;
   }  
 
   void addNewPlayerSuggestion({required PlayerStatsModel newPlayerSuggestion}) => add(OnAddPlayerSuggestionEvent(newPlayerSuggestion: newPlayerSuggestion));

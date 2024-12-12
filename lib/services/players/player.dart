@@ -12,29 +12,26 @@ class PlayerServices {
   
   final String _url = dotenv.get("API_LIMITED_URL");
   
-  PlayerStatsModel? playerStatsModel;
-  PlayerIDmodel? _playerId;
-
-  Future<String> getUserID({required String userName}) async {
+  Future<PlayerIDmodel> getUserID({required String userName}) async {
     try {
       final String url = '$_url/lookup?username=$userName';
       final Response<dynamic> respose = await _dio.get(url);
-      _playerId = PlayerIDmodel.fromJson(respose.data);
-      if (_playerId!.result == false) return 'La cuenta ingresada no existe';
-      return 'success';
+      final PlayerIDmodel playerId = PlayerIDmodel.fromJson(respose.data);
+      if (playerId.result == false) throw Exception('La cuenta ingresada no existe');
+      return playerId;
      } catch (e) {
-      return throw CustomApiErrors.fromError(e);
+      throw CustomApiErrors.fromError(e);
     }
   }
 
-  Future<String> getUserStats() async {
+  Future<PlayerStatsModel> getUserStats({required String accountId}) async {
     try {
-      final String url = '$_url/stats?account=${_playerId!.accountId}';
+      final String url = '$_url/stats?account=$accountId';
       final Response<dynamic> response = await _dio.get(url);
-      playerStatsModel = PlayerStatsModel.fromJson(response.data);
-      return 'success';
+      final PlayerStatsModel playerStats = PlayerStatsModel.fromJson(response.data);
+      return playerStats;
     } catch (e) {
-      return throw CustomApiErrors.fromError(e);
+      throw CustomApiErrors.fromError(e);
     }
   }
 }
