@@ -1,4 +1,4 @@
-[![Flutter](https://img.shields.io/badge/Flutter-v3.22-blue?logo=flutter)](https://flutter.dev) [![Dart](https://img.shields.io/badge/Dart-v2.13-blue?logo=dart)](https://dart.dev) ![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Web-blue) ![Build Status](https://img.shields.io/badge/build-passing-brightgreen) [![Coverage](https://img.shields.io/badge/☂%20Coverage-96.1%25-yellowgreen)](#) ![License](https://img.shields.io/badge/license-MIT-green) ![Version](https://img.shields.io/badge/version-1.0.0-blue) ![Contributors](https://img.shields.io/badge/contributors-2-orange) ![Last Commit](https://img.shields.io/badge/last%20commit-August%202024-yellowgreen)
+[![Flutter](https://img.shields.io/badge/Flutter-3.22+-blue?logo=flutter)](https://flutter.dev) [![Dart](https://img.shields.io/badge/Dart-3.4+-blue?logo=dart)](https://dart.dev) ![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Web-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 
 # Fortnite App - Flutter
@@ -18,6 +18,42 @@
 
 ![tienda](https://github.com/user-attachments/assets/0efb7ff6-2840-436c-b307-9a310233d00c) ![perfiles](https://github.com/user-attachments/assets/18e0c658-98e0-4f22-a8b2-ee3904c2b9c4)
 
+## Isla
+La última pestaña usa [fortnite-api.com](https://fortnite-api.com), que es gratuita y no pide llave.
+
+- **Mapa:** isla actual, con zoom, y los puntos de interés.
+- **Modos:** modos de juego que traen imagen. Las playlists internas de prueba no se muestran. Esta lista solo se descarga al abrir la sección.
+- **Novedades:** cosméticos del último parche (Battle Royale, pistas, instrumentos, vehículos y LEGO).
+- **Creador:** busca un código de Support-a-Creator. La petición se hace al pulsar buscar. Si el código no existe, la app lo dice en español.
+
+## Arquitectura
+Cada feature vive en `lib/features/<feature>` y se parte en tres capas:
+
+| Capa | Responsabilidad |
+| --- | --- |
+| `data` | Llama al HTTP y traduce el JSON. |
+| `domain` | Entidades, repositorio y caso de uso. El repositorio devuelve `Result`, no lanza excepciones de Dio. |
+| `presentation` | Bloc y pantallas. La UI solo conoce `Failure`. |
+
+`lib/core` concentra el cliente HTTP, el `.env`, el catálogo de errores y los widgets compartidos. `lib/app` registra las dependencias, el tema y las rutas. Si la API manda un enum desconocido, una fecha inválida o un campo vacío, la pantalla muestra un estado vacío o un reintento en lugar de cerrarse.
+
+## Variables de entorno
+Copia estos valores en `.env` en la raíz del proyecto. El token de fortniteapi.io es obligatorio para armas, noticias, tienda y jugadores. La URL pública no lleva token.
+
+```sh
+API_LIMITED_URL          = 'https://fortniteapi.io/v1'
+API_LIMITED_URL_V2       = 'https://fortniteapi.io/v2'
+ACCESS_TOKEN_LIMITED_API = 'TU-API-KEY'
+PUBLIC_API_URL           = 'https://fortnite-api.com'
+```
+
+| Variable | Servicio |
+| --- | --- |
+| `API_LIMITED_URL` | Noticias (`/news`), armas (`/loot/list`) y jugadores (`/lookup`, `/stats`). |
+| `API_LIMITED_URL_V2` | Tienda (`/shop`). |
+| `ACCESS_TOKEN_LIMITED_API` | Header `Authorization` de fortniteapi.io. |
+| `PUBLIC_API_URL` | Mapa (`/v1/map`), modos (`/v1/playlists`), novedades (`/v2/cosmetics/new`) y códigos de creador (`/v2/creatorcode`). |
+
 
 
 
@@ -36,7 +72,8 @@ Para poder ejecutar el proyecto es necesario tener instalados ciertos requisitos
 | Android SDK`*` | Misma documentación de android studio |
 | Visual Studio`*` | https://visualstudio.microsoft.com/es |
 | VS Code | https://code.visualstudio.com |
-| tener tu api key (Consiguela aquí)| https://fortniteapi.io |
+| API key de fortniteapi.io (armas, noticias, tienda y jugadores) | https://fortniteapi.io |
+| fortnite-api.com (mapa, modos, novedades y códigos; no pide llave) | https://fortnite-api.com |
 ---
 
 
@@ -128,7 +165,8 @@ Este proyecto está disponible públicamente bajo los términos de la licencia [
 **Créditos**: Si utilizas este proyecto en tu propio trabajo, debes mencionar a los autores originales:
 
 - **Manuel Castro Barinas** ([@manuelcastrobarinas](https://github.com/manuelcastrobarinas))
-- **CREADORES DEL API** ([API FORTNITE](https://fortniteapi.io))
+- **fortniteapi.io** ([armas, noticias, tienda y jugadores](https://fortniteapi.io))
+- **fortnite-api.com** ([mapa, modos, novedades y códigos de creador](https://fortnite-api.com))
 
 Por favor, incluye un enlace a este repositorio en cualquier derivado o trabajo basado en este código.
 
