@@ -1,0 +1,122 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortnite_app/features/players/presentation/bloc/player_bloc.dart';
+import 'package:fortnite_app/features/players/domain/entities/player_stats.dart';
+
+import 'package:fortnite_app/features/players/domain/entities/player_account.dart';
+
+class SearchAccountDelegate extends SearchDelegate {
+  Future<PlayerIDmodel>? _searchFuture;
+  String? _searchQuery;
+
+  SearchAccountDelegate(): super (searchFieldLabel: 'Ingresa el username de tu cuenta');
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon( Icons.clear ),
+        onPressed: () =>  query = '' // limpia el texto 
+      )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+     return IconButton(
+      icon: const Icon(Icons.arrow_back_ios_new),
+      onPressed: () => close(context, ''),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) { //busqueda al darle clic en buscar, esto se ejectua 1 vez 
+    final PlayerBloc playerbloc = BlocProvider.of<PlayerBloc>(context);
+    final username = query.trim();
+    if (username.isEmpty) {
+      return const Center(child: Text('Escribe un nombre de usuario'));
+    }
+    if (_searchQuery != username) {
+      _searchQuery = username;
+      _searchFuture = playerbloc.getPlayerAccount(userName: username);
+    }
+
+    return FutureBuilder(
+      future: _searchFuture,
+      builder: (BuildContext context, AsyncSnapshot<PlayerIDmodel> snapshot) {
+
+        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
+        if (snapshot.connectionState == ConnectionState.none)    return const Center(child: Text("No hay conexión"));
+        if (snapshot.hasError || snapshot.error == true)         return Center(child: Text(snapshot.error.toString()));
+        if (snapshot.data == null) return const Center(child: Text("No se encontró la cuenta"));
+        return   BlocBuilder<PlayerBloc, PlayerState>(
+          builder:(context, PlayerState state) {
+            final account = state.player;
+            if (account == null) {
+              return const Center(child: Text('No se encontró la cuenta'));
+            }
+            return Padding(
+              padding : const EdgeInsets.symmetric( vertical: 20 ),
+              child   : ListView.separated( //vamos a construir un ListView con la lsita de los lugares
+                itemCount   : 1,
+                itemBuilder : (context, i) {
+                  return ListTile(          //retornamos un listTile con la informacion de cada uno de los lugares que existan en la busqueda
+                    title   : Text(account.name ?? 'Sin nombre'),
+                    leading : const Icon( Icons.account_circle, color: Colors.pink ),
+                    onTap: () {
+                      playerbloc.addNewPlayerSuggestion(newPlayerSuggestion: account);
+                      close(context, account);
+                    }
+                  );
+                }, 
+                separatorBuilder: ( _ , i) => const Divider(), 
+              ),
+            );
+          }
+        );
+      },
+    
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final PlayerBloc playerState = BlocProvider.of<PlayerBloc>(context);
+    return BlocBuilder<PlayerBloc, PlayerState>(
+      builder:(context, PlayerState state) {
+        final List<PlayerStatsModel> suggestionList = state.playerSuggestions;
+        if (state.playerSuggestions.isEmpty) return _emptyContainer('No tienes sugerencias'); 
+        return Padding(
+          padding : const EdgeInsets.symmetric( vertical: 20 ),
+          child   : ListView.separated( //vamos a construir un ListView con la lista de los jugadores buscados
+            itemCount   : suggestionList.length,
+            itemBuilder : (context, i) {
+              return ListTile(  //retornamos un listTile con la informacion de cada uno de los jugadores guardados
+                title   : Text( '${suggestionList[i].name}' ),
+                leading : const Icon( Icons.account_circle_rounded, color: Colors.pink ),
+                onTap: () {
+                  playerState.setPlayerAccount(selectedPlayer: suggestionList[i]);
+                  close(context, state.player);
+                }
+              );
+            }, 
+            separatorBuilder: ( _ , i) => const Divider(), 
+          ),
+        );
+      }
+    );
+  }
+}
+
+ Widget _emptyContainer(String? text) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Icon(Icons.account_circle_rounded, color: Colors.black45,size: 150),
+        Text('$text',style: const TextStyle(color: Colors.black54)),
+      ],
+    ),
+  );
+}

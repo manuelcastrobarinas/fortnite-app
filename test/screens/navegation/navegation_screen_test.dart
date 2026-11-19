@@ -1,55 +1,65 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fortnite_app/presentation/screens.dart';
-import 'package:fortnite_app/routes/routes.dart';
+import 'package:fortnite_app/features/island/presentation/pages/island_screen.dart';
+import 'package:fortnite_app/features/items/presentation/pages/home_screen.dart';
+import 'package:fortnite_app/features/news/presentation/pages/news_screen.dart';
+import 'package:fortnite_app/features/players/presentation/pages/player_screen.dart';
+import 'package:fortnite_app/features/shell/presentation/pages/navigation_screen.dart';
+import 'package:fortnite_app/features/shop/presentation/pages/shop_screen.dart';
+
+import '../../helpers/test_app.dart';
 
 void main() {
+  group('Navigation Screen', () {
+    testWidgets('la primera pantalla es HomeScreen', (tester) async {
+      await tester.pumpWidget(testApp(home: const NavegationScreen()));
+      await tester.pump();
 
-  final MaterialApp fakeApp = MaterialApp(
-    home  : const NavegationScreen(),
-    routes: routes,
-  );
-  
-  group('verificar Navigation Screen y Probarar que encuentre los widgets y navegue a otras pantallas', () {
-
-    testWidgets('Verificar que la primera pantalla (HomeScreen) es visible por defecto', (WidgetTester widgetTester) async {
-      //ARRAGE
-      await widgetTester.pumpWidget(fakeApp);
-      //ACT AND ASSERT
       expect(find.byType(HomeScreen), findsOneWidget);
       expect(find.byType(CurvedNavigationBar), findsOneWidget);
       expect(find.byType(Icon), findsWidgets);
-   });
-  
-    testWidgets('navegar a la segunda pantalla (NewsScreen)', (WidgetTester widgetTester) async {
-    //ARRAGE
-      await widgetTester.pumpWidget(fakeApp);
-      //ACT AND ASSERT
-      await widgetTester.tap(find.byIcon(Icons.newspaper_rounded).first); // Tap en el segundo ícono de navegación
-      await widgetTester.pumpAndSettle();  // Espera que los cambios se establezcan
-      // Verificar que se ha navegado a la segunda pantalla
+    });
+
+    testWidgets('navega a NewsScreen', (tester) async {
+      await tester.pumpWidget(testApp(home: const NavegationScreen()));
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.newspaper_rounded).first);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
       expect(find.byType(NewsScreen), findsOneWidget);
     });
 
-    testWidgets('Navegar a la tercera pantalla (ShopScreen)', (WidgetTester widgetTester) async {
-      //ARRAGE
-      await widgetTester.pumpWidget(fakeApp);
-      //ACT
-      await widgetTester.tap(find.byIcon(Icons.shopping_bag_rounded).first);
-      await widgetTester.pumpAndSettle();
-      //ASSERT
+    testWidgets('navega a ShopScreen', (tester) async {
+      await tester.pumpWidget(testApp(home: const NavegationScreen()));
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.shopping_bag_rounded).first);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
       expect(find.byType(ShopScreen), findsOneWidget);
     });
 
-    testWidgets('Navegar a la cuarta pantalla (PlayerScreen)', (WidgetTester widgetTester) async {
-      //ARRAGE
-      await widgetTester.pumpWidget(fakeApp);
-      //ACT
-      await widgetTester.tap(find.byIcon(Icons.query_stats_rounded));
-      await widgetTester.pumpAndSettle();
-      //ASSERT
+    testWidgets('navega a PlayerScreen', (tester) async {
+      await tester.pumpWidget(testApp(home: const NavegationScreen()));
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.query_stats_rounded));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
       expect(find.byType(PlayerScreen), findsOneWidget);
+    });
+
+    testWidgets('navega a IslandScreen', (tester) async {
+      await tester.pumpWidget(testApp(home: const NavegationScreen()));
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.map_rounded));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(find.byType(IslandScreen), findsOneWidget);
+      expect(find.text('Isla'), findsOneWidget);
     });
   });
 }
