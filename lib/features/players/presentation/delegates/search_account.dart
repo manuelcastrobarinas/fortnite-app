@@ -7,6 +7,8 @@ import 'package:fortnite_app/features/players/domain/entities/player_stats.dart'
 import 'package:fortnite_app/features/players/domain/entities/player_account.dart';
 
 class SearchAccountDelegate extends SearchDelegate {
+  Future<PlayerIDmodel>? _searchFuture;
+  String? _searchQuery;
 
   SearchAccountDelegate(): super (searchFieldLabel: 'Ingresa el username de tu cuenta');
   @override
@@ -30,9 +32,17 @@ class SearchAccountDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) { //busqueda al darle clic en buscar, esto se ejectua 1 vez 
     final PlayerBloc playerbloc = BlocProvider.of<PlayerBloc>(context);
-           
+    final username = query.trim();
+    if (username.isEmpty) {
+      return const Center(child: Text('Escribe un nombre de usuario'));
+    }
+    if (_searchQuery != username) {
+      _searchQuery = username;
+      _searchFuture = playerbloc.getPlayerAccount(userName: username);
+    }
+
     return FutureBuilder(
-      future: playerbloc.getPlayerAccount(userName: query),
+      future: _searchFuture,
       builder: (BuildContext context, AsyncSnapshot<PlayerIDmodel> snapshot) {
 
         if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
@@ -42,17 +52,20 @@ class SearchAccountDelegate extends SearchDelegate {
         return   BlocBuilder<PlayerBloc, PlayerState>(
           builder:(context, PlayerState state) {
             final account = state.player;
+            if (account == null) {
+              return const Center(child: Text('No se encontró la cuenta'));
+            }
             return Padding(
               padding : const EdgeInsets.symmetric( vertical: 20 ),
               child   : ListView.separated( //vamos a construir un ListView con la lsita de los lugares
                 itemCount   : 1,
                 itemBuilder : (context, i) {
                   return ListTile(          //retornamos un listTile con la informacion de cada uno de los lugares que existan en la busqueda
-                    title   : Text( '${account!.name}' ),
+                    title   : Text(account.name ?? 'Sin nombre'),
                     leading : const Icon( Icons.account_circle, color: Colors.pink ),
                     onTap: () {
-                      playerbloc.addNewPlayerSuggestion(newPlayerSuggestion: state.player!);
-                      close(context, state.player);
+                      playerbloc.addNewPlayerSuggestion(newPlayerSuggestion: account);
+                      close(context, account);
                     }
                   );
                 }, 

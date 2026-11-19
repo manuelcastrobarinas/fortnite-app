@@ -84,9 +84,9 @@ class Account {
   String toRawJson() => json.encode(toJson());
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
-    season: json["season"],
-    level: json["level"],
-    processPct: json["process_pct"],
+    season: _asInt(json["season"]),
+    level: _asInt(json["level"]),
+    processPct: _asInt(json["process_pct"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -127,16 +127,31 @@ class GlobalStats {
   String toRawJson() => json.encode(toJson());
 
   factory GlobalStats.fromJson(Map<String, dynamic> json) => GlobalStats(
-    duo:   json["duo"] == null ? null : Map.from(json["duo"]!).map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
-    squad: json["squad"] == null ? null : Map.from(json["squad"]!).map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
-    trio:  json["trio"] == null ? null : Map.from(json["trio"]!).map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
-    solo:  json["solo"] == null ? null : Map.from(json["solo"]!).map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
+    duo: _statMap(json["duo"]),
+    squad: _statMap(json["squad"]),
+    trio: _statMap(json["trio"]),
+    solo: _statMap(json["solo"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "duo": Map.from(duo!).map((k, v) => MapEntry<String, dynamic>(k, v)),
-    "squad": Map.from(squad!).map((k, v) => MapEntry<String, dynamic>(k, v)),
-    "trio": Map.from(trio!).map((k, v) => MapEntry<String, dynamic>(k, v)),
-    "solo": Map.from(solo!).map((k, v) => MapEntry<String, dynamic>(k, v)),
+    "duo": duo,
+    "squad": squad,
+    "trio": trio,
+    "solo": solo,
   };
+}
+
+int? _asInt(dynamic value) {
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  return null;
+}
+
+Map<String, double>? _statMap(dynamic raw) {
+  if (raw is! Map) return null;
+  final stats = <String, double>{};
+  raw.forEach((key, value) {
+    if (value is num) stats[key.toString()] = value.toDouble();
+  });
+  return stats;
 }

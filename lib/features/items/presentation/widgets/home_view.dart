@@ -24,7 +24,9 @@ class HomeView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child : BlocBuilder<ItemsBloc, ItemsState>(
           builder: (BuildContext context, ItemsState state) {
-            MainStats? waponStadistics = state.selectedWeapon!.mainStats;
+            final weapon = state.selectedWeapon;
+            final weapons = state.items?.weapons ?? const <Weapon>[];
+            final MainStats? waponStadistics = weapon?.mainStats;
             List<StadisticSections> listStadistics = [
               StadisticSections(title: "Daño", value: waponStadistics?.dmgPb.toString() ?? 'no registra'),
               StadisticSections(title: "Tasa de disparo", value: waponStadistics?.firingRate.toString() ?? 'no registra'),
@@ -58,16 +60,16 @@ class HomeView extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 const _SubtitleSection(),
                 FadeIn(duration: const Duration(seconds: 2), 
-                  child: _ShowItem(urlImage: state.selectedWeapon?.images?.icon)
+                  child: _ShowItem(urlImage: weapon?.images?.icon)
                 ),
                 _ItemName(
-                  weaponName: state.selectedWeapon?.name!,
-                  rarity: state.selectedWeapon?.rarity,
+                  weaponName: weapon?.name,
+                  rarity: weapon?.rarity,
                 ),
                 const SizedBox(height: 20.0),
                 FadeIn(
                   delay: const Duration(milliseconds: 1500),
-                  child: _SelectItemList(itemsList: state.items!.weapons!)
+                  child: _SelectItemList(itemsList: weapons)
                 ),
                 const SizedBox(height: 20.0),
                 Padding(
@@ -115,7 +117,7 @@ class _SelectItemList extends StatelessWidget {
                     width : 70, // Ancho de cada ítem
                     margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 5.0),
                     decoration: BoxDecoration(
-                      color: setBackgroundItemColor(itemsList[i].rarity!),
+                      color: setBackgroundItemColor(itemsList[i].rarity),
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                   ),
@@ -124,8 +126,8 @@ class _SelectItemList extends StatelessWidget {
                     child: Center(
                       child: FadeInImage(
                         placeholder: const AssetImage('assets/loading/load.gif'),
-                        image: (itemsList[i].images!.icon != null) 
-                          ? NetworkImage(itemsList[i].images!.icon!) 
+                        image: (itemsList[i].images?.icon != null)
+                          ? NetworkImage(itemsList[i].images!.icon!)
                           : const AssetImage('assets/loading/vbuck.png')
                       ),
                     ),
@@ -162,8 +164,8 @@ class _ItemName extends StatelessWidget {
         ),
         SizedBox(
           child:Text(
-            (rarity == null) ? 'No registra' : '(${setRarityItemName(rarity!)})',
-            style: TextStyle(color: setBackgroundItemColor(rarity!), fontSize: 18, overflow: TextOverflow.ellipsis)
+            rarity == null ? 'No registra' : '(${setRarityItemName(rarity)})',
+            style: TextStyle(color: setBackgroundItemColor(rarity), fontSize: 18, overflow: TextOverflow.ellipsis)
           )
         ),
       ],

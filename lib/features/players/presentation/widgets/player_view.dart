@@ -58,9 +58,9 @@ class PlayerView extends StatelessWidget {
                 const SizedBox(height: 10.0),
                 Center(child: _ImageAndPlatforms(size: size)),
                 const SizedBox(height: 10.0),
-                Center(child: _Username(userName: state.player!.name!,)),
+                Center(child: _Username(userName: state.player?.name ?? 'Sin nombre')),
                 const SizedBox(height: 5),
-                _UserLevel(level: state.player!.account!.level.toString()),
+                _UserLevel(level: state.player?.account?.level?.toString() ?? '-'),
                 const SizedBox(height: 10),
                 _ChoiceChipSelectedTeam(
                   choisesList: choisesList,
@@ -322,9 +322,11 @@ class _ChoiceChipSelectedTeam extends StatelessWidget {
   }
 
   Map<String, double>? setTeamStats(int index, PlayerState state) {
-    if (index == 0) return state.player!.globalStats!.solo;
-    if (index == 1) return state.player!.globalStats!.duo;
-    if (index == 2) return state.player!.globalStats!.trio;
-   return state.player!.globalStats!.squad;
+    final stats = state.player?.globalStats;
+    if (stats == null) return null;
+    if (index == 0) return stats.solo;
+    if (index == 1) return stats.duo;
+    if (index == 2) return stats.trio;
+    return stats.squad;
   }
 }

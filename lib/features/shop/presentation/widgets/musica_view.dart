@@ -25,19 +25,28 @@ class _MusicaViewState extends State<MusicaView> {
     _scrollController.addListener(_onScroll);
   }
 
+  bool _nearEnd = false;
+
   @override
   void dispose() {
     _scrollController.dispose();
-    context.read<ShopBloc>().add(const OnLoadMoreElementsEvent(page: 0, itemsPerPage: 0));
     super.dispose();
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels ==_scrollController.position.maxScrollExtent) {
-      context.read<ShopBloc>().add(OnLoadMoreElementsEvent(page: _currentPage + 1, itemsPerPage: _itemsPerPage +20));
-      setState(() {
-        _currentPage++;
-      });
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    final atEnd = position.maxScrollExtent > 0 &&
+        position.pixels >= position.maxScrollExtent - 48;
+    if (atEnd && !_nearEnd) {
+      _nearEnd = true;
+      context.read<ShopBloc>().add(OnLoadMoreElementsEvent(
+            page: _currentPage + 1,
+            itemsPerPage: _itemsPerPage + 20,
+          ));
+      setState(() => _currentPage++);
+    } else if (!atEnd) {
+      _nearEnd = false;
     }
   }
 
@@ -46,7 +55,7 @@ class _MusicaViewState extends State<MusicaView> {
     return BlocBuilder<ShopBloc, ShopState>(
       builder: (context, state) {
         return (state.musicShop.isEmpty)
-            ? const Center(child: Text("No existen gestos disponibles en la tienda"))
+            ? const Center(child: Text("No hay pistas disponibles en la tienda"))
             : Column(
                 children: [
                   Padding(
@@ -63,7 +72,7 @@ class _MusicaViewState extends State<MusicaView> {
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
                       itemBuilder: (BuildContext context, int i) {
                         final Shop canciones = state.musicShop[i];
-                        final Color backgroundShopItemColor = replaceShopColorWithDartFormat(canciones);
+                        final ShopOfferPreview? preview = shopOfferPreview(canciones);
                         return Container(
                           decoration: BoxDecoration(
                             color: Colors.black54,
@@ -72,12 +81,14 @@ class _MusicaViewState extends State<MusicaView> {
                           margin: const EdgeInsets.all(8.0),
                           height: 50,
                           width: 50,
-                          child: _ContainerItem(
-                            backgroundColor: backgroundShopItemColor,
-                            titleItem: canciones.displayName!,
-                            imageItem: canciones.granted![0].images!.icon!,
-                            price: canciones.price!.finalPrice!,
-                          ),
+                          child: preview == null
+                              ? const Center(child: Text('No disponible', style: TextStyle(color: Colors.white)))
+                              : _ContainerItem(
+                                  backgroundColor: preview.color,
+                                  titleItem: preview.title,
+                                  imageItem: preview.imageUrl,
+                                  price: preview.price,
+                                ),
                         );
                       },
                     ),

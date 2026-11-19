@@ -10,7 +10,17 @@ class NewsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return  BlocBuilder<NewsBloc, NewsState>(
       builder: (context, state) {
-        final String cleanURL = '${state.newSelected!.image!.split('.jpeg')[0]}.jpeg';
+        final selected = state.newSelected;
+        final newsItems = state.news?.news ?? const <News>[];
+        if (selected == null || newsItems.isEmpty) {
+          return const Center(
+            child: Text(
+              'No hay noticias disponibles',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          );
+        }
+        final String? cleanURL = cleanNewsImageUrl(selected.image);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -21,13 +31,13 @@ class NewsView extends StatelessWidget {
                   _ImageNews(cleanURL: cleanURL),
                   const _TransparentContainerImage(),
                    _TitleScreen(),
-                  _TitleDateAndDescriptionNew(news: state.newSelected!),
+                  _TitleDateAndDescriptionNew(news: selected),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
-              child: _NewsSelectorSlide(newsList: state.news!.news!),
+              child: _NewsSelectorSlide(newsList: newsItems),
             ),
           ],
         );
@@ -52,8 +62,8 @@ class _NewsSelectorSlide extends StatelessWidget {
         itemCount: newsList.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int i) {
-          final News noticias = newsList[i];  
-          final String cleanURL2 = '${noticias.image!.split('.jpeg')[0]}.jpeg';
+          final News noticias = newsList[i];
+          final String? cleanURL2 = cleanNewsImageUrl(noticias.image);
           return  GestureDetector(
             onTap: () => newsBloc.setNewNotice(newNotice: newsList[i]),
             child: Container(
@@ -65,11 +75,13 @@ class _NewsSelectorSlide extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: FadeInImage(
-                  fit: BoxFit.fill,
-                  placeholder: const AssetImage("assets/loading/load.gif"), 
-                  image: NetworkImage(cleanURL2)
-                ),
+                child: cleanURL2 == null
+                    ? Image.asset('assets/loading/vbuck.png', fit: BoxFit.contain)
+                    : FadeInImage(
+                        fit: BoxFit.fill,
+                        placeholder: const AssetImage("assets/loading/load.gif"),
+                        image: NetworkImage(cleanURL2),
+                      ),
               ),
             ),
           );
@@ -98,7 +110,7 @@ class _TitleDateAndDescriptionNew extends StatelessWidget {
           mainAxisSize: MainAxisSize.min, //ESTO HACE QUE EL COLUMN INTENTE OCUPAR EL MINIMO ESPACIO EN VEZ DE INTENTAR OCUPAR EL MAXIMO QUE ES SU COMPORTAMIENTO POR DEFECTO
           children: [
             _Title(title: news.title),
-            _DateContainer(date: news.date!),
+            _DateContainer(date: news.date),
             _Description(description: news.body),
           ],
         ),
@@ -138,7 +150,7 @@ class _TransparentContainerImage extends StatelessWidget {
 }
 
 class _ImageNews extends StatelessWidget {
-  final String cleanURL;
+  final String? cleanURL;
 
   const _ImageNews({
     required this.cleanURL,
@@ -153,11 +165,13 @@ class _ImageNews extends StatelessWidget {
         child: SizedBox(
           height: double.infinity,
           width : double.infinity,
-          child: FadeInImage(
-            fit: BoxFit.fill,
-            placeholder: const AssetImage("assets/loading/load.gif"), 
-            image: NetworkImage(cleanURL)
-          ),
+          child: cleanURL == null
+              ? Image.asset('assets/loading/vbuck.png', fit: BoxFit.contain)
+              : FadeInImage(
+                  fit: BoxFit.fill,
+                  placeholder: const AssetImage("assets/loading/load.gif"),
+                  image: NetworkImage(cleanURL!),
+                ),
         ),
       ),
     );
@@ -165,7 +179,7 @@ class _ImageNews extends StatelessWidget {
 }
 
 class _DateContainer extends StatelessWidget {
-  final DateTime date;
+  final DateTime? date;
 
   const _DateContainer({
     required this.date,
@@ -178,7 +192,7 @@ class _DateContainer extends StatelessWidget {
       width : double.infinity,
       child : Align(
         alignment: Alignment.centerLeft,
-        child: Text('$date', style: const TextStyle(color: Colors.white, fontSize: 18, overflow: TextOverflow.ellipsis), maxLines: 1),
+        child: Text(date == null ? 'Sin fecha' : '$date', style: const TextStyle(color: Colors.white, fontSize: 18, overflow: TextOverflow.ellipsis), maxLines: 1),
       ),
     );
   }

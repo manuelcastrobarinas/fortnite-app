@@ -12,29 +12,31 @@ class LotesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<CustomCardComponent> cardsList = [];
-
-    List<CustomCardComponent> setShopCardsComponents({required List<CustomCardComponent> cardsList, required List<Shop> shop}) {
-        for (var shopElement  in shop) {
-        cardsList.add(
-          CustomCardComponent(
-            urlImage: shopElement.displayAssets?[0].url ?? shopElement.granted![0].images!.icon!,
-            subtitle: shopElement.displayDescription ?? 'Descripcion no disponible', 
-            title   : shopElement.displayName ?? 'Nombre no disponible', 
-            price   : shopElement.price?.finalPrice ?? shopElement.price?.regularPrice ?? shopElement.price?.floorPrice ?? 2000, 
-            color   : replaceShopColorWithDartFormat(shopElement)
-          )
-        );
-      }
-      return cardsList;
-    }
-
     return SingleChildScrollView(
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          if (cardsList.isEmpty) {
-            setShopCardsComponents(cardsList: cardsList, shop: state.loteDeObjetosShopCompletos);
+          final bundles = state.loteDeObjetosShopCompletos;
+          if (bundles.isEmpty) {
+            return const Padding(
+              padding: EdgeInsets.all(24),
+              child: Center(child: Text('No hay lotes disponibles en la tienda')),
+            );
           }
+          final Shop bundle = _bundleAt(bundles, state.indexShop);
+          final int grantedCount = bundle.granted?.length ?? 0;
+          final cardsList = [
+            for (final shopElement in bundles)
+              CustomCardComponent(
+                urlImage: shopBundleImage(shopElement),
+                subtitle: shopElement.displayDescription ?? 'Descripcion no disponible',
+                title: shopElement.displayName ?? 'Nombre no disponible',
+                price: shopElement.price?.finalPrice ??
+                    shopElement.price?.regularPrice ??
+                    shopElement.price?.floorPrice ??
+                    0,
+                color: replaceShopColorWithDartFormat(shopElement),
+              ),
+          ];
           final ShopBloc shopBloc = BlocProvider.of<ShopBloc>(context);
           return Column(    
               children: [        
@@ -42,7 +44,7 @@ class LotesView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   child: SectionTitleShopComponent(
                     titleSection: 'Lotes de objetos',
-                    elementsNumber: state.loteDeObjetosShopCompletos.length,
+                    elementsNumber: bundles.length,
                   ),
                 ),
                 CardSlider(
@@ -61,31 +63,23 @@ class LotesView extends StatelessWidget {
                         flex: 2,
                         child: BounceInDown(
                           from: 50,
-                          child: _LeftContainerItem(//Evaluamos que el index se posicione en 0 cunado tenga el largo del arreglo
-                            imageUrl: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].images!.icon,
-                            titleArticle: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[0].name!,
+                          child: _LeftContainerItem(
+                            imageUrl: shopGrantedIcon(bundle, 0),
+                            titleArticle: shopGrantedName(bundle, 0),
                           ),
                         ),
                       ),
-                      (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 2 ) 
-                        ? const SizedBox() 
+                      grantedCount < 2
+                        ? const SizedBox()
                         : Expanded(
                         flex: 3,
                         child: _RightContainerItems(
-                          titleItemTwo: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[1].name,
-                          titleItemThree: (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 3 ) 
-                            ? null 
-                            : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[2].name,
-                          titleItemFour: (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 4 ) 
-                            ? null
-                            : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[3].name,
-                          imageUrlTwo: state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[1].images!.icon,
-                          imageUrlThree:  (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 3 ) 
-                            ? null
-                            : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[2].images!.icon,
-                          imageUrlFour: (state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted!.length < 4 )
-                           ? null
-                           : state.loteDeObjetosShopCompletos[state.indexShop == state.loteDeObjetosShopCompletos.length ? 0 : state.indexShop].granted?[3].images!.icon,
+                          titleItemTwo: shopGrantedName(bundle, 1),
+                          titleItemThree: grantedCount < 3 ? null : shopGrantedName(bundle, 2),
+                          titleItemFour: grantedCount < 4 ? null : shopGrantedName(bundle, 3),
+                          imageUrlTwo: shopGrantedIcon(bundle, 1),
+                          imageUrlThree: grantedCount < 3 ? null : shopGrantedIcon(bundle, 2),
+                          imageUrlFour: grantedCount < 4 ? null : shopGrantedIcon(bundle, 3),
                         ),
                       ),
                     ],
@@ -97,6 +91,11 @@ class LotesView extends StatelessWidget {
       ),
     );
   }
+}
+
+Shop _bundleAt(List<Shop> bundles, int index) {
+  if (index < 0 || index >= bundles.length) return bundles.first;
+  return bundles[index];
 }
 
 

@@ -42,7 +42,9 @@ class CustomCardComponent extends StatelessWidget {
               height: double.infinity,
               child: FadeInImage(
                 placeholder: const AssetImage('assets/loading/load.gif'), 
-                image: NetworkImage(urlImage, scale: 1),
+                image: urlImage.isEmpty
+                    ? const AssetImage('assets/loading/vbuck.png')
+                    : NetworkImage(urlImage, scale: 1),
                 fit: BoxFit.fill,
               ),
              ),

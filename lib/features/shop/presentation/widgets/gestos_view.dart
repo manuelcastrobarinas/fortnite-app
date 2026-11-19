@@ -12,9 +12,7 @@ class GestosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController controller = ScrollController();
     return SingleChildScrollView(
-      controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           return (state.gesturesShop.isEmpty) 
@@ -26,13 +24,13 @@ class GestosView extends StatelessWidget {
                 child: SectionTitleShopComponent(titleSection: 'Gestos disponibles', elementsNumber: state.gesturesShop.length),
               ),
               GridView.builder(
-                controller: controller,
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: state.gesturesShop.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), 
                 itemBuilder: (BuildContext context, int i) {
                   final Shop gestoShop = state.gesturesShop[i];
-                  final Color backgroundShopItemColor = replaceShopColorWithDartFormat(gestoShop);
+                  final ShopOfferPreview? preview = shopOfferPreview(gestoShop);
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
@@ -41,12 +39,14 @@ class GestosView extends StatelessWidget {
                     margin: const EdgeInsets.all(8.0),
                     height: 50,
                     width : 50,
-                    child: _ContainerItem(
-                      backgroundColor: backgroundShopItemColor, 
-                      titleItem: gestoShop.displayName!, 
-                      imageItem: gestoShop.granted![0].images!.icon!, 
-                      price: gestoShop.price!.finalPrice!
-                    ),
+                    child: preview == null
+                        ? const Center(child: Text('No disponible', style: TextStyle(color: Colors.white)))
+                        : _ContainerItem(
+                            backgroundColor: preview.color,
+                            titleItem: preview.title,
+                            imageItem: preview.imageUrl,
+                            price: preview.price,
+                          ),
                   );
                 }
               ),

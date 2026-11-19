@@ -286,7 +286,12 @@ class _CardSliderState extends State<CardSlider> with SingleTickerProviderStateM
         }
       });
     });
-    widget.setIndexSelectedItem(0); //Seteamos el index en la posicion 0 siempre que se carge por primera vez las tarjetas
+    if (widget.cards.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        widget.setIndexSelectedItem(0);
+      });
+    }
   }
 
   @override

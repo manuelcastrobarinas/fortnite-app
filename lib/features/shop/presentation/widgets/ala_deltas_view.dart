@@ -11,9 +11,7 @@ class AlaDeltaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController controller = ScrollController();
     return SingleChildScrollView(
-      controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           return (state.alaDeltasShop.isEmpty) 
@@ -25,13 +23,13 @@ class AlaDeltaView extends StatelessWidget {
                 child: SectionTitleShopComponent(titleSection: 'Alas delta', elementsNumber: state.alaDeltasShop.length),
               ),
               GridView.builder(
-                controller: controller,
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: state.alaDeltasShop.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3), 
                 itemBuilder: (BuildContext context, int i) {
                   final Shop alaDeltaShop = state.alaDeltasShop[i];
-                  final Color backgroundShopItemColor = replaceShopColorWithDartFormat(alaDeltaShop);
+                  final ShopOfferPreview? preview = shopOfferPreview(alaDeltaShop);
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
@@ -40,12 +38,14 @@ class AlaDeltaView extends StatelessWidget {
                     margin: const EdgeInsets.all(8.0),
                     height: 50,
                     width : 50,
-                    child: _ContainerItem(
-                      backgroundColor: backgroundShopItemColor, 
-                      titleItem: alaDeltaShop.displayName!, 
-                      imageItem: alaDeltaShop.granted![0].images!.icon!, 
-                      price: alaDeltaShop.price!.finalPrice!
-                    ),
+                    child: preview == null
+                        ? const Center(child: Text('No disponible', style: TextStyle(color: Colors.white)))
+                        : _ContainerItem(
+                            backgroundColor: preview.color,
+                            titleItem: preview.title,
+                            imageItem: preview.imageUrl,
+                            price: preview.price,
+                          ),
                   );
                 }
               ),

@@ -4,19 +4,21 @@ import 'package:fortnite_app/core/widgets/widgets.dart';
 
 import 'package:fortnite_app/features/shop/domain/entities/shop_limited.dart';
 import 'package:fortnite_app/features/shop/presentation/bloc/shop_bloc.dart';
+import 'package:fortnite_app/features/shop/presentation/replace_color_shops.dart';
 
 class EnvoltoriosView extends StatelessWidget {
   const EnvoltoriosView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController controller = ScrollController();
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           final List<Shop> envoltoriosShop = state.wrappersShop;
+          if (envoltoriosShop.isEmpty) {
+            return const Center(child: Text('No hay envoltorios disponibles en la tienda'));
+          }
           return Column(
               children: [
                 Padding(
@@ -25,16 +27,19 @@ class EnvoltoriosView extends StatelessWidget {
                 ),
                 ListView.builder(
                   scrollDirection: Axis.vertical,
-                  controller  : controller,
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap  : true,
                   itemCount   : envoltoriosShop.length,
                   itemBuilder : (BuildContext context, int i) {
-                    final Shop envoltorio =  envoltoriosShop[i];
+                    final ShopOfferPreview? preview = shopOfferPreview(envoltoriosShop[i]);
+                    if (preview == null) {
+                      return const ListTile(title: Text('No disponible'));
+                    }
                     return _ListTitleEnvoltorio(
-                      description : envoltorio.granted![0].description!,
-                      imageItem   : envoltorio.granted![0].images!.icon!,
-                      title : envoltorio.displayName!,
-                      price : envoltorio.price!.finalPrice!,
+                      description: preview.description,
+                      imageItem: preview.imageUrl,
+                      title: preview.title,
+                      price: preview.price,
                     );
                   },
                 ),

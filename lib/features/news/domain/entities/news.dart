@@ -1,5 +1,25 @@
 import 'dart:convert';
 
+/// Recorta query params que la API agrega después de la extensión de la imagen.
+String? cleanNewsImageUrl(String? raw) {
+  if (raw == null || raw.trim().isEmpty) return null;
+  final value = raw.trim();
+  const extensions = ['.jpeg', '.jpg', '.png', '.webp'];
+  final lower = value.toLowerCase();
+  for (final extension in extensions) {
+    final index = lower.indexOf(extension);
+    if (index != -1) return value.substring(0, index + extension.length);
+  }
+  final query = value.indexOf('?');
+  return query == -1 ? value : value.substring(0, query);
+}
+
+String _asNewsText(dynamic value, {String fallback = ''}) {
+  if (value == null) return fallback;
+  final text = value.toString().trim();
+  return text.isEmpty ? fallback : text;
+}
+
 class NewsModel {
   bool? result;
   String? type;
@@ -23,7 +43,7 @@ class NewsModel {
       result: json["result"],
       type: json["type"],
       lang: json["lang"],
-      show: json["show"],
+      show: json["show"] is num ? (json["show"] as num).toInt() : null,
       news: json["news"] == null ? [] : List<News>.from(json["news"]!.map((x) => News.fromJson(x))),
   );
 
@@ -64,15 +84,15 @@ class News {
   String toRawJson() => json.encode(toJson());
 
   factory News.fromJson(Map<String, dynamic> json) => News(
-    id: json["id"],
-    title: json["title"],
-    tabTitle: json["tabTitle"],
-    date: json["date"] == null ? null : DateTime.parse(json["date"]),
-    body: json["body"],
-    adspace: json["adspace"],
-    image: json["image"],
-    live: json["live"],
-    video: json["video"],
+    id: _asNewsText(json["id"]),
+    title: _asNewsText(json["title"], fallback: 'Sin título'),
+    tabTitle: json["tabTitle"]?.toString(),
+    date: json["date"] == null ? null : DateTime.tryParse(json["date"].toString()),
+    body: _asNewsText(json["body"]),
+    adspace: json["adspace"]?.toString(),
+    image: json["image"]?.toString(),
+    live: json["live"] is bool ? json["live"] as bool : null,
+    video: json["video"]?.toString(),
   );
 
   Map<String, dynamic> toJson() => {

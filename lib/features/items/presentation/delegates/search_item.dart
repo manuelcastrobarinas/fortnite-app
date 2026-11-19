@@ -30,7 +30,7 @@ class SearchItemDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     final ItemsBloc itemsBloc = BlocProvider.of<ItemsBloc>(context);
-    final List<Weapon> itemsList  = itemsBloc.state.items!.weapons!;
+    final List<Weapon> itemsList = itemsBloc.state.items?.weapons ?? const <Weapon>[];
     final List<Weapon> matchItems = itemsList.where((weapon) => weapon.name != null && weapon.name!.toLowerCase().contains(query.toLowerCase())).toList();
     
     if(matchItems.isEmpty) return _emptyContainer('no se encontraron resultados');
@@ -46,7 +46,7 @@ class SearchItemDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     final ItemsBloc itemsBloc = BlocProvider.of<ItemsBloc>(context);
-    final  List<Weapon> itemsList = itemsBloc.state.items!.weapons!;
+    final List<Weapon> itemsList = itemsBloc.state.items?.weapons ?? const <Weapon>[];
     if (query.isEmpty) {      
       return ListView.builder(
         itemCount: itemsList.length,
@@ -77,9 +77,9 @@ class SearchItemDelegate extends SearchDelegate {
             leading: CircleAvatar(backgroundImage: item.images?.background != null 
               ? NetworkImage(item.images!.background!) 
               : const AssetImage('assets/loading/vbuck.png')),
-            title   : Text(item.name!),
+            title   : Text(item.name ?? 'Sin nombre'),
             subtitle: Text(item.description ?? 'No Disponible', maxLines: 2, overflow: TextOverflow.ellipsis),
-            trailing: Text(item.rarity == null ?  'No disponible' : setRarityItemName(item.rarity!), style: TextStyle(color: setBackgroundItemColor(item.rarity!))),
+            trailing: Text(setRarityItemName(item.rarity), style: TextStyle(color: setBackgroundItemColor(item.rarity))),
             onTap: () {
               itemsBloc.setNewSelectedWapon(newSelectedWeapon: item);
               close(context, query);

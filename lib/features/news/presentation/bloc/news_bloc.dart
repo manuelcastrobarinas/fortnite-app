@@ -24,7 +24,10 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       onFailure: (failure) => throw failure,
       onSuccess: (response) {
         add(OnGetNewsEvent(news: response));
-        add(OnSetNewNoticeEvent(newNotice: response.news![0]));
+        final items = response.news;
+        if (items != null && items.isNotEmpty) {
+          add(OnSetNewNoticeEvent(newNotice: items.first));
+        }
         return response;
       },
     );

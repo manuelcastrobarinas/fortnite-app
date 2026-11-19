@@ -48,7 +48,7 @@ class LastUpdate {
   String toRawJson() => json.encode(toJson());
 
   factory LastUpdate.fromJson(Map<String, dynamic> json) => LastUpdate(
-    date: json["date"] == null ? null : DateTime.parse(json["date"]),
+    date: _tryParseDate(json["date"]),
     uid: json["uid"],
   );
 
@@ -128,8 +128,8 @@ class Shop {
     offerDates: json["offerDates"] == null ? null : OfferDates.fromJson(json["offerDates"]),
     colors: json["colors"] == null ? null : ColorsItems.fromJson(json["colors"]),
     displayAssets: json["displayAssets"] == null ? [] : List<DisplayAsset>.from(json["displayAssets"]!.map((x) => DisplayAsset.fromJson(x))),
-    firstReleaseDate: json["firstReleaseDate"] == null ? null : DateTime.parse(json["firstReleaseDate"]),
-    previousReleaseDate: json["previousReleaseDate"] == null ? null : DateTime.parse(json["previousReleaseDate"]),
+    firstReleaseDate: _tryParseDate(json["firstReleaseDate"]),
+    previousReleaseDate: _tryParseDate(json["previousReleaseDate"]),
     giftAllowed: json["giftAllowed"],
     buyAllowed: json["buyAllowed"],
     price: json["price"] == null ? null : Price.fromJson(json["price"]),
@@ -141,7 +141,7 @@ class Shop {
     priority: json["priority"],
     section: json["section"] == null ? null : Section.fromJson(json["section"]),
     groupIndex: json["groupIndex"],
-    storeName: storeNameValues.map[json["storeName"]]!,
+    storeName: storeNameValues.map[json["storeName"]],
     categories: json["categories"] == null ? [] : List<dynamic>.from(json["categories"]!.map((x) => x)),
   );
 
@@ -155,8 +155,8 @@ class Shop {
     "devName": devName,
     "offerDates": offerDates?.toJson(),
     "displayAssets": displayAssets == null ? [] : List<dynamic>.from(displayAssets!.map((x) => x.toJson())),
-    "firstReleaseDate": "${firstReleaseDate!.year.toString().padLeft(4, '0')}-${firstReleaseDate!.month.toString().padLeft(2, '0')}-${firstReleaseDate!.day.toString().padLeft(2, '0')}",
-    "previousReleaseDate": "${previousReleaseDate!.year.toString().padLeft(4, '0')}-${previousReleaseDate!.month.toString().padLeft(2, '0')}-${previousReleaseDate!.day.toString().padLeft(2, '0')}",
+    "firstReleaseDate": firstReleaseDate == null ? null : "${firstReleaseDate!.year.toString().padLeft(4, '0')}-${firstReleaseDate!.month.toString().padLeft(2, '0')}-${firstReleaseDate!.day.toString().padLeft(2, '0')}",
+    "previousReleaseDate": previousReleaseDate == null ? null : "${previousReleaseDate!.year.toString().padLeft(4, '0')}-${previousReleaseDate!.month.toString().padLeft(2, '0')}-${previousReleaseDate!.day.toString().padLeft(2, '0')}",
     "giftAllowed": giftAllowed,
     "buyAllowed": buyAllowed,
     "price": price?.toJson(),
@@ -191,7 +191,7 @@ class Banner {
     factory Banner.fromJson(Map<String, dynamic> json) => Banner(
       id: json["id"],
       name: json["name"],
-      intensity: intensityValues.map[json["intensity"]]!,
+      intensity: intensityValues.map[json["intensity"]],
     );
 
     Map<String, dynamic> toJson() => {
@@ -273,7 +273,7 @@ class DisplayAsset {
   factory DisplayAsset.fromJson(Map<String, dynamic> json) => DisplayAsset(
     displayAsset: json["displayAsset"],
     materialInstance: json["materialInstance"],
-    primaryMode: primaryModeValues.map[json["primaryMode"]]!,
+    primaryMode: primaryModeValues.map[json["primaryMode"]],
     productTag: json["productTag"],
     url: json["url"],
     flipbook: json["flipbook"] == null ? null : Flipbook.fromJson(json["flipbook"]),
@@ -643,8 +643,8 @@ class OfferDates {
     String toRawJson() => json.encode(toJson());
 
     factory OfferDates.fromJson(Map<String, dynamic> json) => OfferDates(
-        offerDatesIn: json["in"] == null ? null : DateTime.parse(json["in"]),
-        out: json["out"] == null ? null : DateTime.parse(json["out"]),
+        offerDatesIn: _tryParseDate(json["in"]),
+        out: _tryParseDate(json["out"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -693,9 +693,9 @@ class Price {
     String toRawJson() => json.encode(toJson());
 
     factory Price.fromJson(Map<String, dynamic> json) => Price(
-        regularPrice: json["regularPrice"],
-        finalPrice: json["finalPrice"],
-        floorPrice: json["floorPrice"],
+        regularPrice: _asInt(json["regularPrice"]),
+        finalPrice: _asInt(json["finalPrice"]),
+        floorPrice: _asInt(json["floorPrice"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -726,7 +726,7 @@ class Section {
         id: json["id"],
         name: json["name"],
         category: json["category"],
-        landingPriority: json["landingPriority"],
+        landingPriority: _asInt(json["landingPriority"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -764,6 +764,17 @@ final tileSizeValues = EnumValues({
     "Size_3_x_2": TileSize.SIZE_3_X_2,
     "Size_5_x_2": TileSize.SIZE_5_X_2
 });
+
+int? _asInt(dynamic value) {
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  return null;
+}
+
+DateTime? _tryParseDate(dynamic value) {
+  if (value == null) return null;
+  return DateTime.tryParse(value.toString());
+}
 
 class EnumValues<T> {
     Map<String, T> map;

@@ -11,13 +11,11 @@ class PicosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController controller = ScrollController();
     return SingleChildScrollView(
-      controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          return (state.picosShop.isEmpty) 
-          ? const Center(child: Text("No existen Ala deltas disponibles en la tienda"))
+          return (state.picosShop.isEmpty)
+          ? const Center(child: Text("No hay picos disponibles en la tienda"))
           : Column(
             children: [
               Padding(
@@ -25,25 +23,27 @@ class PicosView extends StatelessWidget {
                 child: SectionTitleShopComponent(titleSection: 'Picos disponibles', elementsNumber: state.picosShop.length),
               ),
               GridView.builder(
-                controller: controller,
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: state.picosShop.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), 
                 itemBuilder: (BuildContext context, int i) {
                   final Shop picoShop = state.picosShop[i];
-                  final Color backgroundShopItemColor = replaceShopColorWithDartFormat(picoShop);
+                  final ShopOfferPreview? preview = shopOfferPreview(picoShop);
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     margin: const EdgeInsets.all(8.0),
-                    child: _ContainerItem(
-                      backgroundColor: backgroundShopItemColor, 
-                      titleItem: picoShop.displayName!, 
-                      imageItem: picoShop.granted![0].images!.icon!, 
-                      price: picoShop.price!.finalPrice!
-                    ),
+                    child: preview == null
+                        ? const Center(child: Text('No disponible', style: TextStyle(color: Colors.white)))
+                        : _ContainerItem(
+                            backgroundColor: preview.color,
+                            titleItem: preview.title,
+                            imageItem: preview.imageUrl,
+                            price: preview.price,
+                          ),
                   );
                 }
               ),

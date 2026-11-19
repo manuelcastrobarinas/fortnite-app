@@ -14,9 +14,9 @@ final Map<Rarity, Color> _backgroundColorRarityList = {
 };
 
 
-Color setBackgroundItemColor(Rarity rarity) {
-  Color setColor = _backgroundColorRarityList[rarity]!;
-  return setColor;
+Color setBackgroundItemColor(Rarity? rarity) {
+  if (rarity == null) return Colors.grey;
+  return _backgroundColorRarityList[rarity] ?? Colors.grey;
 }
 
 final Map<Rarity, String> _rarityName = {
@@ -31,7 +31,7 @@ final Map<Rarity, String> _rarityName = {
   Rarity.MYTHIC       : 'Mitico'
 };
 
-String setRarityItemName(Rarity rarity) {
-  String setRarity = _rarityName[rarity]!;
-  return setRarity;
+String setRarityItemName(Rarity? rarity) {
+  if (rarity == null) return 'No disponible';
+  return _rarityName[rarity] ?? 'No disponible';
 }

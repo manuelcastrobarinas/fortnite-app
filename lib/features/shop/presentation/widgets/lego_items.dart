@@ -12,13 +12,11 @@ class LegoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController controller = ScrollController();
     return SingleChildScrollView(
-      controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          return (state.playSetProp.isEmpty) 
-          ? const Center(child: Text("No existen Ala deltas disponibles en la tienda"))
+          return (state.playSetProp.isEmpty)
+          ? const Center(child: Text("No hay sets de Lego disponibles en la tienda"))
           : Column(
             children: [
               Padding(
@@ -26,25 +24,27 @@ class LegoView extends StatelessWidget {
                 child: SectionTitleShopComponent(titleSection: 'Set de Lego disponibles', elementsNumber: state.playSetProp.length),
               ),
               GridView.builder(
-                controller: controller,
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: state.playSetProp.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), 
                 itemBuilder: (BuildContext context, int i) {
                   final Shop legoProp = state.playSetProp[i];
-                  final Color backgroundShopItemColor = replaceShopColorWithDartFormat(legoProp);
+                  final ShopOfferPreview? preview = shopOfferPreview(legoProp);
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     margin: const EdgeInsets.all(8.0),
-                    child: _ContainerItem(
-                      backgroundColor: backgroundShopItemColor, 
-                      titleItem: legoProp.displayName!, 
-                      imageItem: legoProp.granted![0].images!.icon!, 
-                      price: legoProp.price!.finalPrice!
-                    ),
+                    child: preview == null
+                        ? const Center(child: Text('No disponible', style: TextStyle(color: Colors.white)))
+                        : _ContainerItem(
+                            backgroundColor: preview.color,
+                            titleItem: preview.title,
+                            imageItem: preview.imageUrl,
+                            price: preview.price,
+                          ),
                   );
                 }
               ),

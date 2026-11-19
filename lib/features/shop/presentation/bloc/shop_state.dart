@@ -17,7 +17,7 @@ class ShopState extends Equatable {
 
   const ShopState({
     this.isLoading = false,
-    this.indexShop = 1,
+    this.indexShop = 0,
     this.itemsPerPage = 20,
     this.itemShopSelected,
     this.alaDeltasShop = const <Shop>[],

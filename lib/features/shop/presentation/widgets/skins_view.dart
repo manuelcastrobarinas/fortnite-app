@@ -12,13 +12,11 @@ class SkinsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController controller = ScrollController();
     return SingleChildScrollView(
-      controller: controller,
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          return (state.skinsShop.isEmpty) 
-          ? const Center(child: Text("No existen Ala deltas disponibles en la tienda"))
+          return (state.skinsShop.isEmpty)
+          ? const Center(child: Text("No hay skins disponibles en la tienda"))
           : Column(
             children: [
               Padding(
@@ -26,25 +24,27 @@ class SkinsView extends StatelessWidget {
                 child: SectionTitleShopComponent(titleSection: 'Skins Disponibles', elementsNumber: state.skinsShop.length),
               ),
               GridView.builder(
-                controller: controller,
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: state.skinsShop.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1), 
                 itemBuilder: (BuildContext context, int i) {
                   final Shop traje = state.skinsShop[i];
-                  final Color backgroundShopItemColor = replaceShopColorWithDartFormat(traje);
+                  final ShopOfferPreview? preview = shopOfferPreview(traje);
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.black54,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     margin: const EdgeInsets.all(8.0),
-                    child: _ContainerItem(
-                      backgroundColor: backgroundShopItemColor, 
-                      titleItem: traje.displayName!, 
-                      imageItem: traje.granted![0].images!.icon!, 
-                      price: traje.price!.finalPrice!
-                    ),
+                    child: preview == null
+                        ? const Center(child: Text('No disponible', style: TextStyle(color: Colors.white)))
+                        : _ContainerItem(
+                            backgroundColor: preview.color,
+                            titleItem: preview.title,
+                            imageItem: preview.imageUrl,
+                            price: preview.price,
+                          ),
                   );
                 }
               ),
