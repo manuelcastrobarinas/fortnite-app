@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/app/router/app_router.dart';
 import 'package:fortnite_app/core/errors/failures.dart';
 import 'package:fortnite_app/core/utils/result.dart';
+import 'package:fortnite_app/features/island/domain/entities/island.dart';
+import 'package:fortnite_app/features/island/domain/repositories/island_repository.dart';
+import 'package:fortnite_app/features/island/domain/usecases/island_usecases.dart';
+import 'package:fortnite_app/features/island/presentation/bloc/island_bloc.dart';
 import 'package:fortnite_app/features/items/domain/entities/items.dart';
 import 'package:fortnite_app/features/items/domain/repositories/items_repository.dart';
 import 'package:fortnite_app/features/items/domain/usecases/get_items_usecase.dart';
@@ -38,6 +42,23 @@ class _EmptyPlayerRepository implements PlayerRepository {
       const Err(NetworkFailure('sin red'));
 }
 
+class _EmptyIslandRepository implements IslandRepository {
+  @override
+  Future<Result<BrMap>> getMap() async => const Err(NetworkFailure('sin red'));
+
+  @override
+  Future<Result<List<GameMode>>> getModes() async =>
+      const Err(NetworkFailure('sin red'));
+
+  @override
+  Future<Result<List<NewCosmetic>>> getNewCosmetics() async =>
+      const Err(NetworkFailure('sin red'));
+
+  @override
+  Future<Result<CreatorCode>> getCreatorCode(String name) async =>
+      const Err(NetworkFailure('sin red'));
+}
+
 class _EmptyShopRepository implements ShopRepository {
   @override
   Future<Result<ShopLimited>> getShop() async =>
@@ -61,6 +82,14 @@ Widget testApp({required Widget home}) {
       ),
       BlocProvider(
         create: (_) => ShopBloc(getShop: GetShopUseCase(_EmptyShopRepository())),
+      ),
+      BlocProvider(
+        create: (_) => IslandBloc(
+          getMap: GetBrMapUseCase(_EmptyIslandRepository()),
+          getModes: GetGameModesUseCase(_EmptyIslandRepository()),
+          getNewCosmetics: GetNewCosmeticsUseCase(_EmptyIslandRepository()),
+          getCreatorCode: GetCreatorCodeUseCase(_EmptyIslandRepository()),
+        ),
       ),
     ],
     child: MaterialApp(home: home, routes: routes),

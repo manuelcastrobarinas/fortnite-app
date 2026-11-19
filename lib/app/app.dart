@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/app/router/app_router.dart';
 import 'package:fortnite_app/app/theme/app_theme.dart';
 import 'package:fortnite_app/core/di/service_locator.dart';
+import 'package:fortnite_app/features/island/presentation/bloc/island_bloc.dart';
 import 'package:fortnite_app/features/items/presentation/bloc/items_bloc.dart';
 import 'package:fortnite_app/features/news/presentation/bloc/news_bloc.dart';
 import 'package:fortnite_app/features/players/presentation/bloc/player_bloc.dart';
@@ -23,6 +24,7 @@ class FortniteApp extends StatelessWidget {
         BlocProvider<NewsBloc>.value(value: sl.get<NewsBloc>()),
         BlocProvider<PlayerBloc>.value(value: sl.get<PlayerBloc>()),
         BlocProvider<ShopBloc>.value(value: sl.get<ShopBloc>()),
+        BlocProvider<IslandBloc>.value(value: sl.get<IslandBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

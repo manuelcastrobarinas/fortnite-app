@@ -7,4 +7,10 @@ abstract class ApiPaths {
   static const String lookup = '/lookup';
   static const String stats = '/stats';
   static const String shop = '/shop';
+
+  /// fortnite-api.com, sin llave.
+  static const String publicMap = '/v1/map';
+  static const String publicPlaylists = '/v1/playlists';
+  static const String publicNewCosmetics = '/v2/cosmetics/new';
+  static const String publicCreatorCode = '/v2/creatorcode';
 }

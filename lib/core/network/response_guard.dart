@@ -12,7 +12,7 @@ void throwIfUnsuccessful(HttpResponse response) {
   final map = body is Map
       ? Map<String, dynamic>.from(body)
       : const <String, dynamic>{};
-  final rawMessage = map['error_message'] ?? map['message'];
+  final rawMessage = map['error_message'] ?? map['message'] ?? map['error'];
   final details = map['details'];
 
   throw ApiException(

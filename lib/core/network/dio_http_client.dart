@@ -190,6 +190,15 @@ class LimitedApiClient extends DioHttpClient {
   });
 }
 
+/// Cliente de fortnite-api.com. Los endpoints que usa la app no piden llave.
+class PublicApiClient extends DioHttpClient {
+  PublicApiClient({
+    required super.baseUrl,
+    super.defaultHeaders,
+    super.defaultQueryParameters,
+  });
+}
+
 /// Cliente de la API limitada v2 (tienda).
 class ShopApiClient extends DioHttpClient {
   ShopApiClient({

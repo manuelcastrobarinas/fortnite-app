@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fortnite_app/features/island/presentation/pages/island_screen.dart';
 import 'package:fortnite_app/features/items/presentation/pages/home_screen.dart';
 import 'package:fortnite_app/features/news/presentation/pages/news_screen.dart';
 import 'package:fortnite_app/features/players/presentation/pages/player_screen.dart';
@@ -48,6 +49,17 @@ void main() {
       await tester.pump(const Duration(milliseconds: 400));
 
       expect(find.byType(PlayerScreen), findsOneWidget);
+    });
+
+    testWidgets('navega a IslandScreen', (tester) async {
+      await tester.pumpWidget(testApp(home: const NavegationScreen()));
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.map_rounded));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(find.byType(IslandScreen), findsOneWidget);
+      expect(find.text('Isla'), findsOneWidget);
     });
   });
 }

@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fortnite_app/app/theme/app_colors.dart';
+import 'package:fortnite_app/features/island/presentation/pages/island_screen.dart';
 import 'package:fortnite_app/features/items/presentation/pages/home_screen.dart';
 import 'package:fortnite_app/features/news/presentation/pages/news_screen.dart';
 import 'package:fortnite_app/features/players/presentation/pages/player_screen.dart';
@@ -11,6 +12,7 @@ List<Widget> _navigationItems = <Widget> [
     const Icon(Icons.newspaper_rounded),
     const Icon(Icons.shopping_bag_rounded),
     const Icon(Icons.query_stats_rounded),
+    const Icon(Icons.map_rounded),
   ];
 
 //PANTALLAS A LAS CUALES VA A NAVEGAR 
@@ -19,6 +21,7 @@ List<Widget> _navigationItems = <Widget> [
     const NewsScreen(),
     const ShopScreen(),
     const PlayerScreen(),
+    const IslandScreen(),
   ];
 
 //COLORES DE FONDO DE LAS PANTALLAS
@@ -27,6 +30,7 @@ List<Widget> _navigationItems = <Widget> [
     kBackgroundColor,
     Colors.white,
     kBackgroundColor,
+    kBackgroundColor,
   ];
 
 //COLORES DE LA NAVEGACION DE LA BARRA
@@ -34,6 +38,7 @@ List<Widget> _navigationItems = <Widget> [
     Colors.white,
     Colors.white,
     kBackgroundColor,
+    Colors.white,
     Colors.white,
   ];
 

@@ -20,6 +20,11 @@ abstract class BackendErrorCatalog {
     'ACCOUNT_ID_MISSING': 'No se encontró el ID de la cuenta',
     'SHOP_UNAVAILABLE':
         'No se ha podido obtener información de la tienda. Inténtalo más tarde.',
+    'EMPTY_MAP': 'No hay un mapa disponible en este momento',
+    'EMPTY_MODES': 'No hay modos de juego para mostrar',
+    'EMPTY_NEW_COSMETICS': 'No hay cosméticos nuevos para mostrar',
+    'CREATOR_CODE_EMPTY': 'Escribe un código de creador',
+    'CREATOR_CODE_NOT_FOUND': 'Ese código de creador no existe',
   };
 
   static const Set<String> nonBlocking = {

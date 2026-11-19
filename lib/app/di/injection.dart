@@ -1,6 +1,11 @@
 import 'package:fortnite_app/core/config/env_config.dart';
 import 'package:fortnite_app/core/di/service_locator.dart';
 import 'package:fortnite_app/core/network/dio_http_client.dart';
+import 'package:fortnite_app/features/island/data/datasources/island_remote_datasource.dart';
+import 'package:fortnite_app/features/island/data/repositories/island_repository_impl.dart';
+import 'package:fortnite_app/features/island/domain/repositories/island_repository.dart';
+import 'package:fortnite_app/features/island/domain/usecases/island_usecases.dart';
+import 'package:fortnite_app/features/island/presentation/bloc/island_bloc.dart';
 import 'package:fortnite_app/features/items/data/datasources/items_remote_datasource.dart';
 import 'package:fortnite_app/features/items/data/repositories/items_repository_impl.dart';
 import 'package:fortnite_app/features/items/domain/repositories/items_repository.dart';
@@ -30,6 +35,7 @@ void setupDependencies() {
   initItemsInjections();
   initPlayerInjections();
   initShopInjections();
+  initIslandInjections();
 }
 
 void initCoreInjections() {
@@ -48,6 +54,12 @@ void initCoreInjections() {
       baseUrl: EnvConfig.limitedApiUrlV2,
       defaultHeaders: headers,
       defaultQueryParameters: query,
+    ),
+  );
+  sl.registerLazySingleton<PublicApiClient>(
+    () => PublicApiClient(
+      baseUrl: EnvConfig.publicApiUrl,
+      defaultQueryParameters: const {'language': 'es'},
     ),
   );
 }
@@ -109,5 +121,34 @@ void initShopInjections() {
   );
   sl.registerLazySingleton<ShopBloc>(
     () => ShopBloc(getShop: sl.get<GetShopUseCase>()),
+  );
+}
+
+void initIslandInjections() {
+  sl.registerLazySingleton<IslandRemoteDataSource>(
+    () => IslandRemoteDataSourceImpl(sl.get<PublicApiClient>()),
+  );
+  sl.registerLazySingleton<IslandRepository>(
+    () => IslandRepositoryImpl(sl.get<IslandRemoteDataSource>()),
+  );
+  sl.registerLazySingleton<GetBrMapUseCase>(
+    () => GetBrMapUseCase(sl.get<IslandRepository>()),
+  );
+  sl.registerLazySingleton<GetGameModesUseCase>(
+    () => GetGameModesUseCase(sl.get<IslandRepository>()),
+  );
+  sl.registerLazySingleton<GetNewCosmeticsUseCase>(
+    () => GetNewCosmeticsUseCase(sl.get<IslandRepository>()),
+  );
+  sl.registerLazySingleton<GetCreatorCodeUseCase>(
+    () => GetCreatorCodeUseCase(sl.get<IslandRepository>()),
+  );
+  sl.registerLazySingleton<IslandBloc>(
+    () => IslandBloc(
+      getMap: sl.get<GetBrMapUseCase>(),
+      getModes: sl.get<GetGameModesUseCase>(),
+      getNewCosmetics: sl.get<GetNewCosmeticsUseCase>(),
+      getCreatorCode: sl.get<GetCreatorCodeUseCase>(),
+    ),
   );
 }

@@ -7,6 +7,7 @@ abstract class EnvConfig {
   static const String limitedApiUrlKey = 'API_LIMITED_URL';
   static const String limitedApiUrlV2Key = 'API_LIMITED_URL_V2';
   static const String accessTokenKey = 'ACCESS_TOKEN_LIMITED_API';
+  static const String publicApiUrlKey = 'PUBLIC_API_URL';
 
   /// URL base de noticias, armas y jugadores, sin barra final.
   static String get limitedApiUrl => _readRequiredUrl(limitedApiUrlKey);
@@ -17,12 +18,24 @@ abstract class EnvConfig {
   /// Token que la API limitada espera en el header `Authorization`.
   static String get accessToken => _readRequired(accessTokenKey);
 
+  /// API pública gratuita (mapa, modos y cosméticos). No usa el token de pago.
+  static String get publicApiUrl => _readRequiredUrl(publicApiUrlKey);
+
   static String _readRequired(String key) {
     final raw = dotenv.maybeGet(key)?.trim();
     if (raw == null || raw.isEmpty) {
       throw StateError('$key está vacío. Revisa el archivo .env.');
     }
-    return raw;
+    return _stripQuotes(raw);
+  }
+
+  static String _stripQuotes(String value) {
+    if (value.length < 2) return value;
+    final quote = value[0];
+    if ((quote == "'" || quote == '"') && value.endsWith(quote)) {
+      return value.substring(1, value.length - 1).trim();
+    }
+    return value;
   }
 
   static String _readRequiredUrl(String key) =>

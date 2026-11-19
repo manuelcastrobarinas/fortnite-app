@@ -33,7 +33,11 @@ abstract class FailureMapper {
       'ACCOUNT_NOT_FOUND' ||
       'ACCOUNT_ID_MISSING' ||
       'EMPTY_NEWS' ||
-      'EMPTY_WEAPONS' =>
+      'EMPTY_WEAPONS' ||
+      'EMPTY_MAP' ||
+      'EMPTY_MODES' ||
+      'EMPTY_NEW_COSMETICS' ||
+      'CREATOR_CODE_NOT_FOUND' =>
         NotFoundFailure(message),
       'SHOP_UNAVAILABLE' => ServerFailure(message),
       _ => ValidationFailure(
