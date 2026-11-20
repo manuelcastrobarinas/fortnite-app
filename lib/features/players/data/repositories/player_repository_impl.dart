@@ -3,6 +3,7 @@ import 'package:fortnite_app/core/errors/failure_mapper.dart';
 import 'package:fortnite_app/core/utils/result.dart';
 import 'package:fortnite_app/features/players/data/datasources/player_remote_datasource.dart';
 import 'package:fortnite_app/features/players/domain/entities/player_profile.dart';
+import 'package:fortnite_app/features/players/domain/entities/player_stats.dart';
 import 'package:fortnite_app/features/players/domain/repositories/player_repository.dart';
 
 class PlayerRepositoryImpl implements PlayerRepository {
@@ -21,7 +22,18 @@ class PlayerRepositoryImpl implements PlayerRepository {
         if (accountId == null || accountId.isEmpty) {
           throw const BusinessException('ACCOUNT_ID_MISSING');
         }
-        final stats = (await _remote.fetchStats(accountId)).toEntity();
+        // Sin llave, o si el servicio de cifras falla, igual devolvemos la cuenta.
+        final displayName = account.name ?? username;
+        PlayerStatsModel stats = PlayerStatsModel(result: true, name: displayName);
+        try {
+          final remoteStats = await _remote.fetchStats(displayName);
+          if (remoteStats != null) {
+            stats = remoteStats.toEntity();
+            stats = stats.copyWith(name: stats.name ?? displayName);
+          }
+        } catch (_) {
+          stats = PlayerStatsModel(result: true, name: displayName);
+        }
         return PlayerProfile(account: account, stats: stats);
       });
 

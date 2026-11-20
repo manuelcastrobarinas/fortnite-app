@@ -13,4 +13,11 @@ abstract class ApiPaths {
   static const String publicPlaylists = '/v1/playlists';
   static const String publicNewCosmetics = '/v2/cosmetics/new';
   static const String publicCreatorCode = '/v2/creatorcode';
+  static const String publicNews = '/v2/news';
+  static const String publicShop = '/v2/shop';
+  static const String publicStats = '/v2/stats/br/v2';
+
+  /// prod.fn-api.cc, sin llave.
+  static const String weapons = '/v1/weapons';
+  static const String accountLookup = '/v1/lookup';
 }

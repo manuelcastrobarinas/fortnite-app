@@ -39,34 +39,20 @@ void setupDependencies() {
 }
 
 void initCoreInjections() {
-  final headers = {'Authorization': EnvConfig.accessToken};
-  const query = {'lang': 'es'};
-
-  sl.registerLazySingleton<LimitedApiClient>(
-    () => LimitedApiClient(
-      baseUrl: EnvConfig.limitedApiUrl,
-      defaultHeaders: headers,
-      defaultQueryParameters: query,
-    ),
-  );
-  sl.registerLazySingleton<ShopApiClient>(
-    () => ShopApiClient(
-      baseUrl: EnvConfig.limitedApiUrlV2,
-      defaultHeaders: headers,
-      defaultQueryParameters: query,
-    ),
-  );
   sl.registerLazySingleton<PublicApiClient>(
     () => PublicApiClient(
       baseUrl: EnvConfig.publicApiUrl,
       defaultQueryParameters: const {'language': 'es'},
     ),
   );
+  sl.registerLazySingleton<CatalogApiClient>(
+    () => CatalogApiClient(baseUrl: EnvConfig.weaponsApiUrl),
+  );
 }
 
 void initNewsInjections() {
   sl.registerLazySingleton<NewsRemoteDataSource>(
-    () => NewsRemoteDataSourceImpl(sl.get<LimitedApiClient>()),
+    () => NewsRemoteDataSourceImpl(sl.get<PublicApiClient>()),
   );
   sl.registerLazySingleton<NewsRepository>(
     () => NewsRepositoryImpl(sl.get<NewsRemoteDataSource>()),
@@ -81,7 +67,7 @@ void initNewsInjections() {
 
 void initItemsInjections() {
   sl.registerLazySingleton<ItemsRemoteDataSource>(
-    () => ItemsRemoteDataSourceImpl(sl.get<LimitedApiClient>()),
+    () => ItemsRemoteDataSourceImpl(sl.get<CatalogApiClient>()),
   );
   sl.registerLazySingleton<ItemsRepository>(
     () => ItemsRepositoryImpl(sl.get<ItemsRemoteDataSource>()),
@@ -96,7 +82,11 @@ void initItemsInjections() {
 
 void initPlayerInjections() {
   sl.registerLazySingleton<PlayerRemoteDataSource>(
-    () => PlayerRemoteDataSourceImpl(sl.get<LimitedApiClient>()),
+    () => PlayerRemoteDataSourceImpl(
+      sl.get<CatalogApiClient>(),
+      sl.get<PublicApiClient>(),
+      statsApiKey: EnvConfig.publicApiKey,
+    ),
   );
   sl.registerLazySingleton<PlayerRepository>(
     () => PlayerRepositoryImpl(sl.get<PlayerRemoteDataSource>()),
@@ -111,7 +101,7 @@ void initPlayerInjections() {
 
 void initShopInjections() {
   sl.registerLazySingleton<ShopRemoteDataSource>(
-    () => ShopRemoteDataSourceImpl(sl.get<ShopApiClient>()),
+    () => ShopRemoteDataSourceImpl(sl.get<PublicApiClient>()),
   );
   sl.registerLazySingleton<ShopRepository>(
     () => ShopRepositoryImpl(sl.get<ShopRemoteDataSource>()),

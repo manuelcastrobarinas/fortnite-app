@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fortnite_app/core/errors/api_error_type.dart';
@@ -28,14 +27,14 @@ class DioHttpClient implements HttpClient {
     required String baseUrl,
     required Map<String, String> defaultHeaders,
     Duration connectTimeout = const Duration(seconds: 10),
-    Duration sendTimeout = const Duration(seconds: 15),
     Duration receiveTimeout = const Duration(seconds: 15),
   }) {
+    // Sin sendTimeout: en web, dio lo rechaza en los GET (no hay cuerpo que enviar)
+    // y llena la consola. Esta app solo hace GET.
     return Dio(
       BaseOptions(
         baseUrl: baseUrl,
         connectTimeout: connectTimeout,
-        sendTimeout: sendTimeout,
         receiveTimeout: receiveTimeout,
         headers: {
           'Accept': 'application/json',
@@ -136,8 +135,6 @@ class DioHttpClient implements HttpClient {
       rethrow;
     } on DioException catch (exception) {
       throw _classify(exception);
-    } on SocketException catch (exception) {
-      throw NetworkException(ApiErrorType.socketError, exception.message);
     } on TimeoutException {
       throw const NetworkException(ApiErrorType.receiveTimeout);
     } on FormatException catch (exception) {
@@ -147,9 +144,6 @@ class DioHttpClient implements HttpClient {
 
   NetworkException _classify(DioException exception) {
     final inner = exception.error;
-    if (inner is SocketException) {
-      return NetworkException(ApiErrorType.socketError, inner.message);
-    }
     if (inner is TimeoutException) {
       return const NetworkException(ApiErrorType.receiveTimeout);
     }
@@ -202,6 +196,15 @@ class PublicApiClient extends DioHttpClient {
 /// Cliente de la API limitada v2 (tienda).
 class ShopApiClient extends DioHttpClient {
   ShopApiClient({
+    required super.baseUrl,
+    super.defaultHeaders,
+    super.defaultQueryParameters,
+  });
+}
+
+/// Cliente de prod.fn-api.cc (armas y cuentas). No pide llave y permite CORS.
+class CatalogApiClient extends DioHttpClient {
+  CatalogApiClient({
     required super.baseUrl,
     super.defaultHeaders,
     super.defaultQueryParameters,

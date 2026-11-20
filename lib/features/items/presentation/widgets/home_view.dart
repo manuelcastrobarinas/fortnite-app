@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/core/widgets/widgets.dart';
 import 'package:fortnite_app/app/theme/app_colors.dart';
 import 'package:fortnite_app/features/items/presentation/delegates/search_item.dart';
+import 'package:fortnite_app/features/items/presentation/weapon_image.dart';
 import 'package:fortnite_app/features/items/domain/entities/items.dart';
 import 'package:fortnite_app/features/items/presentation/background_items_color.dart';
 
@@ -125,9 +126,9 @@ class _SelectItemList extends StatelessWidget {
                     padding: const EdgeInsets.all(5.0),
                     child: Center(
                       child: FadeInImage(
-                        placeholder: const AssetImage('assets/loading/load.gif'),
+                        placeholder: const AssetImage('assets/loading/vbuck.png'),
                         image: (itemsList[i].images?.icon != null)
-                          ? NetworkImage(itemsList[i].images!.icon!)
+                          ? weaponImage(itemsList[i].images!.icon!)
                           : const AssetImage('assets/loading/vbuck.png')
                       ),
                     ),
@@ -194,7 +195,7 @@ class _ShowItem extends StatelessWidget {
                 child: ImageFiltered(
                   imageFilter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
                   child: const CircleAvatar(
-                    radius: double.infinity,
+                    radius: 90,
                     backgroundColor: Colors.white,
                   ),
                 ),
@@ -202,8 +203,8 @@ class _ShowItem extends StatelessWidget {
             ),
             Center(
               child: FadeInImage(
-                placeholder: const AssetImage('assets/loading/load.gif'),
-                image: urlImage != null ? NetworkImage(urlImage!) : const AssetImage('assets/loading/vbuck.png')
+                placeholder: const AssetImage('assets/loading/vbuck.png'),
+                image: urlImage != null ? weaponImage(urlImage!) : const AssetImage('assets/loading/vbuck.png')
               ),
             ),
           ],

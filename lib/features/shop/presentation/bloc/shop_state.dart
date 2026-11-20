@@ -15,6 +15,16 @@ class ShopState extends Equatable {
   final int itemsPerPage;
   final bool isLoading;
 
+  bool get hasCatalog =>
+      loteDeObjetosShopCompletos.isNotEmpty ||
+      skinsShop.isNotEmpty ||
+      picosShop.isNotEmpty ||
+      alaDeltasShop.isNotEmpty ||
+      wrappersShop.isNotEmpty ||
+      gesturesShop.isNotEmpty ||
+      musicShop.isNotEmpty ||
+      playSetProp.isNotEmpty;
+
   const ShopState({
     this.isLoading = false,
     this.indexShop = 0,

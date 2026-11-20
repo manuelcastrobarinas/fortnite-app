@@ -41,7 +41,7 @@ class CustomCardComponent extends StatelessWidget {
             child: SizedBox(
               height: double.infinity,
               child: FadeInImage(
-                placeholder: const AssetImage('assets/loading/load.gif'), 
+                placeholder: const AssetImage('assets/loading/vbuck.png'), 
                 image: urlImage.isEmpty
                     ? const AssetImage('assets/loading/vbuck.png')
                     : NetworkImage(urlImage, scale: 1),

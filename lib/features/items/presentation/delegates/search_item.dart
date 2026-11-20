@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/features/items/presentation/bloc/items_bloc.dart';
+import 'package:fortnite_app/features/items/presentation/weapon_image.dart';
 import 'package:fortnite_app/features/items/domain/entities/items.dart';
 
 import 'package:fortnite_app/features/items/presentation/background_items_color.dart';
@@ -74,8 +75,8 @@ class SearchItemDelegate extends SearchDelegate {
       child: Column(
         children: [
           ListTile(
-            leading: CircleAvatar(backgroundImage: item.images?.background != null 
-              ? NetworkImage(item.images!.background!) 
+            leading: CircleAvatar(backgroundImage: item.images?.icon != null
+              ? weaponImage(item.images!.icon!)
               : const AssetImage('assets/loading/vbuck.png')),
             title   : Text(item.name ?? 'Sin nombre'),
             subtitle: Text(item.description ?? 'No Disponible', maxLines: 2, overflow: TextOverflow.ellipsis),

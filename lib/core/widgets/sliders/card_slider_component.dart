@@ -437,8 +437,7 @@ class _CardSliderState extends State<CardSlider> with SingleTickerProviderStateM
   Widget animatedBackCards() {
     return Stack(
       children: [
-        for (int index = 0; index < widget.cards.length; index++)
-          for (int i = (widget.cards.length - 1); i >= 0; i--)
+        for (int i = (widget.cards.length - 1); i >= 0; i--)
             Align(
               alignment: (i == 0 || i == widget.cards.length - 1)
                   ? (i == 0
