@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/app/theme/app_colors.dart';
 import 'package:fortnite_app/core/widgets/error_retry_view.dart';
+import 'package:fortnite_app/core/widgets/scorebug.dart';
 import 'package:fortnite_app/features/island/domain/entities/island.dart';
 import 'package:fortnite_app/features/island/presentation/bloc/island_bloc.dart';
 
@@ -64,10 +65,11 @@ class _IslandScreenState extends State<IslandScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: Text(
-                'Isla',
-                style: TextStyle(color: kPrimaryTextColor, fontSize: 36),
+              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+              child: Scorebug(
+                section: 'ISLA',
+                subject: 'Isla',
+                channel: kChannelIsland,
               ),
             ),
             Padding(
@@ -76,23 +78,39 @@ class _IslandScreenState extends State<IslandScreen> {
                 spacing: 8,
                 children: [
                   ChoiceChip(
-                    label: const Text('Mapa'),
+                    label: Text('Mapa', style: TextStyle(color: _section == _IslandSection.map ? Colors.white : kInk)),
                     selected: _section == _IslandSection.map,
+                    selectedColor: kChannelIsland,
+                    backgroundColor: kQuiet,
+                    showCheckmark: false,
+                    side: BorderSide.none,
                     onSelected: (_) => _select(_IslandSection.map),
                   ),
                   ChoiceChip(
-                    label: const Text('Modos'),
+                    label: Text('Modos', style: TextStyle(color: _section == _IslandSection.modes ? Colors.white : kInk)),
                     selected: _section == _IslandSection.modes,
+                    selectedColor: kChannelIsland,
+                    backgroundColor: kQuiet,
+                    showCheckmark: false,
+                    side: BorderSide.none,
                     onSelected: (_) => _select(_IslandSection.modes),
                   ),
                   ChoiceChip(
-                    label: const Text('Novedades'),
+                    label: Text('Novedades', style: TextStyle(color: _section == _IslandSection.cosmetics ? Colors.white : kInk)),
                     selected: _section == _IslandSection.cosmetics,
+                    selectedColor: kChannelIsland,
+                    backgroundColor: kQuiet,
+                    showCheckmark: false,
+                    side: BorderSide.none,
                     onSelected: (_) => _select(_IslandSection.cosmetics),
                   ),
                   ChoiceChip(
-                    label: const Text('Creador'),
+                    label: Text('Creador', style: TextStyle(color: _section == _IslandSection.creator ? Colors.white : kInk)),
                     selected: _section == _IslandSection.creator,
+                    selectedColor: kChannelIsland,
+                    backgroundColor: kQuiet,
+                    showCheckmark: false,
+                    side: BorderSide.none,
                     onSelected: (_) => _select(_IslandSection.creator),
                   ),
                 ],
@@ -237,7 +255,7 @@ class _ModesView extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
       itemCount: modes.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, __) => const Divider(height: 1, color: kQuiet),
       itemBuilder: (context, index) {
         final mode = modes[index];
         final team = mode.teamSize;
@@ -246,9 +264,9 @@ class _ModesView extends StatelessWidget {
             : team <= 1
                 ? 'En solitario'
                 : 'Equipo de $team';
-        return Card(
-          child: ListTile(
-            leading: ClipRRect(
+        return ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 4),
+          leading: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 mode.imageUrl,
@@ -266,8 +284,7 @@ class _ModesView extends StatelessWidget {
             ),
             trailing: teamLabel == null
                 ? null
-                : Text(teamLabel, style: const TextStyle(fontSize: 12)),
-          ),
+                : Text(teamLabel, style: const TextStyle(fontSize: 12, color: kInk)),
         );
       },
     );

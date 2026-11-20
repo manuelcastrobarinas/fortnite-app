@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/features/players/presentation/bloc/player_bloc.dart';
 import 'package:fortnite_app/app/theme/app_colors.dart';
+import 'package:fortnite_app/core/widgets/scorebug.dart';
 import 'package:fortnite_app/features/players/presentation/delegates/search_account.dart';
-import 'package:fortnite_app/core/widgets/painters/left_waves_painter_view.dart';
 
 import 'package:fortnite_app/features/players/presentation/widgets/player_view.dart';
 
@@ -12,29 +12,30 @@ class PlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: kBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: kBackgroundColor,
-          elevation: 0,
-          title: const Text('Estadisticas de Usuario', style: TextStyle(color: Colors.black, fontSize: 26)),
-          toolbarHeight: 100,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.black, size: 30),
-              onPressed: () async => await showSearch(context: context, delegate: SearchAccountDelegate())
-            ),
-            const SizedBox(width: 20.0)
-          ],
-        ),
-        body: BlocBuilder<PlayerBloc, PlayerState>(
-          builder: (context, state) {
-            if (state.player == null) return const _SearchAccountMessage();
-            return const _PlayerInformation();
+    return Scaffold(
+      backgroundColor: kBackgroundColor,
+      body: BlocBuilder<PlayerBloc, PlayerState>(
+        builder: (context, state) {
+          if (state.player == null) {
+            return Column(
+              children: [
+                Scorebug(
+                  section: 'CUENTA',
+                  subject: 'Busca una cuenta',
+                  channel: kChannelPlayers,
+                  trailing: IconButton(
+                    tooltip: 'Buscar cuenta',
+                    icon: const Icon(Icons.search, color: Colors.white),
+                    onPressed: () => showSearch(context: context, delegate: SearchAccountDelegate()),
+                  ),
+                ),
+                const Expanded(child: _SearchAccountMessage()),
+              ],
+            );
           }
-        )
-      )
+          return const PlayerView();
+        },
+      ),
     );
   }
 }
@@ -50,20 +51,6 @@ class _SearchAccountMessage extends StatelessWidget {
       children: [
         Image(image:AssetImage("assets/player/jonnesy.png"), fit: BoxFit.fill),
         Text("Busca la cuenta que deseas ver", style: TextStyle(fontSize: 22.0, overflow: TextOverflow.ellipsis),maxLines: 3),
-      ],
-    );
-  }
-}
-
-class _PlayerInformation extends StatelessWidget {
-  const _PlayerInformation();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Stack(
-      children: [
-        LeftWavesPainterView(colorWave: Colors.white),
-        PlayerView(),
       ],
     );
   }

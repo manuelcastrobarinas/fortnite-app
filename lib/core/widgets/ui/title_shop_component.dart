@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fortnite_app/app/theme/app_colors.dart';
 
 class SectionTitleShopComponent extends StatelessWidget {
   final String titleSection;
@@ -12,7 +13,13 @@ class SectionTitleShopComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle style = TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis);
+    const TextStyle style = TextStyle(
+      color: kInk,
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+      fontFeatures: [FontFeature.tabularFigures()],
+      overflow: TextOverflow.ellipsis,
+    );
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

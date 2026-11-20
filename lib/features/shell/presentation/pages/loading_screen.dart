@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fortnite_app/app/theme/app_colors.dart';
 import 'package:fortnite_app/features/shell/presentation/widgets/loading_view.dart';
 
 class LoadingScreen extends StatelessWidget {
@@ -7,7 +8,8 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: LoadingView()
+      backgroundColor: kGround,
+      body: LoadingView(),
     );
   }
 }

@@ -17,47 +17,26 @@ class ButtonComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Center(
-        child: Container(
-          decoration:  BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            gradient: const LinearGradient(
-              stops: [
-                0.05,
-                1
-              ],
-              colors: [
-                kPrimaryColorVariant,
-                kPrimaryColor
-              ]
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: kShadowColor,
-                blurRadius: 8,
-                offset: Offset(0, 12),
-              )
-            ]
-          ),
-          child: MaterialButton(
-            padding : const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            minWidth: size.width * 0.7,
-            height  : 60,
-            elevation : 0,
-            shape : const  StadiumBorder(),
-            child : Text(
-              text, 
-              style: const TextStyle(
-                color: Colors.white, 
-                fontSize: 18, 
-                fontFamily: 'fortnite'
-              )
-            ),
-            onPressed: () =>  isBack == true ? Navigator.pushNamed(context, route) : Navigator.pushReplacementNamed(context, route)
+    return Center(
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: kChannelWeapons,
+          foregroundColor: Colors.white,
+          minimumSize: Size(size.width * 0.7, 56),
+          shape: const StadiumBorder(),
+        ),
+        onPressed: () => isBack
+            ? Navigator.pushNamed(context, route)
+            : Navigator.pushReplacementNamed(context, route),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontFamily: kPrimaryFont,
           ),
         ),
-      )
+      ),
     );
   }
 }

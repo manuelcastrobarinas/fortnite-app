@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortnite_app/core/widgets/scorebug.dart';
 import 'package:fortnite_app/core/widgets/widgets.dart';
 
 import 'package:fortnite_app/features/players/presentation/bloc/player_bloc.dart';
+import 'package:fortnite_app/features/players/presentation/delegates/search_account.dart';
 import 'package:fortnite_app/app/theme/app_colors.dart';
 
 class PlayerView extends StatelessWidget {
@@ -11,9 +13,6 @@ class PlayerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> choisesList = ['Solo','Duos','Trios','Escuadrones'];
-
-    final Size size = MediaQuery.of(context).size;
-    const TextStyle titleSection = TextStyle(color: kPrimaryTextColor, fontSize: 20);
 
     return BlocBuilder<PlayerBloc, PlayerState>(
       builder: (context, state) {
@@ -47,20 +46,38 @@ class PlayerView extends StatelessWidget {
           StadisticSection(title: '#Tiempo', description: 'Minutos Jugados',    value: state.selectedStats?["minutesplayed"].toString() ?? 'no')
         ];
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: SingleChildScrollView(
-            child: Column(
+        const titleSection = TextStyle(color: kInk, fontSize: 16, fontWeight: FontWeight.w700);
+        final name = state.player?.name ?? 'Sin nombre';
+        return Column(
+          children: [
+            Scorebug(
+              section: 'CUENTA',
+              subject: name,
+              channel: kChannelPlayers,
+              trailing: IconButton(
+                tooltip: 'Buscar cuenta',
+                icon: const Icon(Icons.search, color: Colors.white),
+                onPressed: () => showSearch(context: context, delegate: SearchAccountDelegate()),
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // Center(child: _DropdownSeasonsMenu(dropdownSeasonsList: dropdownSeasonsList)),
-                const SizedBox(height: 10.0),
-                Center(child: _ImageAndPlatforms(size: size)),
-                const SizedBox(height: 10.0),
-                Center(child: _Username(userName: state.player?.name ?? 'Sin nombre')),
-                const SizedBox(height: 5),
+                const SizedBox(height: 16),
+                const Center(child: _ImageAndPlatforms()),
+                const SizedBox(height: 8),
                 _UserLevel(level: state.player?.account?.level?.toString() ?? '-'),
+                if (state.player?.globalStats == null) ...[
+                  const SizedBox(height: 8),
+                  const Text(
+                    'La cuenta sí aparece. Las cifras (K/D, victorias) piden una llave gratuita de fortnite-api.com en PUBLIC_API_KEY.',
+                    style: TextStyle(color: kPrimaryTextColor, fontSize: 14),
+                  ),
+                ],
                 const SizedBox(height: 10),
                 _ChoiceChipSelectedTeam(
                   choisesList: choisesList,
@@ -86,10 +103,12 @@ class PlayerView extends StatelessWidget {
                 StadisticsComponentMultipleRows(
                   listStadistics: generalStats
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 16),
               ],
             ),
-          ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -107,109 +126,36 @@ class _UserLevel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(
-          child: Text('Nivel', style: TextStyle(color: Colors.black, fontSize: 26), overflow: TextOverflow.ellipsis, maxLines: 2),
-        ),
-        const SizedBox(width: 10),
-        SizedBox(
-          child: Text(level, style: const TextStyle(color: Colors.amber, fontSize: 32), overflow: TextOverflow.ellipsis, maxLines: 2),
+        const Text('Nivel', style: TextStyle(color: kInk, fontSize: 16)),
+        const SizedBox(width: 8),
+        Text(
+          level,
+          style: const TextStyle(
+            color: kInk,
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
         ),
       ],
     );
   }
 }
 
-class _Username extends StatelessWidget {
-  final String userName;
-  const _Username({
-    required this.userName
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Text(userName, style: const TextStyle(color: Colors.black, fontSize: 32), overflow: TextOverflow.ellipsis, maxLines: 2),
-    );
-  }
-}
-
 class _ImageAndPlatforms extends StatelessWidget {
-  final Size size;
-  
-  const _ImageAndPlatforms({
-    required this.size
-  });
+  const _ImageAndPlatforms();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width : size.width * 0.34,
-      height: size.width * 0.40,
-      child: Stack(
-        children: <Widget>[
-          CircleAvatar(
-            backgroundColor: kPrimaryTextColor,
-            radius: size.height * 0.40,
-          ),
-          SizedBox(
-            height: size.width * 0.40,
-            width : size.width * 0.34,
-            child: const Image(image: AssetImage('assets/player/jonnes.png'),fit: BoxFit.cover,)),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              width : double.infinity,
-              height: size.height * 0.034,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _Platform(size: size, backgroundColor: Colors.black, isConsole: false),
-                  _Platform(size: size, backgroundColor: Colors.black38, isConsole: true),
-                ]
-              ),
-            ),
-          )
-        ],
+    return const SizedBox(
+      width: 112,
+      height: 112,
+      child: Image(
+        image: AssetImage('assets/player/jonnes.png'),
+        fit: BoxFit.cover,
       ),
-    );
-  }
-}
-
-class _Platform extends StatelessWidget {
-  final Size size;
-  final Color backgroundColor;
-  final bool isConsole;
-
-  const _Platform({
-    required this.size,
-    required this.backgroundColor,
-    required this.isConsole
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: size.height * 0.034,
-      width : size.height * 0.034,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        boxShadow: const <BoxShadow> [
-          BoxShadow(
-            offset: Offset(0, 3),
-            color : Colors.black45,
-          )
-        ],
-        borderRadius: BorderRadius.circular(10)
-      ),
-      child: Center(
-        child: isConsole == true 
-        ? const Icon(Icons.gamepad, color: Colors.white)
-        : const Text("PC", style: TextStyle(color: Colors.white, fontSize: 22))
-      )
     );
   }
 }
@@ -299,13 +245,16 @@ class _ChoiceChipSelectedTeam extends StatelessWidget {
             spacing: 10.0,
             children: List.generate(choisesList.length, (index) {
                 return ChoiceChip(
-                  labelPadding: const EdgeInsets.all(2.0),
-                  label: Text(choisesList[index], style: const TextStyle(color: Colors.white)), 
+                  showCheckmark: false,
+                  label: Text(
+                    choisesList[index],
+                    style: TextStyle(color: defaultChoiseIndex == index ? Colors.white : kInk),
+                  ),
                   selected: defaultChoiseIndex == index,
-                  selectedColor: kPrimaryColor,
-                  disabledColor: kPrimaryColorVariant,
-                  backgroundColor: kPrimaryColorVariant,
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  selectedColor: kChannelPlayers,
+                  backgroundColor: kQuiet,
+                  side: BorderSide.none,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   onSelected: (value) {
                       playerBloc.changeTeamOption(
                       newTeamOption: index, 

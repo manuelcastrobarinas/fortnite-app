@@ -4,15 +4,17 @@ import 'package:fortnite_app/app/theme/app_colors.dart';
 
 class ChoiceChipSelectComponent extends StatelessWidget {
 
-  final int defaultChoiseIndex;     //INDICE DEL CHIP SELECCIONADO
-  final List<String> choisesList;   //LISTA DE ELEMENTOS PARA CADA UNO DE LOS CHOISE
-  final void Function(int) onSelected;  //fUNCION DE EJECUCION 
+  final int defaultChoiseIndex;
+  final List<String> choisesList;
+  final void Function(int) onSelected;
+  final Color selectedColor;
 
   const ChoiceChipSelectComponent({
     super.key, 
     required this.choisesList,
     required this.defaultChoiseIndex,
-    required this.onSelected
+    required this.onSelected,
+    this.selectedColor = kChannelShop,
   });
 
   @override
@@ -30,13 +32,21 @@ class ChoiceChipSelectComponent extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: ChoiceChip(
-                    labelPadding: const EdgeInsets.all(2.0),
-                    label: Text(choisesList[index], style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)), 
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+                    showCheckmark: false,
+                    label: Text(
+                      choisesList[index],
+                      style: TextStyle(
+                        color: defaultChoiseIndex == index ? Colors.white : kInk,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     selected: defaultChoiseIndex == index,
-                    selectedColor: kPrimaryColor,
-                    disabledColor: kPrimaryColorVariant,
-                    backgroundColor: kPrimaryColorVariant,
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    selectedColor: selectedColor,
+                    backgroundColor: kQuiet,
+                    side: BorderSide.none,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     onSelected: (value) {
                         onSelected(index);
                     },

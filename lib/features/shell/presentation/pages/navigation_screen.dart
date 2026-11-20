@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fortnite_app/app/theme/app_colors.dart';
 import 'package:fortnite_app/features/island/presentation/pages/island_screen.dart';
@@ -7,40 +6,13 @@ import 'package:fortnite_app/features/news/presentation/pages/news_screen.dart';
 import 'package:fortnite_app/features/players/presentation/pages/player_screen.dart';
 import 'package:fortnite_app/features/shop/presentation/pages/shop_screen.dart';
 
-List<Widget> _navigationItems = <Widget> [
-    const Icon(Icons.home_rounded),
-    const Icon(Icons.newspaper_rounded),
-    const Icon(Icons.shopping_bag_rounded),
-    const Icon(Icons.query_stats_rounded),
-    const Icon(Icons.map_rounded),
-  ];
-
-//PANTALLAS A LAS CUALES VA A NAVEGAR 
-  final List<Widget> _screens = <Widget> [
-    const HomeScreen(),
-    const NewsScreen(),
-    const ShopScreen(),
-    const PlayerScreen(),
-    const IslandScreen(),
-  ];
-
-//COLORES DE FONDO DE LAS PANTALLAS
-  final List<Color> _backgroundScreenColors = <Color>[
-    kBackgroundColor,
-    kBackgroundColor,
-    Colors.white,
-    kBackgroundColor,
-    kBackgroundColor,
-  ];
-
-//COLORES DE LA NAVEGACION DE LA BARRA
-  final List<Color> _backgroundNavigatorColors = <Color>[
-    Colors.white,
-    Colors.white,
-    kBackgroundColor,
-    Colors.white,
-    Colors.white,
-  ];
+const List<Widget> _screens = <Widget>[
+  HomeScreen(),
+  NewsScreen(),
+  ShopScreen(),
+  PlayerScreen(),
+  IslandScreen(),
+];
 
 class NavegationScreen extends StatefulWidget {
   const NavegationScreen({super.key});
@@ -51,29 +23,43 @@ class NavegationScreen extends StatefulWidget {
 
 class _NavegationScreenState extends State<NavegationScreen> {
   int selectedIndex = 0;
-  Color backgroundColor = kBackgroundColor;
-  Color backgroundNavigatorColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
-    //EVALUA EL INDICE EN EL QUE EL USUARIO SE ENCUENTRA Y NAVEGA A LA PANTALLA QUE CORRESPONDE A ESE INDICE 
+    final channel = kChannelColors[selectedIndex];
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        index: selectedIndex,
-        items: _navigationItems,
-        backgroundColor: backgroundColor,
-        height: 65.0,
-        buttonBackgroundColor: backgroundNavigatorColor,
-        color: backgroundNavigatorColor,
-        onTap: (int newIndex) {
-          setState(() {
-            selectedIndex = newIndex;
-            backgroundColor = _backgroundScreenColors[newIndex];
-            backgroundNavigatorColor = _backgroundNavigatorColors[newIndex];
-          });
-        },          
-      ),
+      backgroundColor: kGround,
       body: _screens[selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: channel,
+        indicatorColor: kGround,
+        selectedIndex: selectedIndex,
+        onDestinationSelected: (int newIndex) {
+          setState(() => selectedIndex = newIndex);
+        },
+        destinations: const <NavigationDestination>[
+          NavigationDestination(
+            icon: ExcludeSemantics(child: Icon(Icons.home_rounded)),
+            label: 'Armas',
+          ),
+          NavigationDestination(
+            icon: ExcludeSemantics(child: Icon(Icons.newspaper_rounded)),
+            label: 'Noticias',
+          ),
+          NavigationDestination(
+            icon: ExcludeSemantics(child: Icon(Icons.shopping_bag_rounded)),
+            label: 'Tienda',
+          ),
+          NavigationDestination(
+            icon: ExcludeSemantics(child: Icon(Icons.query_stats_rounded)),
+            label: 'Cuenta',
+          ),
+          NavigationDestination(
+            icon: ExcludeSemantics(child: Icon(Icons.map_rounded)),
+            label: 'Mapa',
+          ),
+        ],
+      ),
     );
   }
 }

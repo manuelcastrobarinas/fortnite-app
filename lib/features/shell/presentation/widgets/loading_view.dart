@@ -8,23 +8,31 @@ class LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: size.height * 1,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            const SizedBox(height: 30),
-            const _FortniteImageAndShields(),
-            const _Banner(),
-            Expanded(
-              flex  : 1,
-              child : ButtonComponent(text:'PRESIONA INICIAR', size: size, route: 'main', isBack: false)
-            )
-          ],
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final imageHeight = (constraints.maxHeight * 0.46).clamp(180.0, 420.0);
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(height: imageHeight, child: const _FortniteImageAndShields()),
+                const _Banner(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 28),
+                  child: ButtonComponent(
+                    text: 'PRESIONA INICIAR',
+                    size: Size(constraints.maxWidth, constraints.maxHeight),
+                    route: 'main',
+                    isBack: false,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -35,46 +43,38 @@ const _FortniteImageAndShields();
 
 @override
 Widget build(BuildContext context) {
-  return const Expanded( 
-      flex: 4,
-      child : SizedBox(
-        width: double.infinity,
-        child: Stack(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: Image(
-                image: AssetImage("assets/loading/5.png"),
-                fit: BoxFit.fill,
-              )
-            ),
-            Positioned(
-              left: -55,
-              bottom: 30,
-              child: SizedBox(
-                width : 140,
-                height: 140,
-                child: Image(
-                  image: AssetImage("assets/loading/slurp_bottle.png")
-                )
-              ),
-            ),
-            Positioned(
-              right: -20,
-              bottom: 0,
-              child: SizedBox(
-                width : 100,
-                height: 100,
-                child: Image(
-                  image: AssetImage("assets/loading/big.png")
-                )
-              ),
-            ),
-          ],
+  return const Stack(
+    fit: StackFit.expand,
+    children: [
+      Image(
+        image: AssetImage("assets/loading/5.png"),
+        fit: BoxFit.contain,
+      ),
+      Positioned(
+        left: -55,
+        bottom: 30,
+        child: SizedBox(
+          width : 140,
+          height: 140,
+          child: Image(
+            image: AssetImage("assets/loading/slurp_bottle.png")
+          )
         ),
       ),
-    );
-  }
+      Positioned(
+        right: -20,
+        bottom: 0,
+        child: SizedBox(
+          width : 100,
+          height: 100,
+          child: Image(
+            image: AssetImage("assets/loading/big.png")
+          )
+        ),
+      ),
+    ],
+  );
+}
 }
 
 class _Banner extends StatelessWidget {
@@ -83,21 +83,26 @@ class _Banner extends StatelessWidget {
   //sin embargo es importante entender que este metodo aunque es efectivo es menos eficiente, pues debe hacer que el widget se construya cada vez que se llama la pantalla 
   @override
   Widget build(BuildContext context) {
-    const TextStyle text = TextStyle(fontFamily: 'fortnite', color: kPrimaryTextColor);
-    return Expanded( 
-      flex :1,
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          Expanded(
-            flex : 1,
-            child: Text("FORTNITE",      style: text.copyWith(fontSize: 70))
+          Text(
+            'FORTNITE',
+            style: TextStyle(fontFamily: kPrimaryFont, color: kInk, fontSize: 56, height: 1),
           ),
-          Expanded(
-            flex  : 1,
-            child : Text("BATTLE ROYALE", style: text.copyWith(fontSize: 36))
+          SizedBox(height: 4),
+          Text(
+            'BATTLE ROYALE',
+            style: TextStyle(
+              color: kInk,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 2.4,
+            ),
           ),
         ],
-      )
+      ),
     );
   }
 }

@@ -1,9 +1,8 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortnite_app/app/theme/app_colors.dart';
 import 'package:fortnite_app/core/widgets/error_retry_view.dart';
-import 'package:fortnite_app/core/widgets/painters/painters.dart';
+import 'package:fortnite_app/core/widgets/scorebug.dart';
 import 'package:fortnite_app/core/widgets/widgets.dart';
 import 'package:fortnite_app/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:fortnite_app/features/shop/presentation/widgets/ala_deltas_view.dart';
@@ -21,21 +20,11 @@ class ShopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        toolbarHeight: 100,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text('Tienda Hoy', style: TextStyle(color: Colors.black, fontSize: 38), maxLines: 1, overflow: TextOverflow.ellipsis),
-        // actions: <Widget>[
-        //   IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black, size: 40,)),
-        //   const SizedBox(width: 40.0)
-        // ],
-      ),
+      backgroundColor: kGround,
       body: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           // return state.shopAll?.shop != null 
-          return state.loteDeObjetosShopCompletos.isNotEmpty
+          return state.hasCatalog
             ? _ShowShopView(state: state)
             : _GetShopData(state: state);
         }
@@ -96,31 +85,26 @@ class _ShowShopView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ShopBloc shopBloc = BlocProvider.of<ShopBloc>(context);
-    final List<String> choisesList =  ['Lotes', 'ala Deltas', 'Picos', 'Skins', 'Envoltorios', 'Gestos', 'Sets Lego', 'Musica'];
+    final List<String> choisesList = ['Lotes', 'ala Deltas', 'Picos', 'Skins', 'Envoltorios', 'Gestos', 'Sets Lego', 'Musica'];
+    final index = state.indexChipSelected.clamp(0, choisesList.length - 1).toInt();
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        Flexible(
-          flex: 1,
-          fit: FlexFit.loose,
-          child: FadeInRight(
-            duration: const Duration(milliseconds: 1200),
-            child: ChoiceChipSelectComponent(
-              choisesList: choisesList, 
-              defaultChoiseIndex: state.indexChipSelected, 
-              onSelected: shopBloc.setNewIndexChip
-            ),
-          )
-        ),  
-        Flexible(
-          flex: 7,
-          fit: FlexFit.loose,
-          child: Stack(
-            children: [
-              const LeftWavesPainterView(colorWave: kBackgroundColor),
-              _setShopViewByTag(indexSelected: state.indexChipSelected)
-            ],
+        Scorebug(
+          section: 'TIENDA',
+          subject: choisesList[index],
+          channel: kChannelShop,
+        ),
+        SizedBox(
+          height: 56,
+          child: ChoiceChipSelectComponent(
+            choisesList: choisesList,
+            defaultChoiseIndex: index,
+            selectedColor: kChannelShop,
+            onSelected: shopBloc.setNewIndexChip,
           ),
+        ),
+        Expanded(
+          child: _setShopViewByTag(indexSelected: index),
         ),
       ],
     );

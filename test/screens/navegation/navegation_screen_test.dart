@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fortnite_app/features/island/presentation/pages/island_screen.dart';
@@ -17,7 +16,7 @@ void main() {
       await tester.pump();
 
       expect(find.byType(HomeScreen), findsOneWidget);
-      expect(find.byType(CurvedNavigationBar), findsOneWidget);
+      expect(find.byType(NavigationBar), findsOneWidget);
       expect(find.byType(Icon), findsWidgets);
     });
 
